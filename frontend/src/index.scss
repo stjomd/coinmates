@@ -1,1 +1,6 @@
 @use 'colors';
+
+html {
+    font-family: Helvetica, -apple-system, -system-ui, sans-serif;
+    color: colors.$dark;
+}
