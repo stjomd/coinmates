@@ -49,9 +49,6 @@
         padding-left: 12pt;
         padding-right: 12pt;
     }
-    #title {
-        // font-size: 30pt;
-    }
     .description {
         & p {
             white-space: normal;
@@ -73,5 +70,11 @@
 @media (max-width: 320px) {
     #title {
         font-size: 18pt;
+    }
+}
+
+@media (orientation: landscape) {
+    .flex-container {
+        margin-top: 10pt;
     }
 }
