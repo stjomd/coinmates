@@ -15,6 +15,10 @@
     align-items: center;
 }
 
+.left-part {
+    margin-right: -30pt;
+}
+
 .description p {
     margin: 0pt;
     white-space: nowrap;
@@ -30,4 +34,15 @@
 
 #image {
     scale: 0.75;
+}
+
+.buttons {
+    & button {
+        color: white;
+        margin-right: 4pt;
+    }
+    & button:hover {
+        color: white;
+    }
+    margin-top: 12pt;
 }
