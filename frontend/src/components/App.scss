@@ -6,8 +6,13 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    padding: 50%;
-    background: radial-gradient(closest-side, mix(colors.$primary, white, 30%), white);
+    padding: 15%;
+    background: radial-gradient(closest-side, mix(colors.$primary, white, 50%), white);
+}
+
+.flex-container {
+    display: flex;
+    align-items: center;
 }
 
 .description p {
@@ -21,4 +26,8 @@
     font-weight: bold;
     font-size: 48pt;
     margin-bottom: 4pt;
+}
+
+#image {
+    scale: 0.75;
 }
