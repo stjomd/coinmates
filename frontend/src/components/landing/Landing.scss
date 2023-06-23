@@ -40,9 +40,20 @@
 @media (max-width: 1200px) {
     .flex-container {
         flex-direction: column;
+        padding-left: 10pt;
+        padding-right: 10pt;
+    }
+    #title {
+        font-size: 30pt;
+    }
+    .description {
+        & p {
+            white-space: normal;
+        }
+        max-width: 100%;
     }
     #image {
-        padding-left: 0;
+        padding-left: 0pt;
         margin-top: 20pt;
     }
 }

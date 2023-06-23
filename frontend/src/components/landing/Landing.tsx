@@ -7,8 +7,10 @@ function Landing() {
         <div className='left-part'>
           <h1 id='title'>coinmates</h1>
           <div className='description'>
-            <p>track and split expenses with your friends and family.</p>
-            <p>create an account for free to receive and send payments today.</p>
+            <p>
+              track and split expenses with your friends and family.
+              create an account for free to receive and send payments today.
+            </p>
           </div>
           <div className='buttons'>
             <button type='button' className='btn btn-primary'>Log in</button>
