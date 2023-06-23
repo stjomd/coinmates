@@ -1,48 +1,22 @@
 @use '../colors';
-@use '../fonts';
 
-.center {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    padding: 15%;
-    background: radial-gradient(closest-side, mix(colors.$primary, white, 50%), white);
-}
-
-.flex-container {
+.flexbox-container {
     display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     align-items: center;
+    height: 100%;
 }
 
-.left-part {
-    margin-right: -30pt;
+div#landing {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    background: radial-gradient(closest-side, rgba(colors.$primary, 0.5), rgba(white, 0));
 }
 
-.description p {
-    margin: 0pt;
-    white-space: nowrap;
-}
-
-#title {
-    color: colors.$primary;
-    font-family: fonts.$display-font;
-    font-weight: bold;
-    font-size: 48pt;
-    margin-bottom: 4pt;
-}
-
-#image {
-    scale: 0.75;
-}
-
-.buttons {
-    & button {
-        color: white;
-        margin-right: 4pt;
-    }
-    & button:hover {
-        color: white;
-    }
-    margin-top: 12pt;
+footer#footer {
+    font-size: 9pt;
+    padding-bottom: 10pt;
 }

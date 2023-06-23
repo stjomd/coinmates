@@ -1,0 +1,36 @@
+@use '../../colors';
+@use '../../fonts';
+
+.flex-container {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+}
+
+.description p {
+    margin: 0pt;
+    white-space: nowrap;
+}
+
+#title {
+    color: colors.$primary;
+    font-family: fonts.$display-font;
+    font-weight: bold;
+    font-size: 48pt;
+    margin-bottom: 4pt;
+}
+
+#image {
+    padding-left: 40pt;
+}
+
+.buttons {
+    & button {
+        color: white;
+        margin-right: 4pt;
+    }
+    & button:hover {
+        color: white;
+    }
+    margin-top: 12pt;
+}
