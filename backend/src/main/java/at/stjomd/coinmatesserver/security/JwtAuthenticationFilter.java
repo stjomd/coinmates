@@ -2,7 +2,6 @@ package at.stjomd.coinmatesserver.security;
 
 import at.stjomd.coinmatesserver.entity.User;
 import at.stjomd.coinmatesserver.service.jwt.JwtService;
-import at.stjomd.coinmatesserver.service.jwt.JwtServiceImpl;
 import at.stjomd.coinmatesserver.service.user.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -49,7 +48,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             if (jwtService.isValid(jwt, user)) {
                 // Update security context
                 UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                    user, user.getPassword(), List.of(user.getRole()));
+                    user.getUsername(), user.getPassword(), List.of(user.getRole())
+                );
                 token.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(token);
             }
