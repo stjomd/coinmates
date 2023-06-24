@@ -1,5 +1,6 @@
 package at.stjomd.coinmatesserver.config;
 
+import at.stjomd.coinmatesserver.repository.UserRepository;
 import at.stjomd.coinmatesserver.security.JwtAuthenticationFilter;
 import at.stjomd.coinmatesserver.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +24,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
-    private final UserService userService;
+    private final UserRepository userRepository;
 
     @Autowired
-    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter, UserService userService) {
+    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter, UserRepository userRepository) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
-        this.userService = userService;
+        this.userRepository = userRepository;
     }
 
     @Bean
@@ -42,7 +43,7 @@ public class SecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return userService::getUser;
+        return username -> userRepository.findByEmail(username).orElseThrow();
     }
 
     @Bean

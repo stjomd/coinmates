@@ -13,4 +13,8 @@ public interface UserService {
      */
     User getUser(String email) throws UsernameNotFoundException;
 
+    User register(User user);
+
+    String authenticate(User user);
+
 }

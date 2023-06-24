@@ -1,6 +1,7 @@
 package at.stjomd.coinmatesserver.security;
 
 import at.stjomd.coinmatesserver.entity.User;
+import at.stjomd.coinmatesserver.repository.UserRepository;
 import at.stjomd.coinmatesserver.service.jwt.JwtService;
 import at.stjomd.coinmatesserver.service.user.UserService;
 import jakarta.servlet.FilterChain;
@@ -22,12 +23,12 @@ import java.util.List;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
-    private final UserService userService;
+    private final UserRepository userRepository;
 
     @Autowired
-    public JwtAuthenticationFilter(JwtService jwtService, UserService userService) {
+    public JwtAuthenticationFilter(JwtService jwtService, UserRepository userRepository) {
         this.jwtService = jwtService;
-        this.userService = userService;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -44,7 +45,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         // Extract username/email, verify jwt
         String email = jwtService.getUsername(jwt);
         if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            User user = userService.getUser(email);
+            User user = userRepository.findByEmail(email).orElseThrow();
             if (jwtService.isValid(jwt, user)) {
                 // Update security context
                 UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(

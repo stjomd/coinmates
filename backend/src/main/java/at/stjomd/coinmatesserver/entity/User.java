@@ -19,12 +19,12 @@ import java.util.List;
 @Table(name = "_user")
 public class User implements UserDetails {
 
-    enum Role implements GrantedAuthority {
+    public enum Role implements GrantedAuthority {
         REGULAR, ADMIN;
         @Override public String getAuthority() { return toString(); }
     }
 
-    enum Status {
+    public enum Status {
         ACTIVE, RESTRICTED, DELETED
     }
 
