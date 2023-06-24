@@ -8,14 +8,21 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
+import org.springframework.security.core.GrantedAuthority;
 
 @Data
 @Entity
 @Table(name = "_user")
 public class User {
 
-    enum Role { REGULAR, ADMIN }
-    enum Status { ACTIVE, RESTRICTED, DELETED }
+    enum Role implements GrantedAuthority {
+        REGULAR, ADMIN;
+        @Override public String getAuthority() { return toString(); }
+    }
+
+    enum Status {
+        ACTIVE, RESTRICTED, DELETED
+    }
 
     @Id
     @GeneratedValue
