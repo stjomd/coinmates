@@ -4,10 +4,8 @@ import at.stjomd.coinmatesserver.entity.User;
 import at.stjomd.coinmatesserver.entity.dto.UserDto;
 import at.stjomd.coinmatesserver.mapper.UserMapper;
 import at.stjomd.coinmatesserver.service.user.UserService;
-import jakarta.annotation.security.PermitAll;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,7 +26,6 @@ public class UserEndpoint {
     }
 
     @PostMapping
-    @Secured({"REGULAR"})
     @ResponseStatus(HttpStatus.CREATED)
     public UserDto register(@RequestBody UserDto userDto) {
         User user = userMapper.entity(userDto);
@@ -37,7 +34,6 @@ public class UserEndpoint {
     }
 
     @PostMapping("auth")
-    @PermitAll
     @ResponseStatus(HttpStatus.OK)
     public String authenticate(@RequestBody UserDto userDto) {
         User user = userMapper.entity(userDto);

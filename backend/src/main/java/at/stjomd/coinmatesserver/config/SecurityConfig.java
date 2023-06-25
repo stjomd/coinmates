@@ -2,7 +2,6 @@ package at.stjomd.coinmatesserver.config;
 
 import at.stjomd.coinmatesserver.repository.UserRepository;
 import at.stjomd.coinmatesserver.security.JwtAuthenticationFilter;
-import at.stjomd.coinmatesserver.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,6 +12,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -30,15 +30,6 @@ public class SecurityConfig {
     public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter, UserRepository userRepository) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         this.userRepository = userRepository;
-    }
-
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        return httpSecurity
-            .csrf(AbstractHttpConfigurer::disable)
-            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-//            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .build();
     }
 
     @Bean
@@ -62,6 +53,21 @@ public class SecurityConfig {
         provider.setUserDetailsService(userDetailsService());
         provider.setPasswordEncoder(passwordEncoder());
         return provider;
+    }
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+        return httpSecurity
+            .csrf(AbstractHttpConfigurer::disable)
+            .authorizeHttpRequests(ahr -> ahr
+                .anyRequest().authenticated()
+            )
+            .sessionManagement(sm -> sm
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            )
+            .authenticationProvider(authenticationProvider())
+            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+            .build();
     }
 
 }

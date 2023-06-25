@@ -3,7 +3,6 @@ package at.stjomd.coinmatesserver.security;
 import at.stjomd.coinmatesserver.entity.User;
 import at.stjomd.coinmatesserver.repository.UserRepository;
 import at.stjomd.coinmatesserver.service.jwt.JwtService;
-import at.stjomd.coinmatesserver.service.user.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -36,6 +35,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         @NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
         String header = request.getHeader("Authorization");
+        // Skip filter for authorization
+        if (request.getServletPath().contains("api/v1/user/auth")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
         // Go to next filter if wrong header
         if (header == null || !header.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
