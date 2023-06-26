@@ -1,13 +1,12 @@
 import { serverUri } from '../Globals.ts';
 import { LoginDetails } from '../entities/LoginDetails.ts';
+import { FetchError } from './FetchError.ts';
 
 export class UserService {
 
   private static readonly uri: string = serverUri + '/user';
 
 	static async authenticate(login: LoginDetails): Promise<number> {
-		console.log('In authenticate')
-		console.log(login)
 		const response = await fetch(this.uri + '/auth', {
 				method: "POST",
 				body: JSON.stringify(login),
@@ -16,7 +15,11 @@ export class UserService {
 					'Content-Type': 'application/json'
 				}
 		})
-		return await response.json();
+		if (response.ok) {
+			return await response.json();
+		} else {
+			throw new FetchError(response.status, await response.text());
+		}
 	}
 
 }

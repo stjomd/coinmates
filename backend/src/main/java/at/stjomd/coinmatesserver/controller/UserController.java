@@ -1,7 +1,8 @@
-package at.stjomd.coinmatesserver.rest;
+package at.stjomd.coinmatesserver.controller;
 
 import at.stjomd.coinmatesserver.entity.User;
 import at.stjomd.coinmatesserver.entity.dto.UserDto;
+import at.stjomd.coinmatesserver.exception.AuthenticationFailedException;
 import at.stjomd.coinmatesserver.mapper.UserMapper;
 import at.stjomd.coinmatesserver.security.SecurityConfig;
 import at.stjomd.coinmatesserver.service.user.UserService;
@@ -17,13 +18,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/user")
 @CrossOrigin(origins = SecurityConfig.frontendOrigin)
-public class UserEndpoint {
+public class UserController {
 
     private final UserService userService;
     private final UserMapper userMapper;
 
     @Autowired
-    public UserEndpoint(UserService userService, UserMapper userMapper) {
+    public UserController(UserService userService, UserMapper userMapper) {
         this.userService = userService;
         this.userMapper = userMapper;
     }
@@ -38,7 +39,7 @@ public class UserEndpoint {
 
     @PostMapping("auth")
     @ResponseStatus(HttpStatus.OK)
-    public String authenticate(@RequestBody UserDto userDto) {
+    public String authenticate(@RequestBody UserDto userDto) throws AuthenticationFailedException {
         User user = userMapper.entity(userDto);
         return userService.authenticate(user);
     }

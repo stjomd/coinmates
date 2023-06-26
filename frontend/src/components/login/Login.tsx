@@ -9,7 +9,7 @@ function Login() {
 	const [password, setPassword] = useState("")
 
 	const login = new LoginDetails(email, password);
-	
+
 	useEffect(() => {
 		login.email = email;
 		login.password = password;
@@ -18,7 +18,7 @@ function Login() {
 	const authenticate = () => {
 		UserService.authenticate(login)
 			.then(id => console.log('Hello user ' + id))
-			.catch(error => console.log(error))
+			.catch(error => console.error(error))
 	}
 
 	return (
@@ -38,7 +38,11 @@ function Login() {
 					onChange={event => setPassword(event.target.value)}
 				/>
 			</form>
-			<button type='button' className='btn btn-primary login-btn' onClick={authenticate}>
+			<button
+				type='button'
+				className='btn btn-primary login-btn'
+				onClick={authenticate}
+			>
 				Sign in
 			</button>
 			<p>Do not have an account? Sign up</p>

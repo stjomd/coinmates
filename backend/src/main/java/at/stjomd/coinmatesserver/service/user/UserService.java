@@ -1,6 +1,7 @@
 package at.stjomd.coinmatesserver.service.user;
 
 import at.stjomd.coinmatesserver.entity.User;
+import at.stjomd.coinmatesserver.exception.AuthenticationFailedException;
 
 public interface UserService {
 
@@ -13,6 +14,6 @@ public interface UserService {
 
     User register(User user);
 
-    String authenticate(User user);
+    String authenticate(User user) throws AuthenticationFailedException;
 
 }

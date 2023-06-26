@@ -1,6 +1,7 @@
 package at.stjomd.coinmatesserver.service.user;
 
 import at.stjomd.coinmatesserver.entity.User;
+import at.stjomd.coinmatesserver.exception.AuthenticationFailedException;
 import at.stjomd.coinmatesserver.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -34,12 +35,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String authenticate(User user) {
+    public String authenticate(User user) throws AuthenticationFailedException {
         User foundUser = userRepository.findByEmail(user.getEmail()).orElse(null);
         if (foundUser != null && passwordEncoder.matches(user.getPassword(), foundUser.getPassword())) {
             return foundUser.getId().toString();
         }
-        return "throw exception here";
+        throw new AuthenticationFailedException("Authentication failed for email " + user.getEmail());
     }
 
 }
