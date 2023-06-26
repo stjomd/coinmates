@@ -1,3 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@700&display=swap');
 
 $display-font: 'Unbounded';
+
+$primary-font-family: Helvetica, -apple-system, -system-ui, sans-serif;
+$display-font-family: $display-font, $primary-font-family;

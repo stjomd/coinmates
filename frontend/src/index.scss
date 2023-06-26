@@ -1,7 +1,8 @@
 @use 'colors';
+@use 'fonts';
 
 html {
-    font-family: Helvetica, -apple-system, -system-ui, sans-serif;
+    font-family: fonts.$primary-font-family;
     color: colors.$dark;
 }
 
