@@ -13,13 +13,14 @@ div.centered {
     flex-direction: column;
     justify-content: center;
     height: 100%;
-    overflow-y: scroll;
     margin-top: auto;
     margin-bottom: auto;
 }
 
 .gradient {
-    background: radial-gradient(closest-side, rgba(colors.$primary, 0.5), rgba(white, 0));
+    background: radial-gradient(
+        closest-side, rgba(colors.$primary, 0.5), rgba(white, 0)
+    );
 }
 
 footer#footer {
