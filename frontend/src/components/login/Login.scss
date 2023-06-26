@@ -1,0 +1,32 @@
+@use '../../colors';
+@use '../../fonts';
+
+.title {
+    font-family: fonts.$display-font-family;
+    font-size: 24pt;
+    color: colors.$primary;
+}
+
+.login-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: min(100vw - 20pt, 400px);
+}
+
+form {
+    width: 100%;
+}
+
+form input {
+    margin-bottom: 6pt;
+}
+
+button.login-btn {
+    width: 100%;
+    margin-bottom: 18pt;
+    color: white;
+    &:hover {
+        color: white;
+    }
+}
