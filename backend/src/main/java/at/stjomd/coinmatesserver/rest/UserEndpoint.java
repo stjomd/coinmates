@@ -3,9 +3,11 @@ package at.stjomd.coinmatesserver.rest;
 import at.stjomd.coinmatesserver.entity.User;
 import at.stjomd.coinmatesserver.entity.dto.UserDto;
 import at.stjomd.coinmatesserver.mapper.UserMapper;
+import at.stjomd.coinmatesserver.security.SecurityConfig;
 import at.stjomd.coinmatesserver.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/user")
+@CrossOrigin(origins = SecurityConfig.frontendOrigin)
 public class UserEndpoint {
 
     private final UserService userService;
