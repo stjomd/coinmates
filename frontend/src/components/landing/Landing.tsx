@@ -1,5 +1,6 @@
 import './Landing.scss'
 import image from '../../assets/friends.svg'
+import { Link } from "react-router-dom";
 
 function Landing() {
     return (
@@ -13,7 +14,9 @@ function Landing() {
             </p>
           </div>
           <div className='buttons'>
-            <button type='button' className='btn btn-primary'>Log in</button>
+            <Link to="/login">
+              <button type='button' className='btn btn-primary'>Log in</button>
+            </Link>
             <button type='button' className='btn btn-primary'>Sign up</button>
           </div>
         </div>

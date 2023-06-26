@@ -1,4 +1,4 @@
-@use '../colors';
+@use '../../colors';
 
 .flexbox-container {
     display: flex;
@@ -8,15 +8,18 @@
     min-height: 100%;
 }
 
-div#landing {
+div.centered {
     display: flex;
     flex-direction: column;
     justify-content: center;
     height: 100%;
-    background: radial-gradient(closest-side, rgba(colors.$primary, 0.5), rgba(white, 0));
     overflow-y: scroll;
     margin-top: auto;
     margin-bottom: auto;
+}
+
+.gradient {
+    background: radial-gradient(closest-side, rgba(colors.$primary, 0.5), rgba(white, 0));
 }
 
 footer#footer {

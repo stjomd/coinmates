@@ -33,14 +33,15 @@
 .buttons {
     & button {
         color: white;
-        &:not(:last-child) {
-            margin-right: 6pt;
-        }
     }
     & button:hover {
         color: white;
     }
     margin-top: 12pt;
+}
+
+.buttons :not(:last-child) {
+    margin-right: 6pt;
 }
 
 @media (max-width: 1250px) {
