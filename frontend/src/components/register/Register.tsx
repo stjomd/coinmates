@@ -1,12 +1,29 @@
 import './Register.scss';
 
 import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z as zod } from "zod";
 
 
 function Register() {
 
-	const { register, handleSubmit } = useForm()
+	// Validation
+	const schema = zod.object({
+		email: zod.string().email(),
+		password: zod.string().min(10),
+		firstName: zod.string(),
+		lastName: zod.string()
+	})
 
+	// Form hook
+	const { register, handleSubmit, formState } = useForm({
+		resolver: zodResolver(schema)
+	})
+
+	// Validation errors
+	const { errors } = formState
+
+	// Actions to perform on submit
 	const onSubmit = (values: any) => {
 		console.log(values)
 	}
@@ -52,7 +69,7 @@ function Register() {
 					<label htmlFor='last-name'>Last name</label>
 				</div>
 				<button type='submit' className='btn btn-primary login-btn'>
-					Sign up
+					Continue
 				</button>
 			</form>
 		</div>

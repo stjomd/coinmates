@@ -60,7 +60,7 @@ function Login() {
 			valid = false
 		} else {
 			const regex = new RegExp(
-				'^[a-zA-Z0-9.+_-]+@([a-zA-Z0-9+_-]+\.)+[a-zA-Z0-9]+$'
+				'^[a-zA-Z0-9.+_-]+@([a-zA-Z0-9+_-]+.)+[a-zA-Z0-9]+$'
 			);
 			if (!regex.test(email)) {
 				setEmailValidation('Please enter a correct email')
