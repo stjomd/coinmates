@@ -1,8 +1,9 @@
+import './Login.scss';
+
 import { useEffect, useState } from 'react';
 import { UserService } from '../../services/UserService';
 import { LoginDetails } from '../../entities/LoginDetails';
-
-import './Login.scss';
+import { Link } from 'react-router-dom';
 
 function Login() {
 
@@ -127,7 +128,9 @@ function Login() {
 
 	return (
 		<div className='login-box'>
-			<p className="title">coinmates</p>
+			<Link to='/' style={{textDecoration: 'none'}}>
+				<p className="title">coinmates</p>
+			</Link>
 			{ errorMessage !== undefined &&
 				<div className="login-alert alert alert-danger" role="alert">
 					{ errorMessage }
