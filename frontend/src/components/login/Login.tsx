@@ -147,7 +147,7 @@ function Login() {
 			>
 				Sign in
 			</button>
-			<p>Do not have an account? Sign up</p>
+			<p>Do not have an account? <Link to='/register'>Sign up</Link></p>
 		</div>
 	);
 

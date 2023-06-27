@@ -14,10 +14,12 @@ function Landing() {
             </p>
           </div>
           <div className='buttons'>
-            <Link to="/login">
+            <Link to='/login'>
               <button type='button' className='btn btn-primary'>Log in</button>
             </Link>
-            <button type='button' className='btn btn-primary'>Sign up</button>
+            <Link to='/register'>
+							<button type='button' className='btn btn-primary'>Sign up</button>
+						</Link>
           </div>
         </div>
         <img src={image} id='image'/>
