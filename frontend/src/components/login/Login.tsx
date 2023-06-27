@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
-import './Login.scss';
 import { UserService } from '../../services/UserService';
 import { LoginDetails } from '../../entities/LoginDetails';
+
+import './Login.scss';
 
 function Login() {
 
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("")
+	const [errorMessage, setErrorMessage] = useState<string>();
 
 	const login = new LoginDetails(email, password);
 
@@ -18,12 +20,23 @@ function Login() {
 	const authenticate = () => {
 		UserService.authenticate(login)
 			.then(id => console.log('Hello user ' + id))
-			.catch(error => console.error(error))
+			.catch(error => {
+				if (error.status === 401) {
+					setErrorMessage("Your email or password is incorrect, please retry.")
+				} else {
+					setErrorMessage(error.message)
+				}
+			})
 	}
 
 	return (
 		<div className='login-box'>
 			<p className="title">coinmates</p>
+			{ errorMessage !== undefined &&
+				<div className="login-alert alert alert-danger" role="alert">
+					{errorMessage}
+				</div>
+			}
 			<form onSubmit={e => e.preventDefault()}>
 				<input type="text" required
 					placeholder='Email'

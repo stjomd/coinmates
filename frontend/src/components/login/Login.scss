@@ -30,3 +30,15 @@ button.login-btn {
         color: white;
     }
 }
+
+.login-alert {
+    width: 100%;
+    min-height: 24pt;
+    line-height: 1.5;
+    // Does not work without !important
+    padding-left: 8pt !important;
+    padding-right: 8pt !important;
+    padding-top: 4pt !important;
+    padding-bottom: 5pt !important;
+    margin-bottom: 6pt !important;
+}
