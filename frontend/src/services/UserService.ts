@@ -8,12 +8,12 @@ export class UserService {
 
 	static async authenticate(login: LoginDetails): Promise<number> {
 		const response = await fetch(this.uri + '/auth', {
-				method: "POST",
-				body: JSON.stringify(login),
-				headers: {
-					'Accept': 'application/json',
-					'Content-Type': 'application/json'
-				}
+			method: "POST",
+			body: JSON.stringify(login),
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+			}
 		})
 		if (response.ok) {
 			return await response.json();

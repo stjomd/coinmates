@@ -2,80 +2,80 @@
 @use '../../fonts';
 
 .flex-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 .description {
-    max-width: 500px;
+	max-width: 500px;
 }
 
 .description p {
-    margin: 0pt;
-    white-space: normal;
+	margin: 0pt;
+	white-space: normal;
 }
 
 #title {
-    color: colors.$primary;
-    font-family: fonts.$display-font-family;
-    font-weight: bold;
-    font-size: 48pt;
-    margin-bottom: 4pt;
+	color: colors.$primary;
+	font-family: fonts.$display-font-family;
+	font-weight: bold;
+	font-size: 48pt;
+	margin-bottom: 4pt;
 }
 
 #image {
-    padding-left: 40pt;
-    max-width: 80%;
-    height: auto;
+	padding-left: 40pt;
+	max-width: 80%;
+	height: auto;
 }
 
 .buttons {
-    & button {
-        color: white;
-    }
-    & button:hover {
-        color: white;
-    }
-    margin-top: 12pt;
+	& button {
+		color: white;
+	}
+	& button:hover {
+		color: white;
+	}
+	margin-top: 12pt;
 }
 
 .buttons :not(:last-child) {
-    margin-right: 6pt;
+	margin-right: 6pt;
 }
 
 @media (max-width: 1250px) {
-    .flex-container {
-        flex-direction: column;
-        padding-left: 12pt;
-        padding-right: 12pt;
-    }
-    .description {
-        & p {
-            white-space: normal;
-        }
-        max-width: 100%;
-    }
-    #image {
-        padding-left: 0pt;
-        margin-top: 20pt;
-    }
+	.flex-container {
+		flex-direction: column;
+		padding-left: 12pt;
+		padding-right: 12pt;
+	}
+	.description {
+		& p {
+			white-space: normal;
+		}
+		max-width: 100%;
+	}
+	#image {
+		padding-left: 0pt;
+		margin-top: 20pt;
+	}
 }
 
 @media (max-width: 520px) {
-    #title {
-        font-size: 30pt;
-    }
+	#title {
+		font-size: 30pt;
+	}
 }
 
 @media (max-width: 320px) {
-    #title {
-        font-size: 18pt;
-    }
+	#title {
+		font-size: 18pt;
+	}
 }
 
 @media (orientation: landscape) {
-    .flex-container {
-        margin-top: 10pt;
-    }
+	.flex-container {
+		margin-top: 10pt;
+	}
 }

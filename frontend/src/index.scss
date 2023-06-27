@@ -2,18 +2,18 @@
 @use 'fonts';
 
 html {
-    font-family: fonts.$primary-font-family;
-    color: colors.$dark;
+	font-family: fonts.$primary-font-family;
+	color: colors.$dark;
 }
 
 html, body {
-    margin: 0;
-    height: 100%;
-    width: 100%;
+	margin: 0;
+	height: 100%;
+	width: 100%;
  }
 
  div#root {
-    height: 100%;
+	height: 100%;
  }
 
 // Override Bootstrap colors
