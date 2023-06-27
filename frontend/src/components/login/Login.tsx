@@ -9,17 +9,24 @@ function Login() {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("")
 
+	// Login DTO
 	const login = new LoginDetails(email, password);
 	useEffect(() => {
 		login.email = email;
 		login.password = password;
 	})
 
+	// Error message (from server)
 	const [errorMessage, setErrorMessage] = useState<string>();
 
+	// Validation error messages
 	const [emailValidation, setEmailValidation] = useState<string>();
 	const [passwordValidation, setPasswordValidation] = useState<string>();
 
+	/**
+	 * Validates input and if passed, attempts to login.
+	 * @returns void.
+	 */
 	const authenticate = () => {
 		setErrorMessage(undefined)
 		setEmailValidation(undefined)
@@ -38,6 +45,10 @@ function Login() {
 			})
 	}
 
+	/**
+	 * Validates the user input and updates the necessary state variables.
+	 * @returns true, if validation has passed, or false otherwise.
+	 */
 	const validate = () => {
 		let valid = true
 		if (email.length < 1) {
@@ -62,8 +73,12 @@ function Login() {
 		return valid
 	}
 
+	/**
+	 * Constructs an input field for email, if necessary with error messages.
+	 * @returns the input field for email.
+	 */
 	const emailField = () => {
-		let classes = 'form-control';
+		let classes = 'form-control'
 		if (emailValidation != null) {
 			classes += ' is-invalid'
 		}
@@ -84,8 +99,12 @@ function Login() {
 		);
 	}
 
+	/**
+	 * Constructs an input field for password, if necessary with error messages.
+	 * @returns the input field for password.
+	 */
 	const passwordField = () => {
-		let classes = 'form-control';
+		let classes = 'form-control'
 		if (passwordValidation != null) {
 			classes += ' is-invalid'
 		}
@@ -111,7 +130,7 @@ function Login() {
 			<p className="title">coinmates</p>
 			{ errorMessage !== undefined &&
 				<div className="login-alert alert alert-danger" role="alert">
-					{errorMessage}
+					{ errorMessage }
 				</div>
 			}
 			<form onSubmit={e => e.preventDefault()}>
