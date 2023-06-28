@@ -1,28 +1,27 @@
-import './Login.scss';
+import './Login.scss'
 
-import { useEffect, useState } from 'react';
-import { UserService } from '../../services/UserService';
-import { LoginDetails } from '../../entities/LoginDetails';
-import { Link } from 'react-router-dom';
+import {useEffect, useState} from 'react'
+import {UserService} from '../../services/UserService'
+import {LoginDetails} from '../../entities/LoginDetails'
+import {Link} from 'react-router-dom'
 
 function Login() {
-
-	const [email, setEmail] = useState("");
-	const [password, setPassword] = useState("")
+	const [email, setEmail] = useState('')
+	const [password, setPassword] = useState('')
 
 	// Login DTO
-	const login = new LoginDetails(email, password);
+	const login = new LoginDetails(email, password)
 	useEffect(() => {
-		login.email = email;
-		login.password = password;
+		login.email = email
+		login.password = password
 	})
 
 	// Error message (from server)
-	const [errorMessage, setErrorMessage] = useState<string>();
+	const [errorMessage, setErrorMessage] = useState<string>()
 
 	// Validation error messages
-	const [emailValidation, setEmailValidation] = useState<string>();
-	const [passwordValidation, setPasswordValidation] = useState<string>();
+	const [emailValidation, setEmailValidation] = useState<string>()
+	const [passwordValidation, setPasswordValidation] = useState<string>()
 
 	/**
 	 * Validates input and if passed, attempts to login.
@@ -39,7 +38,7 @@ function Login() {
 			.then(id => console.log('Hello user ' + id))
 			.catch(error => {
 				if (error.status === 401) {
-					setErrorMessage("Your email or password is incorrect, please retry.")
+					setErrorMessage('Your email or password is incorrect, please retry.')
 				} else {
 					setErrorMessage(error.message)
 				}
@@ -61,7 +60,7 @@ function Login() {
 		} else {
 			const regex = new RegExp(
 				'^[a-zA-Z0-9.+_-]+@([a-zA-Z0-9+_-]+.)+[a-zA-Z0-9]+$'
-			);
+			)
 			if (!regex.test(email)) {
 				setEmailValidation('Please enter a correct email')
 				valid = false
@@ -85,19 +84,19 @@ function Login() {
 		}
 		return (
 			<>
-				<input type="text" required
+				<input
+					type='text'
+					required
 					placeholder='Email'
 					className={classes}
 					value={email}
 					onChange={event => setEmail(event.target.value)}
 				/>
-				{ emailValidation != null &&
-					<div className="invalid-feedback">
-						{ emailValidation }
-					</div>
-				}
+				{emailValidation != null && (
+					<div className='invalid-feedback'>{emailValidation}</div>
+				)}
 			</>
-		);
+		)
 	}
 
 	/**
@@ -111,34 +110,34 @@ function Login() {
 		}
 		return (
 			<>
-				<input type="password" required
+				<input
+					type='password'
+					required
 					placeholder='Password'
 					className={classes}
 					value={password}
 					onChange={event => setPassword(event.target.value)}
 				/>
-				{ passwordValidation != null &&
-					<div className="invalid-feedback">
-						{ passwordValidation }
-					</div>
-				}
+				{passwordValidation != null && (
+					<div className='invalid-feedback'>{passwordValidation}</div>
+				)}
 			</>
-		);
+		)
 	}
 
 	return (
 		<div className='login-box'>
 			<Link to='/' style={{textDecoration: 'none'}}>
-				<p className="title">coinmates</p>
+				<p className='title'>coinmates</p>
 			</Link>
-			{ errorMessage !== undefined &&
-				<div className="login-alert alert alert-danger" role="alert">
-					{ errorMessage }
+			{errorMessage !== undefined && (
+				<div className='login-alert alert alert-danger' role='alert'>
+					{errorMessage}
 				</div>
-			}
+			)}
 			<form onSubmit={e => e.preventDefault()}>
-				{ emailField() }
-				{ passwordField() }
+				{emailField()}
+				{passwordField()}
 			</form>
 			<button
 				type='button'
@@ -147,10 +146,11 @@ function Login() {
 			>
 				Sign in
 			</button>
-			<p>Do not have an account? <Link to='/register'>Sign up</Link></p>
+			<p>
+				Do not have an account? <Link to='/register'>Sign up</Link>
+			</p>
 		</div>
-	);
-
+	)
 }
 
-export default Login;
+export default Login

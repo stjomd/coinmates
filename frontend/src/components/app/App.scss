@@ -19,7 +19,9 @@ div.centered {
 
 .gradient {
 	background: radial-gradient(
-		closest-side, rgba(colors.$primary, 0.5), rgba(white, 0)
+		closest-side,
+		rgba(colors.$primary, 0.5),
+		rgba(white, 0)
 	);
 }
 

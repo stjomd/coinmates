@@ -1,28 +1,27 @@
-import './Register.scss';
+import './Register.scss'
 
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z as zod } from "zod";
+import {useForm} from 'react-hook-form'
+import {zodResolver} from '@hookform/resolvers/zod'
+import {z as zod} from 'zod'
 
-import PasswordHelper from '../password-helper/PasswordHelper';
+import PasswordHelper from '../password-helper/PasswordHelper'
 
 function Register() {
-
 	// Validation
 	const schema = zod.object({
 		email: zod.string().email('Please enter a valid email.'),
 		password: zod.string().min(1, 'Please enter a password.'),
 		firstName: zod.string().min(1, 'Please enter your first name.'),
-		lastName: zod.string().min(1, 'Please enter your last name.')
+		lastName: zod.string().min(1, 'Please enter your last name.'),
 	})
 
 	// Form hook
-	const { register, handleSubmit, formState, watch } = useForm({
-		resolver: zodResolver(schema)
+	const {register, handleSubmit, formState, watch} = useForm({
+		resolver: zodResolver(schema),
 	})
 
 	// Validation errors
-	const { errors } = formState
+	const {errors} = formState
 
 	// Actions to perform on submit
 	const onSubmit = handleSubmit(data => {
@@ -36,21 +35,21 @@ function Register() {
 			classes += ' is-invalid'
 		}
 		return (
-			<div className="form-floating">
+			<div className='form-floating'>
 				<input
-					{...register("email")}
-					type="text"
+					{...register('email')}
+					type='text'
 					className={classes}
-					id="email"
-					placeholder="s"
+					id='email'
+					placeholder='s'
 				/>
-				<label htmlFor="email">Email</label>
-				{typeof errors.email?.message === "string" && (
-					<div className="invalid-feedback">{errors.email?.message}</div>
+				<label htmlFor='email'>Email</label>
+				{typeof errors.email?.message === 'string' && (
+					<div className='invalid-feedback'>{errors.email?.message}</div>
 				)}
 			</div>
-		);
-	};
+		)
+	}
 
 	// Password field
 	const passwordField = () => {
@@ -59,25 +58,23 @@ function Register() {
 			classes += ' is-invalid'
 		}
 		return (
-			<div className="form-floating">
-				<input {...register('password')}
+			<div className='form-floating'>
+				<input
+					{...register('password')}
 					type='password'
 					className={classes}
 					id='password'
 					placeholder='s'
 				/>
 				<label htmlFor='password'>Password</label>
-				{typeof errors.password?.message === "string" && (
-					<div
-						className="invalid-feedback"
-						style={{marginBottom: 0}}
-					>
+				{typeof errors.password?.message === 'string' && (
+					<div className='invalid-feedback' style={{marginBottom: 0}}>
 						{errors.password?.message}
 					</div>
 				)}
-				{ watch('password') != undefined &&
-					<PasswordHelper password={watch('password')}/>
-				}
+				{watch('password') != undefined && (
+					<PasswordHelper password={watch('password')} />
+				)}
 			</div>
 		)
 	}
@@ -89,16 +86,17 @@ function Register() {
 			classes += ' is-invalid'
 		}
 		return (
-			<div className="form-floating">
-				<input {...register('firstName')}
+			<div className='form-floating'>
+				<input
+					{...register('firstName')}
 					type='text'
 					className={classes}
 					id='first-name'
 					placeholder='s'
 				/>
 				<label htmlFor='first-name'>First name</label>
-				{typeof errors.firstName?.message === "string" && (
-					<div className="invalid-feedback">{errors.firstName?.message}</div>
+				{typeof errors.firstName?.message === 'string' && (
+					<div className='invalid-feedback'>{errors.firstName?.message}</div>
 				)}
 			</div>
 		)
@@ -111,16 +109,17 @@ function Register() {
 			classes += ' is-invalid'
 		}
 		return (
-			<div className="form-floating">
-				<input {...register('lastName')}
+			<div className='form-floating'>
+				<input
+					{...register('lastName')}
 					type='text'
 					className={classes}
 					id='last-name'
 					placeholder='s'
 				/>
 				<label htmlFor='last-name'>Last name</label>
-				{typeof errors.lastName?.message === "string" && (
-					<div className="invalid-feedback">{errors.lastName?.message}</div>
+				{typeof errors.lastName?.message === 'string' && (
+					<div className='invalid-feedback'>{errors.lastName?.message}</div>
 				)}
 			</div>
 		)
@@ -130,17 +129,16 @@ function Register() {
 		<div className='register-box'>
 			<p id='register-title'>Sign up</p>
 			<form onSubmit={onSubmit}>
-				{ emailField() }
-				{ passwordField() }
-				{ firstNameField() }
-				{ lastNameField() }
+				{emailField()}
+				{passwordField()}
+				{firstNameField()}
+				{lastNameField()}
 				<button type='submit' className='btn btn-primary login-btn mt-3'>
 					Continue
 				</button>
 			</form>
 		</div>
-	);
-
+	)
 }
 
-export default Register;
+export default Register
