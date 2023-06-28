@@ -7,36 +7,19 @@ interface PasswordHelperProps {
 
 function PasswordHelper({ password }: PasswordHelperProps) {
 
-	// ----- Validators ----------------------------------------------------------
-	const isLong = () => {
-		if (password == null) {
-			return false
-		}
-		return password.length >= 10
-	}
-	const containsLowercase = () => {
-		if (password == null) {
-			return false
-		}
-		return password !== password.toUpperCase()
-	}
-	const containsUppercase = () => {
-		if (password == null) {
-			return false
-		}
-		return password !== password.toLowerCase()
-	}
-	const containsNumber = () => {
-		if (password == null) {
-			return false
-		}
-		return /[0-9]/.test(password)
-	}
-	const containsSpecialChar = () => {
-		if (password == null) {
-			return false
-		}
-		return /[!#$&*_-]/.test(password)
+	// ----- Checks --------------------------------------------------------------
+	let [
+		isLong, containsLowercase, containsUppercase, containsNumber,
+		containsSpecialChar
+	] = [
+		false, false, false, false, false
+	]
+	if (password != null) {
+		isLong = password.length >= 10
+		containsLowercase = /[a-z]/.test(password)
+		containsUppercase = /[A-Z]/.test(password)
+		containsNumber = /[0-9]/.test(password)
+		containsSpecialChar = /[!#$&*_-]/.test(password)
 	}
 
 	// ----- Pass/fail indicators ------------------------------------------------
@@ -49,72 +32,60 @@ function PasswordHelper({ password }: PasswordHelperProps) {
 
 	// ----- Hints/password requirements -----------------------------------------
 	const lengthHint = () => {
-		const pass = isLong()
 		return (
-			<p className={color(pass)}>
-				<i className={icon(pass)}/>
+			<p className={color(isLong)}>
+				<i className={icon(isLong)}/>
 				has at least 10 characters
 			</p>
 		)
 	}
 	const lowercaseHint = () => {
-		const pass = containsLowercase()
 		return (
-			<p className={color(pass)}>
-				<i className={icon(pass)}/>
+			<p className={color(containsLowercase)}>
+				<i className={icon(containsLowercase)}/>
 				contains a lowercase letter
 			</p>
 		)
 	}
 	const uppercaseHint = () => {
-		const pass = containsUppercase()
 		return (
-			<p className={color(pass)}>
-				<i className={icon(pass)}/>
+			<p className={color(containsUppercase)}>
+				<i className={icon(containsUppercase)}/>
 				contains an uppercase letter
 			</p>
 		)
 	}
 	const numberHint = () => {
-		const pass = containsNumber()
 		return (
-			<p className={color(pass)}>
-				<i className={icon(pass)}/>
+			<p className={color(containsNumber)}>
+				<i className={icon(containsNumber)}/>
 				contains a number
 			</p>
 		)
 	}
 	const specialCharsHint = () => {
-		const pass = containsSpecialChar()
 		return (
-			<p className={color(pass)}>
-				<i className={icon(pass)}/>
+			<p className={color(containsSpecialChar)}>
+				<i className={icon(containsSpecialChar)}/>
 				contains a special character: !#$&*_-
 			</p>
 		)
 	}
 
 	// ----- Progress bar properties ---------------------------------------------
-	const progress = () => {
-		const fulfilment = [
-			isLong(), containsLowercase(), containsUppercase(), containsNumber(),
-			containsSpecialChar()
-		]
-		return fulfilment.filter(b => b === true).length / fulfilment.length
-	}
-	const width = () => {
-		const value = Math.max(5, progress() * 100)
-		return String(value) + '%'
-	}
-	const barColor = () => {
-		const value = progress() * 100
-		if (value >= 100) {
-			return 'progress-bar bg-primary'
-		} else if (value >= 50) {
-			return 'progress-bar bg-warning'
-		} else {
-			return 'progress-bar bg-danger'
-		}
+	const fulfilment = [
+		isLong, containsLowercase, containsUppercase, containsNumber,
+		containsSpecialChar
+	]
+	const progress = fulfilment.filter(b => b === true).length / fulfilment.length
+	const width = String(Math.max(5, progress * 100)) + '%'
+	let barColor = 'progress-bar '
+	if (progress * 100 >= 100) {
+		barColor += 'bg-primary'
+	} else if (progress * 100 >= 50) {
+		barColor += 'bg-warning'
+	} else {
+		barColor += 'bg-danger'
 	}
 
 	// ----- Component -----------------------------------------------------------
@@ -124,8 +95,8 @@ function PasswordHelper({ password }: PasswordHelperProps) {
 				<p>Password strength: </p>
 				<div className="progress" role="progressbar">
 					<div
-						className={barColor()}
-						style={{ width: width() }}
+						className={barColor}
+						style={{ width: width }}
 					></div>
 				</div>
 			</div>
