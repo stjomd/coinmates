@@ -8,10 +8,10 @@ function Register() {
 
 	// Validation
 	const schema = zod.object({
-		email: zod.string().email(),
-		password: zod.string().min(10),
-		firstName: zod.string(),
-		lastName: zod.string()
+		email: zod.string().email('Please enter a valid email.'),
+		password: zod.string().min(1, 'Please enter a password.'),
+		firstName: zod.string().min(1, 'Please enter your first name.'),
+		lastName: zod.string().min(1, 'Please enter your last name.')
 	})
 
 	// Form hook
@@ -23,50 +23,107 @@ function Register() {
 	const { errors } = formState
 
 	// Actions to perform on submit
-	const onSubmit = (values: any) => {
-		console.log(values)
+	const onSubmit = handleSubmit(data => {
+		console.log(data)
+	})
+
+	// Email field
+	const emailField = () => {
+		let classes = 'form-control'
+		if (errors.email?.message) {
+			classes += ' is-invalid'
+		}
+		return (
+			<div className="form-floating">
+				<input
+					{...register("email")}
+					type="text"
+					className={classes}
+					id="email"
+					placeholder="s"
+				/>
+				<label htmlFor="email">Email</label>
+				{typeof errors.email?.message === "string" && (
+					<div className="invalid-feedback">{errors.email?.message}</div>
+				)}
+			</div>
+		);
+	};
+
+	// Password field
+	const passwordField = () => {
+		let classes = 'form-control'
+		if (errors.password?.message) {
+			classes += ' is-invalid'
+		}
+		return (
+			<div className="form-floating">
+				<input {...register('password')}
+					type='password'
+					className={classes}
+					id='password'
+					placeholder='s'
+				/>
+				<label htmlFor='password'>Password</label>
+				{typeof errors.password?.message === "string" && (
+					<div className="invalid-feedback">{errors.password?.message}</div>
+				)}
+			</div>
+		)
+	}
+
+	// First name field
+	const firstNameField = () => {
+		let classes = 'form-control'
+		if (errors.firstName?.message) {
+			classes += ' is-invalid'
+		}
+		return (
+			<div className="form-floating">
+				<input {...register('firstName')}
+					type='text'
+					className={classes}
+					id='first-name'
+					placeholder='s'
+				/>
+				<label htmlFor='first-name'>First name</label>
+				{typeof errors.firstName?.message === "string" && (
+					<div className="invalid-feedback">{errors.firstName?.message}</div>
+				)}
+			</div>
+		)
+	}
+
+	// Last name field
+	const lastNameField = () => {
+		let classes = 'form-control'
+		if (errors.lastName?.message) {
+			classes += ' is-invalid'
+		}
+		return (
+			<div className="form-floating">
+				<input {...register('lastName')}
+					type='text'
+					className={classes}
+					id='last-name'
+					placeholder='s'
+				/>
+				<label htmlFor='last-name'>Last name</label>
+				{typeof errors.lastName?.message === "string" && (
+					<div className="invalid-feedback">{errors.lastName?.message}</div>
+				)}
+			</div>
+		)
 	}
 
 	return (
 		<div className='register-box'>
 			<p id='register-title'>Sign up</p>
-			<form onSubmit={handleSubmit(onSubmit)}>
-				<div className="form-floating">
-					<input {...register('email')}
-						type='text'
-						className='form-control'
-						id='email'
-						placeholder='s'
-					/>
-					<label htmlFor='email'>Email</label>
-				</div>
-				<div className="form-floating">
-					<input {...register('password')}
-						type='password'
-						className='form-control'
-						id='password'
-						placeholder='s'
-					/>
-					<label htmlFor='password'>Password</label>
-				</div>
-				<div className="form-floating">
-					<input {...register('firstName')}
-						type='text'
-						className='form-control'
-						id='first-name'
-						placeholder='s'
-					/>
-					<label htmlFor='first-name'>First name</label>
-				</div>
-				<div className="form-floating">
-					<input {...register('lastName')}
-						type='text'
-						className='form-control'
-						id='last-name'
-						placeholder='s'
-					/>
-					<label htmlFor='last-name'>Last name</label>
-				</div>
+			<form onSubmit={onSubmit}>
+				{ emailField() }
+				{ passwordField() }
+				{ firstNameField() }
+				{ lastNameField() }
 				<button type='submit' className='btn btn-primary login-btn'>
 					Continue
 				</button>
