@@ -8,6 +8,7 @@ interface PasswordHelperProps {
 function PasswordHelper({ password }: PasswordHelperProps) {
 
 	// ----- Checks --------------------------------------------------------------
+
 	let [
 		isLong, containsLowercase, containsUppercase, containsNumber,
 		containsSpecialChar
@@ -23,14 +24,31 @@ function PasswordHelper({ password }: PasswordHelperProps) {
 	}
 
 	// ----- Pass/fail indicators ------------------------------------------------
+
+	/**
+	 * Determines the class to apply to color a hint.
+	 * @param pass a boolean indicating if a check passed.
+	 * @returns a className.
+	 */
 	const color = (pass: boolean) => {
 		return pass ? 'password-ok' : 'password-bad'
 	}
+
+	/**
+	 * Determines the classes to display the icon next to a hint.
+	 * @param pass a boolean indicating if a check passed.
+	 * @returns a className.
+	 */
 	const icon = (pass: boolean) => {
 		return 'bi ' + (pass ? 'bi-check' : 'bi-x')
 	}
 
 	// ----- Hints/password requirements -----------------------------------------
+
+	/**
+	 * Constructs a hint for length.
+	 * @returns a JSX element.
+	 */
 	const lengthHint = () => {
 		return (
 			<p className={color(isLong)}>
@@ -39,6 +57,11 @@ function PasswordHelper({ password }: PasswordHelperProps) {
 			</p>
 		)
 	}
+
+	/**
+	 * Constructs a hint for lowercase letters.
+	 * @returns a JSX element.
+	 */
 	const lowercaseHint = () => {
 		return (
 			<p className={color(containsLowercase)}>
@@ -47,6 +70,11 @@ function PasswordHelper({ password }: PasswordHelperProps) {
 			</p>
 		)
 	}
+
+	/**
+	 * Constructs a hint for uppercase letters.
+	 * @returns a JSX element.
+	 */
 	const uppercaseHint = () => {
 		return (
 			<p className={color(containsUppercase)}>
@@ -55,6 +83,11 @@ function PasswordHelper({ password }: PasswordHelperProps) {
 			</p>
 		)
 	}
+
+	/**
+	 * Constructs a hint for numbers.
+	 * @returns a JSX element.
+	 */
 	const numberHint = () => {
 		return (
 			<p className={color(containsNumber)}>
@@ -63,6 +96,11 @@ function PasswordHelper({ password }: PasswordHelperProps) {
 			</p>
 		)
 	}
+
+	/**
+	 * Constructs a hint for special characters.
+	 * @returns a JSX element.
+	 */
 	const specialCharsHint = () => {
 		return (
 			<p className={color(containsSpecialChar)}>
@@ -73,12 +111,14 @@ function PasswordHelper({ password }: PasswordHelperProps) {
 	}
 
 	// ----- Progress bar properties ---------------------------------------------
+
 	const fulfilment = [
 		isLong, containsLowercase, containsUppercase, containsNumber,
 		containsSpecialChar
 	]
 	const progress = fulfilment.filter(b => b === true).length / fulfilment.length
 	const width = String(Math.max(5, progress * 100)) + '%'
+
 	let barColor = 'progress-bar '
 	if (progress * 100 >= 100) {
 		barColor += 'bg-primary'
@@ -89,6 +129,7 @@ function PasswordHelper({ password }: PasswordHelperProps) {
 	}
 
 	// ----- Component -----------------------------------------------------------
+	
 	return (
 		<div className="password-helper">
 			<div className="password-bar">
