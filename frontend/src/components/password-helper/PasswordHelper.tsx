@@ -94,6 +94,29 @@ function PasswordHelper({ password }: PasswordHelperProps) {
 		)
 	}
 
+	// ----- Progress bar properties ---------------------------------------------
+	const progress = () => {
+		const fulfilment = [
+			isLong(), containsLowercase(), containsUppercase(), containsNumber(),
+			containsSpecialChar()
+		]
+		return fulfilment.filter(b => b === true).length / fulfilment.length
+	}
+	const width = () => {
+		const value = Math.max(5, progress() * 100)
+		return String(value) + '%'
+	}
+	const barColor = () => {
+		const value = progress() * 100
+		if (value >= 100) {
+			return 'progress-bar bg-primary'
+		} else if (value >= 50) {
+			return 'progress-bar bg-warning'
+		} else {
+			return 'progress-bar bg-danger'
+		}
+	}
+
 	// ----- Component -----------------------------------------------------------
 	return (
 		<div className="password-helper">
@@ -101,8 +124,8 @@ function PasswordHelper({ password }: PasswordHelperProps) {
 				<p>Password strength: </p>
 				<div className="progress" role="progressbar">
 					<div
-						className="progress-bar bg-primary"
-						style={{ width: "75%" }}
+						className={barColor()}
+						style={{ width: width() }}
 					></div>
 				</div>
 			</div>
