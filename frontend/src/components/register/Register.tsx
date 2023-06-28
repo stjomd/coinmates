@@ -4,6 +4,8 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z as zod } from "zod";
 
+import PasswordHelper from '../password-helper/PasswordHelper';
+
 function Register() {
 
 	// Validation
@@ -15,7 +17,7 @@ function Register() {
 	})
 
 	// Form hook
-	const { register, handleSubmit, formState } = useForm({
+	const { register, handleSubmit, formState, watch } = useForm({
 		resolver: zodResolver(schema)
 	})
 
@@ -66,8 +68,14 @@ function Register() {
 				/>
 				<label htmlFor='password'>Password</label>
 				{typeof errors.password?.message === "string" && (
-					<div className="invalid-feedback">{errors.password?.message}</div>
+					<div
+						className="invalid-feedback"
+						style={{marginBottom: 0}}
+					>
+						{errors.password?.message}
+					</div>
 				)}
+				<PasswordHelper password={watch('password')}/>
 			</div>
 		)
 	}
