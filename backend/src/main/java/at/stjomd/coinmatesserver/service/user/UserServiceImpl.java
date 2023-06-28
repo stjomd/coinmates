@@ -29,8 +29,10 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         // Check that no user with the same email exists
         if (userRepository.findByEmail(user.getEmail()).isPresent()) {
-            return null;
+            return null; // TODO: throw exception
         }
+		user.setRole(User.Role.REGULAR);
+		user.setStatus(User.Status.ACTIVE);
         return userRepository.save(user);
     }
 
