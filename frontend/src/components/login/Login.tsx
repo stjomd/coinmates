@@ -142,7 +142,7 @@ function Login() {
 			</form>
 			<button
 				type='button'
-				className='btn btn-primary login-btn'
+				className='btn btn-primary login-btn mt-3'
 				onClick={authenticate}
 			>
 				Sign in

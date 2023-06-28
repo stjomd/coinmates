@@ -75,7 +75,9 @@ function Register() {
 						{errors.password?.message}
 					</div>
 				)}
-				<PasswordHelper password={watch('password')}/>
+				{ watch('password') != undefined &&
+					<PasswordHelper password={watch('password')}/>
+				}
 			</div>
 		)
 	}
@@ -132,7 +134,7 @@ function Register() {
 				{ passwordField() }
 				{ firstNameField() }
 				{ lastNameField() }
-				<button type='submit' className='btn btn-primary login-btn'>
+				<button type='submit' className='btn btn-primary login-btn mt-3'>
 					Continue
 				</button>
 			</form>

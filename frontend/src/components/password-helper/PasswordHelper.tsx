@@ -27,7 +27,7 @@ function PasswordHelper({ password }: PasswordHelperProps) {
 		return pass ? 'password-ok' : 'password-bad'
 	}
 	const icon = (pass: boolean) => {
-		return 'bi ' + (pass ? ' bi-check' : ' bi-x')
+		return 'bi ' + (pass ? 'bi-check' : 'bi-x')
 	}
 
 	// ----- Hints/password requirements -----------------------------------------
