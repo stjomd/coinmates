@@ -1,10 +1,13 @@
 import './Register.scss'
 
-import {useForm} from 'react-hook-form'
+import {get, useForm} from 'react-hook-form'
 import {zodResolver} from '@hookform/resolvers/zod'
 import {z as zod} from 'zod'
+import {User} from '../../entities/User'
 
 import PasswordHelper from '../password-helper/PasswordHelper'
+import {useEffect} from 'react'
+import {UserService} from '../../services/UserService'
 
 function Register() {
 	// Validation
@@ -25,7 +28,10 @@ function Register() {
 
 	// Actions to perform on submit
 	const onSubmit = handleSubmit(data => {
-		console.log(data)
+		const user = Object.assign(new User(), data)
+		UserService.register(user)
+			.then(res => console.log(res))
+			.catch(err => console.error(err))
 	})
 
 	// Email field
