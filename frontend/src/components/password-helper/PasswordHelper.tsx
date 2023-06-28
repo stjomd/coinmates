@@ -7,7 +7,7 @@ interface PasswordHelperProps {
 
 function PasswordHelper({ password }: PasswordHelperProps) {
 
-	// Validators
+	// ----- Validators ----------------------------------------------------------
 	const isLong = () => {
 		if (password == null) {
 			return false
@@ -39,53 +39,62 @@ function PasswordHelper({ password }: PasswordHelperProps) {
 		return /[!#$&*_-]/.test(password)
 	}
 
-	// Singular hints/password requirements
+	// ----- Pass/fail indicators ------------------------------------------------
+	const color = (pass: boolean) => {
+		return pass ? 'password-ok' : 'password-bad'
+	}
+	const icon = (pass: boolean) => {
+		return 'bi ' + (pass ? ' bi-check' : ' bi-x')
+	}
+
+	// ----- Hints/password requirements -----------------------------------------
 	const lengthHint = () => {
-		const pClass = (isLong()) ? 'password-ok' : 'password-bad'
+		const pass = isLong()
 		return (
-			<p className={pClass}>
-				<i className="bi bi-x"/>
+			<p className={color(pass)}>
+				<i className={icon(pass)}/>
 				has at least 10 characters
 			</p>
 		)
 	}
 	const lowercaseHint = () => {
-		const pClass = (containsLowercase()) ? 'password-ok' : 'password-bad'
+		const pass = containsLowercase()
 		return (
-			<p className={pClass}>
-				<i className="bi bi-x"/>
+			<p className={color(pass)}>
+				<i className={icon(pass)}/>
 				contains a lowercase letter
 			</p>
 		)
 	}
 	const uppercaseHint = () => {
-		const pClass = (containsUppercase()) ? 'password-ok' : 'password-bad'
+		const pass = containsUppercase()
 		return (
-			<p className={pClass}>
-				<i className="bi bi-x"/>
+			<p className={color(pass)}>
+				<i className={icon(pass)}/>
 				contains an uppercase letter
 			</p>
 		)
 	}
 	const numberHint = () => {
-		const pClass = (containsNumber()) ? 'password-ok' : 'password-bad'
+		const pass = containsNumber()
 		return (
-			<p className={pClass}>
-				<i className="bi bi-x"/>
+			<p className={color(pass)}>
+				<i className={icon(pass)}/>
 				contains a number
 			</p>
 		)
 	}
 	const specialCharsHint = () => {
-		const pClass = (containsSpecialChar()) ? 'password-ok' : 'password-bad'
+		const pass = containsSpecialChar()
 		return (
-			<p className={pClass}>
-				<i className="bi bi-x"/>
+			<p className={color(pass)}>
+				<i className={icon(pass)}/>
 				contains a special character: !#$&*_-
 			</p>
 		)
 	}
 
+	// ----- Component -----------------------------------------------------------
 	return (
 		<div className="password-helper">
 			<div className="password-bar">
