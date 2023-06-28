@@ -10,7 +10,7 @@ export class UserService {
 			method: 'POST',
 			body: JSON.stringify(login),
 			headers: {
-				Accept: 'application/json',
+				'Accept': 'application/json',
 				'Content-Type': 'application/json',
 			},
 		})
