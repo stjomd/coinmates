@@ -1,4 +1,4 @@
-package at.stjomd.coinmatesserver.mapper;
+package at.stjomd.coinmatesserver.entity.mapper;
 
 import at.stjomd.coinmatesserver.entity.User;
 import at.stjomd.coinmatesserver.entity.dto.UserDto;

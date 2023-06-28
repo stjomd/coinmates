@@ -3,7 +3,7 @@ package at.stjomd.coinmatesserver.controller;
 import at.stjomd.coinmatesserver.entity.User;
 import at.stjomd.coinmatesserver.entity.dto.UserDto;
 import at.stjomd.coinmatesserver.exception.AuthenticationFailedException;
-import at.stjomd.coinmatesserver.mapper.UserMapper;
+import at.stjomd.coinmatesserver.entity.mapper.UserMapper;
 import at.stjomd.coinmatesserver.security.SecurityConfig;
 import at.stjomd.coinmatesserver.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
