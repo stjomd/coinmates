@@ -6,7 +6,6 @@ import at.stjomd.coinmatesserver.exception.AuthenticationFailedException;
 import at.stjomd.coinmatesserver.entity.mapper.UserMapper;
 import at.stjomd.coinmatesserver.security.SecurityConfig;
 import at.stjomd.coinmatesserver.service.user.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,7 +22,6 @@ public class UserController {
     private final UserService userService;
     private final UserMapper userMapper;
 
-    @Autowired
     public UserController(UserService userService, UserMapper userMapper) {
         this.userService = userService;
         this.userMapper = userMapper;
