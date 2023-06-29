@@ -6,7 +6,14 @@ import {FetchError} from './FetchError.ts'
 export class UserService {
 	private static readonly uri: string = serverUri + '/user'
 
-	static async authenticate(login: LoginDetails): Promise<number> {
+	/**
+	 * Sends a request to the server to authenticate the user. Does not store
+	 * authentication details in local storage – this must be performed
+	 * separately.
+	 * @param login the login details.
+	 * @returns a promise containing the logged in user.
+	 */
+	static async authenticate(login: LoginDetails): Promise<User> {
 		const response = await fetch(this.uri + '/auth', {
 			method: 'POST',
 			body: JSON.stringify(login),
@@ -22,6 +29,12 @@ export class UserService {
 		}
 	}
 
+	/**
+	 * Sends a request to the server to register a new user.
+	 * @param user the (partially filled) user object. Email, password, first
+	 * 				name, and last name fields must be set.
+	 * @returns a promise containing the registered user.
+	 */
 	static async register(user: User): Promise<User> {
 		const response = await fetch(this.uri, {
 			method: 'POST',
@@ -38,11 +51,21 @@ export class UserService {
 		}
 	}
 
+	/**
+	 * Saves authentication details into local storage.
+	 * @param user the user entity.
+	 * @todo Make secure!
+	 */
 	static storeAuth(user: User) {
 		// TODO: make secure / store token
 		localStorage.setItem('user', JSON.stringify(user))
 	}
 
+	/**
+	 * Retrieves authentication details from local storage.
+	 * @returns the authentication details, or null if unauthenticated.
+	 * @todo Make secure!
+	 */
 	static getAuth(): User | null {
 		// TODO: make secure / store token
 		const contents = localStorage.getItem('user')
