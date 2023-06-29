@@ -8,18 +8,20 @@ interface PasswordHelperProps {
 function PasswordHelper({password}: PasswordHelperProps) {
 	// ----- Checks --------------------------------------------------------------
 
-	let isLong = false
-	let containsLowercase = false
-	let containsUppercase = false
-	let containsNumber = false
-	let containsSpecialChar = false
+	const checks = {
+		isLong: false,
+		containsLowercase: false,
+		containsUppercase: false,
+		containsNumber: false,
+		containsSpecialChar: false,
+	}
 
 	if (password != null) {
-		isLong = password.length >= 10
-		containsLowercase = /[a-z]/.test(password)
-		containsUppercase = /[A-Z]/.test(password)
-		containsNumber = /[0-9]/.test(password)
-		containsSpecialChar = /[!#$&*_-]/.test(password)
+		checks.isLong = password.length >= 10
+		checks.containsLowercase = /[a-z]/.test(password)
+		checks.containsUppercase = /[A-Z]/.test(password)
+		checks.containsNumber = /[0-9]/.test(password)
+		checks.containsSpecialChar = /[!#$&*_-]/.test(password)
 	}
 
 	// ----- Pass/fail indicators ------------------------------------------------
@@ -50,8 +52,8 @@ function PasswordHelper({password}: PasswordHelperProps) {
 	 */
 	const lengthHint = () => {
 		return (
-			<p className={color(isLong)}>
-				<i className={icon(isLong)} />
+			<p className={color(checks.isLong)}>
+				<i className={icon(checks.isLong)} />
 				has at least 10 characters
 			</p>
 		)
@@ -63,8 +65,8 @@ function PasswordHelper({password}: PasswordHelperProps) {
 	 */
 	const lowercaseHint = () => {
 		return (
-			<p className={color(containsLowercase)}>
-				<i className={icon(containsLowercase)} />
+			<p className={color(checks.containsLowercase)}>
+				<i className={icon(checks.containsLowercase)} />
 				contains a lowercase letter
 			</p>
 		)
@@ -76,8 +78,8 @@ function PasswordHelper({password}: PasswordHelperProps) {
 	 */
 	const uppercaseHint = () => {
 		return (
-			<p className={color(containsUppercase)}>
-				<i className={icon(containsUppercase)} />
+			<p className={color(checks.containsUppercase)}>
+				<i className={icon(checks.containsUppercase)} />
 				contains an uppercase letter
 			</p>
 		)
@@ -89,8 +91,8 @@ function PasswordHelper({password}: PasswordHelperProps) {
 	 */
 	const numberHint = () => {
 		return (
-			<p className={color(containsNumber)}>
-				<i className={icon(containsNumber)} />
+			<p className={color(checks.containsNumber)}>
+				<i className={icon(checks.containsNumber)} />
 				contains a number
 			</p>
 		)
@@ -102,8 +104,8 @@ function PasswordHelper({password}: PasswordHelperProps) {
 	 */
 	const specialCharsHint = () => {
 		return (
-			<p className={color(containsSpecialChar)}>
-				<i className={icon(containsSpecialChar)} />
+			<p className={color(checks.containsSpecialChar)}>
+				<i className={icon(checks.containsSpecialChar)} />
 				contains a special character: !#$&*_-
 			</p>
 		)
@@ -111,13 +113,7 @@ function PasswordHelper({password}: PasswordHelperProps) {
 
 	// ----- Progress bar properties ---------------------------------------------
 
-	const fulfilment = [
-		isLong,
-		containsLowercase,
-		containsUppercase,
-		containsNumber,
-		containsSpecialChar,
-	]
+	const fulfilment = Object.values(checks)
 	const progress = fulfilment.filter(b => b === true).length / fulfilment.length
 	const width = String(Math.max(5, progress * 100)) + '%'
 
