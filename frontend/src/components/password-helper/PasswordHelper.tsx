@@ -2,10 +2,13 @@ import './PasswordHelper.scss'
 import 'bootstrap-icons/font/bootstrap-icons.css'
 
 interface PasswordHelperProps {
+	// the currently typed in password
 	password: string
+	// a function that accepts as argument a boolean indicating if all check pass
+	fulfils?: (allValid: boolean) => void
 }
 
-function PasswordHelper({password}: PasswordHelperProps) {
+function PasswordHelper({password, fulfils}: PasswordHelperProps) {
 	// ----- Checks --------------------------------------------------------------
 
 	const checks = {
@@ -22,6 +25,13 @@ function PasswordHelper({password}: PasswordHelperProps) {
 		checks.containsUppercase = /[A-Z]/.test(password)
 		checks.containsNumber = /[0-9]/.test(password)
 		checks.containsSpecialChar = /[!#$&*_-]/.test(password)
+	}
+
+	// Report if all checks passed to parent component
+	if (fulfils != null) {
+		const values = Object.values(checks)
+		const passes = values.filter(bool => bool === true).length
+		fulfils(passes === values.length)
 	}
 
 	// ----- Pass/fail indicators ------------------------------------------------

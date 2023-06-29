@@ -1,12 +1,11 @@
 import './Register.scss'
 
-import {get, useForm} from 'react-hook-form'
+import {useForm} from 'react-hook-form'
 import {zodResolver} from '@hookform/resolvers/zod'
 import {z as zod} from 'zod'
 import {User} from '../../entities/User'
 
 import PasswordHelper from '../password-helper/PasswordHelper'
-import {useEffect} from 'react'
 import {UserService} from '../../services/UserService'
 
 function Register() {
@@ -17,6 +16,8 @@ function Register() {
 		firstName: zod.string().min(1, 'Please enter your first name.'),
 		lastName: zod.string().min(1, 'Please enter your last name.'),
 	})
+	// Password meets requirements
+	let passwordIsStrong = false
 
 	// Form hook
 	const {register, handleSubmit, formState, watch} = useForm({
@@ -28,6 +29,7 @@ function Register() {
 
 	// Actions to perform on submit
 	const onSubmit = handleSubmit(data => {
+		console.log(passwordIsStrong)
 		const user = Object.assign(new User(), data)
 		UserService.register(user)
 			.then(res => console.log(res))
@@ -79,7 +81,10 @@ function Register() {
 					</div>
 				)}
 				{watch('password') != undefined && (
-					<PasswordHelper password={watch('password')} />
+					<PasswordHelper
+						password={watch('password')}
+						fulfils={pass => (passwordIsStrong = pass)}
+					/>
 				)}
 			</div>
 		)
