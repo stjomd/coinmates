@@ -9,7 +9,7 @@ import org.mapstruct.Mapper;
 @DecoratedWith(HidePasswordDecorator.class)
 public interface UserMapper {
 
-    User entity(UserDto dto);
-    UserDto dto(User entity);
+    User toEntity(UserDto dto);
+    UserDto toDto(User entity);
 
 }

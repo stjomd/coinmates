@@ -32,16 +32,16 @@ public class UserController {
     @ResponseStatus(HttpStatus.CREATED)
     public UserDto register(@RequestBody UserDto userDto)
 	throws UserAlreadyExists {
-        User user = userMapper.entity(userDto);
+        User user = userMapper.toEntity(userDto);
         User registeredUser = userService.register(user);
-        return userMapper.dto(registeredUser);
+        return userMapper.toDto(registeredUser);
     }
 
     @PostMapping("auth")
     @ResponseStatus(HttpStatus.OK)
     public String authenticate(@RequestBody UserDto userDto)
 	throws AuthenticationFailedException {
-        User user = userMapper.entity(userDto);
+        User user = userMapper.toEntity(userDto);
         return userService.authenticate(user);
     }
 

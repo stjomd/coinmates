@@ -15,8 +15,8 @@ public abstract class HidePasswordDecorator implements UserMapper {
 	private UserMapper delegate;
 
 	@Override
-	public UserDto dto(User entity) {
-		UserDto mapped = delegate.dto(entity);
+	public UserDto toDto(User entity) {
+		UserDto mapped = delegate.toDto(entity);
 		mapped.setPassword(null);
 		return mapped;
 	}
