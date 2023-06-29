@@ -7,6 +7,7 @@ import {User} from '../../entities/User'
 
 import PasswordHelper from '../password-helper/PasswordHelper'
 import {UserService} from '../../services/UserService'
+import {useState} from 'react'
 
 function Register() {
 	// Validation
@@ -16,8 +17,9 @@ function Register() {
 		firstName: zod.string().min(1, 'Please enter your first name.'),
 		lastName: zod.string().min(1, 'Please enter your last name.'),
 	})
+
 	// Password meets requirements
-	let passwordIsStrong = false
+	const [passwordIsStrong, setPasswordIsStrong] = useState(false)
 
 	// Form hook
 	const {register, handleSubmit, formState, watch} = useForm({
@@ -25,18 +27,22 @@ function Register() {
 	})
 
 	// Validation errors
-	const {errors} = formState
+	const { errors } = formState
 
 	// Actions to perform on submit
 	const onSubmit = handleSubmit(data => {
-		console.log(passwordIsStrong)
-		const user = Object.assign(new User(), data)
-		UserService.register(user)
-			.then(res => console.log(res))
-			.catch(err => console.error(err))
+		if (passwordIsStrong) {
+			const user = Object.assign(new User(), data)
+			UserService.register(user)
+				.then(res => console.log(res))
+				.catch(err => console.error(err))
+		}
 	})
 
-	// Email field
+	/**
+	 * Constructs an email field for the form.
+	 * @returns a JSX element, the email field.
+	 */
 	const emailField = () => {
 		let classes = 'form-control'
 		if (errors.email?.message) {
@@ -59,11 +65,16 @@ function Register() {
 		)
 	}
 
-	// Password field
+	/**
+	 * Constructs a password field for the form.
+	 * @returns a JSX element, the password field.
+	 */
 	const passwordField = () => {
 		let classes = 'form-control'
-		if (errors.password?.message) {
-			classes += ' is-invalid'
+		if (watch('password') != null) {
+			if (errors.password?.message != null || !passwordIsStrong) {
+				classes += ' is-invalid'
+			}
 		}
 		return (
 			<div className='form-floating'>
@@ -83,14 +94,17 @@ function Register() {
 				{watch('password') != undefined && (
 					<PasswordHelper
 						password={watch('password')}
-						fulfils={pass => (passwordIsStrong = pass)}
+						fulfils={pass => setPasswordIsStrong(pass)}
 					/>
 				)}
 			</div>
 		)
 	}
 
-	// First name field
+	/**
+	 * Constructs a first name field for the form.
+	 * @returns a JSX element, the first name field.
+	 */
 	const firstNameField = () => {
 		let classes = 'form-control'
 		if (errors.firstName?.message) {
@@ -113,7 +127,10 @@ function Register() {
 		)
 	}
 
-	// Last name field
+	/**
+	 * Constructs a last name field for the form.
+	 * @returns a JSX element, the last name field.
+	 */
 	const lastNameField = () => {
 		let classes = 'form-control'
 		if (errors.lastName?.message) {
@@ -136,6 +153,7 @@ function Register() {
 		)
 	}
 
+	// Component
 	return (
 		<div className='register-box'>
 			<p id='register-title'>Sign up</p>

@@ -1,3 +1,4 @@
+import {useEffect} from 'react'
 import './PasswordHelper.scss'
 import 'bootstrap-icons/font/bootstrap-icons.css'
 
@@ -28,11 +29,13 @@ function PasswordHelper({password, fulfils}: PasswordHelperProps) {
 	}
 
 	// Report if all checks passed to parent component
-	if (fulfils != null) {
-		const values = Object.values(checks)
-		const passes = values.filter(bool => bool === true).length
-		fulfils(passes === values.length)
-	}
+	const values = Object.values(checks)
+	const passes = values.filter(bool => bool === true).length
+	useEffect(() => {
+		if (fulfils != null) {
+			fulfils(passes === values.length)
+		}
+	})
 
 	// ----- Pass/fail indicators ------------------------------------------------
 
