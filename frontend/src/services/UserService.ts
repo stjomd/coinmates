@@ -16,9 +16,9 @@ export class UserService {
 			},
 		})
 		if (response.ok) {
-			return await response.json()
+			return response.json()
 		} else {
-			throw new FetchError(response.status, await response.text())
+			throw FetchError.fromResponseBody(await response.json())
 		}
 	}
 
@@ -32,9 +32,9 @@ export class UserService {
 			},
 		})
 		if (response.ok) {
-			return await response.json()
+			return response.json()
 		} else {
-			throw new FetchError(response.status, await response.text())
+			throw FetchError.fromResponseBody(await response.json())
 		}
 	}
 }
