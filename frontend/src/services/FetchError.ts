@@ -1,5 +1,5 @@
 export class FetchError {
-	constructor(
+	private constructor(
 		public timestamp: Date,
 		public status: number,
 		public statusText: string,

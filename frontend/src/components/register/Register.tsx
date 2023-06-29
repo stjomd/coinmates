@@ -27,7 +27,7 @@ function Register() {
 	})
 
 	// Validation errors
-	const { errors } = formState
+	const {errors} = formState
 
 	// Actions to perform on submit
 	const onSubmit = handleSubmit(data => {
