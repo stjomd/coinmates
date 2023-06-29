@@ -8,6 +8,8 @@ import {User} from '../../entities/User'
 import PasswordHelper from '../password-helper/PasswordHelper'
 import {UserService} from '../../services/UserService'
 import {useState} from 'react'
+import {FetchError} from '../../services/FetchError'
+import {NavLink} from 'react-router-dom'
 
 function Register() {
 	// Validation
@@ -18,8 +20,9 @@ function Register() {
 		lastName: zod.string().min(1, 'Please enter your last name.'),
 	})
 
-	// Password meets requirements
 	const [passwordIsStrong, setPasswordIsStrong] = useState(false)
+	const [errorMessage, setErrorMessage] = useState<string>()
+	const [showSignInLink, setShowSignInLink] = useState(false)
 
 	// Form hook
 	const {register, handleSubmit, formState, watch} = useForm({
@@ -31,11 +34,21 @@ function Register() {
 
 	// Actions to perform on submit
 	const onSubmit = handleSubmit(data => {
+		setErrorMessage(undefined)
+		setShowSignInLink(false)
 		if (passwordIsStrong) {
 			const user = Object.assign(new User(), data)
 			UserService.register(user)
 				.then(res => console.log(res))
-				.catch(err => console.error(err))
+				.catch(err => {
+					const error = err as FetchError
+					if (error.status === 409) {
+						setErrorMessage('Looks like you already have an account!')
+						setShowSignInLink(true)
+					} else {
+						setErrorMessage('Sorry, but an error occurred. Please try again.')
+					}
+				})
 		}
 	})
 
@@ -157,6 +170,19 @@ function Register() {
 	return (
 		<div className='register-box'>
 			<p id='register-title'>Sign up</p>
+			{errorMessage != null && (
+				<div className='alert alert-danger login-alert' role='alert'>
+					{errorMessage}
+					{showSignInLink && (
+						<span>
+							&nbsp;
+							<NavLink to='/login' className='reg-link-dark'>
+								Sign in
+							</NavLink>
+						</span>
+					)}
+				</div>
+			)}
 			<form onSubmit={onSubmit}>
 				{emailField()}
 				{passwordField()}
