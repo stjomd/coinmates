@@ -37,7 +37,8 @@ public class UserController {
 
     @PostMapping("auth")
     @ResponseStatus(HttpStatus.OK)
-    public String authenticate(@RequestBody UserDto userDto) throws AuthenticationFailedException {
+    public String authenticate(@RequestBody UserDto userDto)
+	throws AuthenticationFailedException {
         User user = userMapper.entity(userDto);
         return userService.authenticate(user);
     }

@@ -9,12 +9,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class SecurityConfig {
 
     /**
-     * Address of the frontend. Use with @CrossOrigin to allow requests from the frontend.
+     * Address of the frontend. Use with @CrossOrigin to allow requests from the
+	 * frontend.
      */
     public static final String frontendOrigin = "http://127.0.0.1:5173";
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
+    PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 

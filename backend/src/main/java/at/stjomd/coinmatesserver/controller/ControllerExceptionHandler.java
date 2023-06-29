@@ -12,11 +12,14 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(value = {AuthenticationFailedException.class})
-    protected ResponseEntity<Object> handleAuthFailed(AuthenticationFailedException exception, WebRequest request) {
-        return handleExceptionInternal(
-            exception, exception.getMessage(), new HttpHeaders(), HttpStatus.UNAUTHORIZED, request
-        );
-    }
+	@ExceptionHandler(value = {AuthenticationFailedException.class})
+	protected ResponseEntity<Object> handleAuthFailed(
+		AuthenticationFailedException exception, WebRequest request
+	) {
+		return handleExceptionInternal(
+			exception, exception.getMessage(), new HttpHeaders(),
+			HttpStatus.UNAUTHORIZED, request
+		);
+	}
 
 }
