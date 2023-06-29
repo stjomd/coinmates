@@ -37,4 +37,19 @@ export class UserService {
 			throw FetchError.fromResponseBody(await response.json())
 		}
 	}
+
+	static storeAuth(user: User) {
+		// TODO: make secure / store token
+		localStorage.setItem('user', JSON.stringify(user))
+	}
+
+	static getAuth(): User | null {
+		// TODO: make secure / store token
+		const contents = localStorage.getItem('user')
+		if (contents != null) {
+			return JSON.parse(contents) as User
+		} else {
+			return null
+		}
+	}
 }

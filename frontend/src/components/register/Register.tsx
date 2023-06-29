@@ -39,7 +39,7 @@ function Register() {
 		if (passwordIsStrong) {
 			const user = Object.assign(new User(), data)
 			UserService.register(user)
-				.then(res => console.log(res))
+				.then(res => UserService.storeAuth(res as User))
 				.catch(err => {
 					const error = err as FetchError
 					if (error.status === 409) {

@@ -4,6 +4,8 @@ import {useEffect, useState} from 'react'
 import {UserService} from '../../services/UserService'
 import {LoginDetails} from '../../entities/LoginDetails'
 import {Link} from 'react-router-dom'
+import {User} from '../../entities/User'
+import {FetchError} from '../../services/FetchError'
 
 function Login() {
 	const [email, setEmail] = useState('')
@@ -35,8 +37,9 @@ function Login() {
 			return
 		}
 		UserService.authenticate(login)
-			.then(id => console.log('Hello user ' + id))
-			.catch(error => {
+			.then(res => UserService.storeAuth(res as User))
+			.catch(err => {
+				const error = err as FetchError
 				if (error.status === 401) {
 					setErrorMessage('Your email or password is incorrect, please retry.')
 				} else {

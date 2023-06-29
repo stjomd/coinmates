@@ -5,8 +5,12 @@ import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 import Landing from '../landing/Landing'
 import Login from '../login/Login'
 import Register from '../register/Register'
+import {UserService} from '../../services/UserService'
 
 function App() {
+	const loggedInUser = UserService.getAuth()
+	console.log('logged user', loggedInUser)
+
 	return (
 		<Router>
 			<div className='flexbox-container'>
