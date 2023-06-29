@@ -1,6 +1,8 @@
 package at.stjomd.coinmatesserver.controller;
 
 import at.stjomd.coinmatesserver.exception.AuthenticationFailedException;
+import at.stjomd.coinmatesserver.exception.UserAlreadyExists;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,16 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 		return handleExceptionInternal(
 			exception, exception.getMessage(), new HttpHeaders(),
 			HttpStatus.UNAUTHORIZED, request
+		);
+	}
+
+	@ExceptionHandler(value = {UserAlreadyExists.class})
+	protected ResponseEntity<Object> handleUserAlreadyExists(
+		UserAlreadyExists exception, WebRequest request
+	) {
+		return handleExceptionInternal(
+			exception, exception.getMessage(), new HttpHeaders(),
+			HttpStatus.CONFLICT, request
 		);
 	}
 
