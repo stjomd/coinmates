@@ -9,6 +9,8 @@ public class ErrorBodyDto {
 
 	private Integer status;
 
+	private String statusText;
+
 	private String message;
 
 }
