@@ -37,6 +37,15 @@ header {
 	align-items: end;
 }
 
+.header-dropdown-btn {
+	flex-shrink: 2;
+	min-width: 0;
+	max-width: 30vw;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
 .header-dropdown-content {
 	display: none;
 	margin-right: 0pt;

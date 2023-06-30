@@ -53,8 +53,7 @@ function Header() {
 			return (
 				<div className='header-dropdown'>
 					<p
-						className='header-dropdown-btn dropdown-toggle'
-						// type='button'
+						className='header-dropdown-btn header-link dropdown-toggle'
 						onClick={() => setShowDropdown(!showDropdown)}
 					>
 						{user.firstName} {user.lastName}
