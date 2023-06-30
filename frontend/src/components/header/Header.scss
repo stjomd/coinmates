@@ -11,6 +11,12 @@ header {
 	padding-right: 15pt;
 }
 
+.header-left {
+	display: flex;
+	align-items: baseline;
+	gap: 15pt;
+}
+
 .header-link {
 	color: colors.$dimmed;
 	text-decoration: none;
@@ -21,4 +27,41 @@ header {
 
 .header-logo {
 	font-size: 14pt;
+}
+
+// ----- Dropdown --------------------------------------------------------------
+
+.header-dropdown {
+	display: flex;
+	flex-direction: column;
+	align-items: end;
+}
+
+.header-dropdown-content {
+	display: none;
+	margin-right: 0pt;
+	margin-top: 22pt;
+	min-width: fit-content;
+}
+
+.header-dropdown-content-show {
+	display: block;
+}
+
+.dropdown-menu li {
+	text-align: end;
+}
+
+.header-dropdown p {
+	cursor: pointer;
+	&:hover {
+		text-decoration: underline;
+	}
+}
+
+.dropdown-item-danger {
+	color: var(--bs-danger);
+	&:hover {
+		color: var(--bs-danger);
+	}
 }
