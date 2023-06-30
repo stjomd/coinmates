@@ -1,6 +1,7 @@
 package at.stjomd.coinmatesserver.controller;
 
 import at.stjomd.coinmatesserver.entity.User;
+import at.stjomd.coinmatesserver.entity.dto.LoginDetailsDto;
 import at.stjomd.coinmatesserver.entity.dto.UserDto;
 import at.stjomd.coinmatesserver.exception.AuthenticationFailedException;
 import at.stjomd.coinmatesserver.exception.UserAlreadyExists;
@@ -41,9 +42,9 @@ public class UserController {
 
     @PostMapping("auth")
     @ResponseStatus(HttpStatus.OK)
-    public String authenticate(@RequestBody UserDto userDto)
+    public String authenticate(@Valid @RequestBody LoginDetailsDto loginDto)
     throws AuthenticationFailedException {
-        User user = userMapper.toEntity(userDto);
+        User user = userMapper.toEntity(loginDto);
         return userService.authenticate(user);
     }
 

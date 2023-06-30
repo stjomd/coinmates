@@ -1,6 +1,6 @@
 import './Login.scss'
 
-import {useEffect, useState} from 'react'
+import {useState} from 'react'
 import {UserService} from '../../services/UserService'
 import {LoginDetails} from '../../entities/LoginDetails'
 import {Link} from 'react-router-dom'
@@ -10,13 +10,6 @@ import {FetchError} from '../../services/FetchError'
 function Login() {
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
-
-	// Login DTO
-	const login = new LoginDetails(email, password)
-	useEffect(() => {
-		login.email = email
-		login.password = password
-	})
 
 	// Error message (from server)
 	const [errorMessage, setErrorMessage] = useState<string>()
@@ -36,14 +29,17 @@ function Login() {
 		if (!validate()) {
 			return
 		}
+		const login = new LoginDetails(email, password)
 		UserService.authenticate(login)
 			.then(res => UserService.storeAuth(res as User))
 			.catch(err => {
 				const error = err as FetchError
 				if (error.status === 401) {
 					setErrorMessage('Your email or password is incorrect, please retry.')
+				} else if (error.status === 422) {
+					setErrorMessage('Your data is invalid, please check and try again.')
 				} else {
-					setErrorMessage(error.message)
+					setErrorMessage('Sorry, but an error occurred. Please try again.')
 				}
 			})
 	}
