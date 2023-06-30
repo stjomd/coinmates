@@ -1,4 +1,5 @@
 import './App.scss'
+import '../../styles/global.scss'
 
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 
@@ -6,6 +7,7 @@ import Landing from '../landing/Landing'
 import Login from '../login/Login'
 import Register from '../register/Register'
 import {UserService} from '../../services/UserService'
+import Header from '../header/Header'
 
 function App() {
 	const loggedInUser = UserService.getAuth()
@@ -14,6 +16,7 @@ function App() {
 	return (
 		<Router>
 			<div className='flexbox-container'>
+				<Header />
 				<Routes>
 					{/* home page */}
 					<Route
