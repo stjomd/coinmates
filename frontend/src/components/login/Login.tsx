@@ -31,7 +31,7 @@ function Login() {
 		}
 		const login = new LoginDetails(email, password)
 		UserService.authenticate(login)
-			.then(res => UserService.storeAuth(res as User))
+			.then(res => UserService.storeAuth(res as User, '/home'))
 			.catch(err => {
 				const error = err as FetchError
 				if (error.status === 401) {

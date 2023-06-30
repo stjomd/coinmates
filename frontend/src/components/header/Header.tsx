@@ -60,7 +60,12 @@ function Header() {
 					</p>
 					<ul className={dropdownClass()}>
 						<li className='dropdown-item'>Settings</li>
-						<li className='dropdown-item dropdown-item-danger'>Log out</li>
+						<li
+							className='dropdown-item dropdown-item-danger'
+							onClick={UserService.deleteAuth}
+						>
+							Log out
+						</li>
 					</ul>
 				</div>
 			)

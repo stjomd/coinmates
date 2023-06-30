@@ -52,13 +52,20 @@ export class UserService {
 	}
 
 	/**
-	 * Saves authentication details into local storage.
+	 * Saves authentication details into local storage, and reloads the page or
+	 * redirect the user to a specified URL.
 	 * @param user the user entity.
+	 * @param url the URL to redirect to. If null, page is reloaded.
 	 * @todo Make secure!
 	 */
-	static storeAuth(user: User) {
+	static storeAuth(user: User, url?: string) {
 		// TODO: make secure / store token
 		localStorage.setItem('user', JSON.stringify(user))
+		if (url == null) {
+			window.location.reload()
+		} else {
+			window.location.replace(url)
+		}
 	}
 
 	/**
@@ -74,5 +81,15 @@ export class UserService {
 		} else {
 			return null
 		}
+	}
+
+	/**
+	 * Removes authentication details from local storage, and redirect the user to
+	 * the landing page.
+	 * @todo Make secure!
+	 */
+	static deleteAuth() {
+		localStorage.removeItem('user')
+		window.location.replace('/')
 	}
 }
