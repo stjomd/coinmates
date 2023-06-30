@@ -7,6 +7,8 @@ import at.stjomd.coinmatesserver.exception.UserAlreadyExists;
 import at.stjomd.coinmatesserver.entity.mapper.UserMapper;
 import at.stjomd.coinmatesserver.security.SecurityConfig;
 import at.stjomd.coinmatesserver.service.user.UserService;
+import jakarta.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,8 +32,8 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public UserDto register(@RequestBody UserDto userDto)
-	throws UserAlreadyExists {
+    public UserDto register(@Valid @RequestBody UserDto userDto)
+    throws UserAlreadyExists {
         User user = userMapper.toEntity(userDto);
         User registeredUser = userService.register(user);
         return userMapper.toDto(registeredUser);
@@ -40,7 +42,7 @@ public class UserController {
     @PostMapping("auth")
     @ResponseStatus(HttpStatus.OK)
     public String authenticate(@RequestBody UserDto userDto)
-	throws AuthenticationFailedException {
+    throws AuthenticationFailedException {
         User user = userMapper.toEntity(userDto);
         return userService.authenticate(user);
     }

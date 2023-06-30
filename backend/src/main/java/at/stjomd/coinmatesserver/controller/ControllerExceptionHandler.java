@@ -10,7 +10,9 @@ import java.util.Date;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -67,6 +69,22 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 			errorBody(exception, status),
 			new HttpHeaders(),
 			status,
+			request
+		);
+	}
+
+	// Validation
+	@Override
+	protected ResponseEntity<Object> handleMethodArgumentNotValid(
+		MethodArgumentNotValidException exception, HttpHeaders headers,
+		HttpStatusCode status, WebRequest request
+	) {
+		HttpStatus overriddenStatus = HttpStatus.UNPROCESSABLE_ENTITY;
+		return handleExceptionInternal(
+			exception,
+			errorBody(exception, overriddenStatus),
+			headers,
+			overriddenStatus,
 			request
 		);
 	}

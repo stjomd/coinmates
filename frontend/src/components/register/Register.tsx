@@ -14,10 +14,10 @@ import {NavLink} from 'react-router-dom'
 function Register() {
 	// Validation
 	const schema = zod.object({
-		email: zod.string().email('Please enter a valid email.'),
-		password: zod.string().min(1, 'Please enter a password.'),
-		firstName: zod.string().min(1, 'Please enter your first name.'),
-		lastName: zod.string().min(1, 'Please enter your last name.'),
+		email: zod.string().email('Please enter a valid email.').max(100),
+		password: zod.string().min(1, 'Please enter a password.').max(50),
+		firstName: zod.string().min(1, 'Please enter your first name.').max(100),
+		lastName: zod.string().min(1, 'Please enter your last name.').max(100),
 	})
 
 	const [passwordIsStrong, setPasswordIsStrong] = useState(false)
