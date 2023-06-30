@@ -2,7 +2,7 @@ package at.stjomd.coinmatesserver.service.user;
 
 import at.stjomd.coinmatesserver.entity.User;
 import at.stjomd.coinmatesserver.exception.AuthenticationFailedException;
-import at.stjomd.coinmatesserver.exception.UserAlreadyExists;
+import at.stjomd.coinmatesserver.exception.UserAlreadyExistsException;
 
 /**
  * A service responsible for all user actions, including authentication.
@@ -23,9 +23,10 @@ public interface UserService {
 	 * 			   first and last name.
 	 * @return the (total, i.e. with all fields set) registered user entity.
 	 * 		   Warning: contains the hashed password.
-	 * @throws UserAlreadyExists if a user with the same email already exists.
+	 * @throws UserAlreadyExistsException if a user with the same email already
+	 * 		   exists.
 	 */
-	User register(User user) throws UserAlreadyExists;
+	User register(User user) throws UserAlreadyExistsException;
 
 	/**
 	 * Accepts a partial user entity, and checks the credentials.

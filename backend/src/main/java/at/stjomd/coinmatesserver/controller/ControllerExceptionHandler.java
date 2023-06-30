@@ -4,7 +4,7 @@ import at.stjomd.coinmatesserver.entity.ErrorBody;
 import at.stjomd.coinmatesserver.entity.dto.ErrorBodyDto;
 import at.stjomd.coinmatesserver.entity.mapper.ErrorBodyMapper;
 import at.stjomd.coinmatesserver.exception.AuthenticationFailedException;
-import at.stjomd.coinmatesserver.exception.UserAlreadyExists;
+import at.stjomd.coinmatesserver.exception.UserAlreadyExistsException;
 import lombok.extern.slf4j.Slf4j;
 import java.util.Date;
 
@@ -73,9 +73,9 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 	}
 
 	// User Already Exists
-	@ExceptionHandler(value = {UserAlreadyExists.class})
+	@ExceptionHandler(value = {UserAlreadyExistsException.class})
 	protected ResponseEntity<Object> handleUserAlreadyExists(
-		UserAlreadyExists exception, WebRequest request
+		UserAlreadyExistsException exception, WebRequest request
 	) {
 		log(exception);
 		HttpStatus status = HttpStatus.CONFLICT;

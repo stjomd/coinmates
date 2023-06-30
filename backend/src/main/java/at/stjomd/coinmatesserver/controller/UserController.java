@@ -4,7 +4,7 @@ import at.stjomd.coinmatesserver.entity.User;
 import at.stjomd.coinmatesserver.entity.dto.LoginDetailsDto;
 import at.stjomd.coinmatesserver.entity.dto.UserDto;
 import at.stjomd.coinmatesserver.exception.AuthenticationFailedException;
-import at.stjomd.coinmatesserver.exception.UserAlreadyExists;
+import at.stjomd.coinmatesserver.exception.UserAlreadyExistsException;
 import at.stjomd.coinmatesserver.entity.mapper.UserMapper;
 import at.stjomd.coinmatesserver.security.SecurityConfig;
 import at.stjomd.coinmatesserver.service.user.UserService;
@@ -35,7 +35,7 @@ public class UserController {
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public UserDto register(@Valid @RequestBody UserDto userDto)
-	throws UserAlreadyExists {
+	throws UserAlreadyExistsException {
 		log.info("POST /api/v1/user: email = ", userDto.getEmail());
 		User user = userMapper.toEntity(userDto);
 		User registeredUser = userService.register(user);

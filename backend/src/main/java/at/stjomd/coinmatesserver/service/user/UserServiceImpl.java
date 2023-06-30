@@ -2,7 +2,7 @@ package at.stjomd.coinmatesserver.service.user;
 
 import at.stjomd.coinmatesserver.entity.User;
 import at.stjomd.coinmatesserver.exception.AuthenticationFailedException;
-import at.stjomd.coinmatesserver.exception.UserAlreadyExists;
+import at.stjomd.coinmatesserver.exception.UserAlreadyExistsException;
 import at.stjomd.coinmatesserver.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User register(User user) throws UserAlreadyExists {
+	public User register(User user) throws UserAlreadyExistsException {
 		log.trace("register(email = {})", user.getEmail());
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		// Check that no user with the same email exists
@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
 				"Attempted to register already existing email {}",
 				user.getEmail()
 			);
-			throw new UserAlreadyExists(user);
+			throw new UserAlreadyExistsException(user);
 		}
 		user.setRole(User.Role.REGULAR);
 		user.setStatus(User.Status.ACTIVE);
