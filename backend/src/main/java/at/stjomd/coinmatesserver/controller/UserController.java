@@ -44,11 +44,12 @@ public class UserController {
 
 	@PostMapping("auth")
 	@ResponseStatus(HttpStatus.OK)
-	public String authenticate(@Valid @RequestBody LoginDetailsDto loginDto)
+	public UserDto authenticate(@Valid @RequestBody LoginDetailsDto loginDto)
 	throws AuthenticationFailedException {
 		log.info("POST /api/v1/user/auth: email = {}", loginDto.getEmail());
-		User user = userMapper.toEntity(loginDto);
-		return userService.authenticate(user);
+		User loginUser = userMapper.toEntity(loginDto);
+		User registeredUser = userService.authenticate(loginUser);
+		return userMapper.toDto(registeredUser);
 	}
 
 }

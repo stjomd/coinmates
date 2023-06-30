@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public String authenticate(User user) throws AuthenticationFailedException {
+	public User authenticate(User user) throws AuthenticationFailedException {
 		log.trace("authenticate(email = {})", user.getEmail());
 		User foundUser = userRepository
 			.findByEmail(user.getEmail())
@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService {
 			user.getPassword(), foundUser.getPassword()
 		)) {
 			log.debug("Authentication succeeded for email {}", user.getEmail());
-			return foundUser.getId().toString();
+			return foundUser;
 		}
 		log.debug("Authentication failed for email {}", user.getEmail());
 		throw new AuthenticationFailedException(user);

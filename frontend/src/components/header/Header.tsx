@@ -14,7 +14,11 @@ function Header() {
 				</Link>
 			)
 		} else {
-			return <p>{user.email}</p>
+			return (
+				<p>
+					{user.firstName} {user.lastName}
+				</p>
+			)
 		}
 	}
 

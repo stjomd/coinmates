@@ -30,9 +30,9 @@ public interface UserService {
 	/**
 	 * Accepts a partial user entity, and checks the credentials.
 	 * @param user the user entity, which must contain the email and password.
-	 * @return the ID. TODO: adjust for security auth.
+	 * @return the user entity. TODO: adjust for security auth.
 	 * @throws AuthenticationFailedException if authentication failed.
 	 */
-	String authenticate(User user) throws AuthenticationFailedException;
+	User authenticate(User user) throws AuthenticationFailedException;
 
 }
