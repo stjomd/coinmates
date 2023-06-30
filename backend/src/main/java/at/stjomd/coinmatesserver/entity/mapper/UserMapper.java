@@ -13,7 +13,7 @@ import org.mapstruct.Mapping;
 @DecoratedWith(HidePasswordDecorator.class)
 public interface UserMapper {
 
-    User toEntity(UserDto dto);
+	User toEntity(UserDto dto);
 	UserDto toDto(User entity);
 
 	@BeanMapping(ignoreByDefault = true)

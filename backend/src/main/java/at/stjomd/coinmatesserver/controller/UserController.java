@@ -24,31 +24,31 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin(origins = SecurityConfig.frontendOrigin)
 public class UserController {
 
-    private final UserService userService;
-    private final UserMapper userMapper;
+	private final UserService userService;
+	private final UserMapper userMapper;
 
-    public UserController(UserService userService, UserMapper userMapper) {
-        this.userService = userService;
-        this.userMapper = userMapper;
-    }
+	public UserController(UserService userService, UserMapper userMapper) {
+		this.userService = userService;
+		this.userMapper = userMapper;
+	}
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public UserDto register(@Valid @RequestBody UserDto userDto)
-    throws UserAlreadyExists {
+	@PostMapping
+	@ResponseStatus(HttpStatus.CREATED)
+	public UserDto register(@Valid @RequestBody UserDto userDto)
+	throws UserAlreadyExists {
 		log.info("POST /api/v1/user: email = ", userDto.getEmail());
-        User user = userMapper.toEntity(userDto);
-        User registeredUser = userService.register(user);
-        return userMapper.toDto(registeredUser);
-    }
+		User user = userMapper.toEntity(userDto);
+		User registeredUser = userService.register(user);
+		return userMapper.toDto(registeredUser);
+	}
 
-    @PostMapping("auth")
-    @ResponseStatus(HttpStatus.OK)
-    public String authenticate(@Valid @RequestBody LoginDetailsDto loginDto)
-    throws AuthenticationFailedException {
+	@PostMapping("auth")
+	@ResponseStatus(HttpStatus.OK)
+	public String authenticate(@Valid @RequestBody LoginDetailsDto loginDto)
+	throws AuthenticationFailedException {
 		log.info("POST /api/v1/user/auth: email = {}", loginDto.getEmail());
-        User user = userMapper.toEntity(loginDto);
-        return userService.authenticate(user);
-    }
+		User user = userMapper.toEntity(loginDto);
+		return userService.authenticate(user);
+	}
 
 }

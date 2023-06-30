@@ -7,13 +7,13 @@ import at.stjomd.coinmatesserver.entity.User;
  */
 public class AuthenticationFailedException extends Exception {
 
-    public AuthenticationFailedException(String message) {
-        super(message);
-    }
+	public AuthenticationFailedException(String message) {
+		super(message);
+	}
 
-    public AuthenticationFailedException(String message, Throwable cause) {
-        super(message, cause);
-    }
+	public AuthenticationFailedException(String message, Throwable cause) {
+		super(message, cause);
+	}
 
 	public AuthenticationFailedException(User user) {
 		super("Authentication failed for email " + user.getEmail());

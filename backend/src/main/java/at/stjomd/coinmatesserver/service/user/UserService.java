@@ -9,12 +9,12 @@ import at.stjomd.coinmatesserver.exception.UserAlreadyExists;
  */
 public interface UserService {
 
-    /**
-     * Retrieves the user with the specified email.
-     * @param email the email of a user.
-     * @return the user with the specified email.
-     */
-    User getUser(String email);
+	/**
+	 * Retrieves the user with the specified email.
+	 * @param email the email of a user.
+	 * @return the user with the specified email.
+	 */
+	User getUser(String email);
 
 	/**
 	 * Accepts a partial user entity, sets the regular role and active status,
@@ -25,7 +25,7 @@ public interface UserService {
 	 * 		   Warning: contains the hashed password.
 	 * @throws UserAlreadyExists if a user with the same email already exists.
 	 */
-    User register(User user) throws UserAlreadyExists;
+	User register(User user) throws UserAlreadyExists;
 
 	/**
 	 * Accepts a partial user entity, and checks the credentials.
@@ -33,6 +33,6 @@ public interface UserService {
 	 * @return the ID. TODO: adjust for security auth.
 	 * @throws AuthenticationFailedException if authentication failed.
 	 */
-    String authenticate(User user) throws AuthenticationFailedException;
+	String authenticate(User user) throws AuthenticationFailedException;
 
 }

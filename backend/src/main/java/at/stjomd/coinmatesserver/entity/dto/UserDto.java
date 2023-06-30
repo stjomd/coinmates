@@ -10,22 +10,22 @@ import lombok.Data;
 @Data
 public class UserDto {
 
-    private Integer id;
+	private Integer id;
 
 	@NotNull @Email @Size(max = 100)
-    private String email;
+	private String email;
 
 	@NotNull @Size(min = 10) @Size(max = 50)
-    private String password;
+	private String password;
 
 	@NotBlank @Size(max = 100)
-    private String firstName;
+	private String firstName;
 
 	@NotBlank @Size(max = 100)
-    private String lastName;
+	private String lastName;
 
-    private User.Role role;
+	private User.Role role;
 
-    private User.Status status;
+	private User.Status status;
 
 }
