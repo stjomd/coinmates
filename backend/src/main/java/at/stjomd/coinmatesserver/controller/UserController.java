@@ -9,7 +9,7 @@ import at.stjomd.coinmatesserver.entity.mapper.UserMapper;
 import at.stjomd.coinmatesserver.security.SecurityConfig;
 import at.stjomd.coinmatesserver.service.user.UserService;
 import jakarta.validation.Valid;
-
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/v1/user")
 @CrossOrigin(origins = SecurityConfig.frontendOrigin)
@@ -35,6 +36,7 @@ public class UserController {
     @ResponseStatus(HttpStatus.CREATED)
     public UserDto register(@Valid @RequestBody UserDto userDto)
     throws UserAlreadyExists {
+		log.info("POST /api/v1/user: email = ", userDto.getEmail());
         User user = userMapper.toEntity(userDto);
         User registeredUser = userService.register(user);
         return userMapper.toDto(registeredUser);
@@ -44,6 +46,7 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     public String authenticate(@Valid @RequestBody LoginDetailsDto loginDto)
     throws AuthenticationFailedException {
+		log.info("POST /api/v1/user/auth: email = {}", loginDto.getEmail());
         User user = userMapper.toEntity(loginDto);
         return userService.authenticate(user);
     }
