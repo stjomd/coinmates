@@ -59,7 +59,7 @@ function Header() {
 						{user.firstName} {user.lastName}
 					</p>
 					<ul className={dropdownClass()}>
-						<li className='dropdown-item'>Settings</li>
+						{/* <li className='dropdown-item'>Settings</li> */}
 						<li
 							className='dropdown-item dropdown-item-danger'
 							onClick={UserService.deleteAuth}
