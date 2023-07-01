@@ -1,0 +1,37 @@
+@use '../../colors';
+@use '../../fonts';
+
+.payment-content {
+	display: flex;
+	gap: 12pt;
+}
+
+.payment-date {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-top: 0;
+	font-family: fonts.$display-font-family;
+	& * {
+		margin: 0;
+	}
+}
+
+.payment-info {
+	display: flex;
+	flex-direction: column;
+	margin-top: 0;
+	& * {
+		margin: 0;
+	}
+}
+
+.payment-amount-pos {
+	font-weight: bold;
+	color: colors.$primary;
+}
+
+.payment-description {
+	
+	font-weight: bold;
+}

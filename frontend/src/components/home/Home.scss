@@ -28,6 +28,8 @@
 	color: colors.$primary;
 }
 
+// History
+
 .home-history {
 	margin-top: 30pt;
 	& p.home-name {
@@ -36,4 +38,8 @@
 	& hr {
 		margin: 0;
 	}
+}
+
+.home-payments * {
+	margin-top: 6pt;
 }

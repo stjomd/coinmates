@@ -1,4 +1,5 @@
 import {UserService} from '../../services/UserService'
+import Payment from '../payment/Payment'
 import './Home.scss'
 
 function Home() {
@@ -14,8 +15,8 @@ function Home() {
 			<div className='home-history'>
 				<p className='home-name'>History</p>
 				<hr />
-				<div>
-					<p>1 JUL You received 10,00 &euro; from Lucille (for the banana)</p>
+				<div className='home-payments'>
+					<Payment />
 				</div>
 			</div>
 		</div>
