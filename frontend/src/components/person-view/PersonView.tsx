@@ -1,4 +1,4 @@
-import {useParams} from 'react-router-dom'
+import {Navigate, useParams} from 'react-router-dom'
 import './PersonView.scss'
 import {UserService} from '../../services/UserService'
 import {useEffect, useState} from 'react'
@@ -25,8 +25,15 @@ function PersonView() {
 		}
 	}, [params])
 
+	const redirectToHomeIfOwnPage = () => {
+		if (user != null && signedInUser != null && user.id === signedInUser.id) {
+			return <Navigate replace to='/home' />
+		}
+	}
+
 	return (
 		<div className='pv-content'>
+			{redirectToHomeIfOwnPage()}
 			{user != null && (
 				<>
 					<div className='pv-top'>
@@ -36,7 +43,7 @@ function PersonView() {
 						</p>
 					</div>
 					<div className='pv-bottom'>
-						{signedInUser != null ? (
+						{signedInUser == null ? (
 							<p>
 								Sign in to add {user.firstName} as a friend and split bills with
 								them.
@@ -51,10 +58,6 @@ function PersonView() {
 								</button>
 							</>
 						)}
-						{/* <p>
-							Sign in to add {user.firstName} as a friend and split bills with
-							them.
-						</p> */}
 					</div>
 				</>
 			)}
