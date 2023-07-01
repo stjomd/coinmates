@@ -4,6 +4,7 @@ import at.stjomd.coinmatesserver.entity.ErrorBody;
 import at.stjomd.coinmatesserver.entity.dto.ErrorBodyDto;
 import at.stjomd.coinmatesserver.entity.mapper.ErrorBodyMapper;
 import at.stjomd.coinmatesserver.exception.AuthenticationFailedException;
+import at.stjomd.coinmatesserver.exception.NotFoundException;
 import at.stjomd.coinmatesserver.exception.UserAlreadyExistsException;
 import lombok.extern.slf4j.Slf4j;
 import java.util.Date;
@@ -101,6 +102,22 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 			errorBody(exception, overriddenStatus),
 			headers,
 			overriddenStatus,
+			request
+		);
+	}
+
+	// Not Found
+	@ExceptionHandler(value = {NotFoundException.class})
+	protected ResponseEntity<Object> handleNotFound(
+		NotFoundException exception, WebRequest request
+	) {
+		log(exception);
+		HttpStatus status = HttpStatus.NOT_FOUND;
+		return handleExceptionInternal(
+			exception,
+			errorBody(exception, status),
+			new HttpHeaders(),
+			status,
 			request
 		);
 	}

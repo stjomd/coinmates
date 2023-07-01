@@ -2,6 +2,7 @@ package at.stjomd.coinmatesserver.service.user;
 
 import at.stjomd.coinmatesserver.entity.User;
 import at.stjomd.coinmatesserver.exception.AuthenticationFailedException;
+import at.stjomd.coinmatesserver.exception.NotFoundException;
 import at.stjomd.coinmatesserver.exception.UserAlreadyExistsException;
 import at.stjomd.coinmatesserver.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -23,9 +24,21 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User getUser(String email) {
-		log.trace("getUser({})", email);
-		return userRepository.findByEmail(email).orElseThrow();
+	public User getUser(Integer id) throws NotFoundException {
+		log.trace("getUser(id = {})", id);
+		return userRepository.findById(id)
+			.orElseThrow(() -> new NotFoundException(
+				"No user found with ID: " + id
+			));
+	}
+
+	@Override
+	public User getUser(String email) throws NotFoundException {
+		log.trace("getUser(email = {})", email);
+		return userRepository.findByEmail(email)
+			.orElseThrow(() -> new NotFoundException(
+				"No user found with email: " + email
+			));
 	}
 
 	@Override

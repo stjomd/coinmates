@@ -2,6 +2,7 @@ package at.stjomd.coinmatesserver.service.user;
 
 import at.stjomd.coinmatesserver.entity.User;
 import at.stjomd.coinmatesserver.exception.AuthenticationFailedException;
+import at.stjomd.coinmatesserver.exception.NotFoundException;
 import at.stjomd.coinmatesserver.exception.UserAlreadyExistsException;
 
 /**
@@ -10,11 +11,20 @@ import at.stjomd.coinmatesserver.exception.UserAlreadyExistsException;
 public interface UserService {
 
 	/**
+	 * Retrieves the user with the specified ID.
+	 * @param id the ID of the user.
+	 * @return the user with the specified ID.
+	 * @throws NotFoundException if no user with such ID exists.
+	 */
+	User getUser(Integer id) throws NotFoundException;
+
+	/**
 	 * Retrieves the user with the specified email.
 	 * @param email the email of a user.
 	 * @return the user with the specified email.
+	 * @throws NotFoundException of no user with such email exists.
 	 */
-	User getUser(String email);
+	User getUser(String email) throws NotFoundException;
 
 	/**
 	 * Accepts a partial user entity, sets the regular role and active status,
