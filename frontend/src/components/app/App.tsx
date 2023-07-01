@@ -24,8 +24,23 @@ function App() {
 	 * @returns if the user is logged in, redirects to the specified URL.
 	 * 					Otherwise renders the element.
 	 */
-	const onlyIfNotLoggedIn = (url: string, element: ReactNode) => {
+	const renderIfNotLoggedIn = (url: string, element: ReactNode) => {
 		if (UserService.getAuth() != null) {
+			return <Navigate replace to={url} />
+		} else {
+			return element
+		}
+	}
+
+	/**
+	 * Determines if the component is shown to unauthenticated users.
+	 * @param url the URL to redirect the user to.
+	 * @param element the element to render.
+	 * @returns if the user is NOT logged in, redirects to the specified URL.
+	 * 					Otherwise renders the element.
+	 */
+	const renderIfLoggedIn = (url: string, element: ReactNode) => {
+		if (UserService.getAuth() == null) {
 			return <Navigate replace to={url} />
 		} else {
 			return element
@@ -61,7 +76,7 @@ function App() {
 				{/* home page */}
 				<Route
 					path='/'
-					element={onlyIfNotLoggedIn(
+					element={renderIfNotLoggedIn(
 						'/home',
 						<div className='centered gradient'>
 							<Landing />
@@ -71,7 +86,7 @@ function App() {
 				{/* login form */}
 				<Route
 					path='/login'
-					element={onlyIfNotLoggedIn(
+					element={renderIfNotLoggedIn(
 						'/home',
 						<div className='centered'>
 							<Login />
@@ -81,15 +96,17 @@ function App() {
 				{/* register form */}
 				<Route
 					path='/register'
-					element={onlyIfNotLoggedIn(
+					element={renderIfNotLoggedIn(
 						'/home',
 						<div className='centered'>
 							<Register />
 						</div>
 					)}
 				/>
+				{/* home dashboard */}
+				<Route path='/home' element={renderIfLoggedIn('/', <p>Welcome!</p>)} />
 				{/* all other routes: 404 */}
-				<Route path='*' element={<p>Welcome!</p>} />
+				<Route path='*' element={<p>404</p>} />
 			</Routes>
 		)
 	}
