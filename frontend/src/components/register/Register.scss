@@ -7,10 +7,15 @@
 	width: min(100vw - 20pt, 400px);
 }
 
-#register-title {
-	font-size: 24pt;
-	font-weight: bold;
+.register-title {
+	font-size: 18pt;
 	color: colors.$primary;
+}
+
+.logo.register-title {
+	font-size: 24pt;
+	margin-bottom: 16px;
+	text-decoration: none;
 }
 
 .reg-link-dark {

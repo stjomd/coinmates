@@ -9,7 +9,7 @@ import PasswordHelper from '../password-helper/PasswordHelper'
 import {UserService} from '../../services/UserService'
 import {useState} from 'react'
 import {FetchError} from '../../services/FetchError'
-import {NavLink} from 'react-router-dom'
+import {Link, NavLink} from 'react-router-dom'
 
 function Register() {
 	// Validation
@@ -62,15 +62,14 @@ function Register() {
 			classes += ' is-invalid'
 		}
 		return (
-			<div className='form-floating'>
+			<div className=''>
 				<input
 					{...register('email')}
 					type='text'
 					className={classes}
 					id='email'
-					placeholder='s'
+					placeholder='Email'
 				/>
-				<label htmlFor='email'>Email</label>
 				{typeof errors.email?.message === 'string' && (
 					<div className='invalid-feedback'>{errors.email?.message}</div>
 				)}
@@ -90,15 +89,14 @@ function Register() {
 			}
 		}
 		return (
-			<div className='form-floating'>
+			<div className=''>
 				<input
 					{...register('password')}
 					type='password'
 					className={classes}
 					id='password'
-					placeholder='s'
+					placeholder='Password'
 				/>
-				<label htmlFor='password'>Password</label>
 				{typeof errors.password?.message === 'string' && (
 					<div className='invalid-feedback' style={{marginBottom: 0}}>
 						{errors.password?.message}
@@ -124,15 +122,14 @@ function Register() {
 			classes += ' is-invalid'
 		}
 		return (
-			<div className='form-floating'>
+			<div className=''>
 				<input
 					{...register('firstName')}
 					type='text'
 					className={classes}
 					id='first-name'
-					placeholder='s'
+					placeholder='First name'
 				/>
-				<label htmlFor='first-name'>First name</label>
 				{typeof errors.firstName?.message === 'string' && (
 					<div className='invalid-feedback'>{errors.firstName?.message}</div>
 				)}
@@ -150,15 +147,14 @@ function Register() {
 			classes += ' is-invalid'
 		}
 		return (
-			<div className='form-floating'>
+			<div className=''>
 				<input
 					{...register('lastName')}
 					type='text'
 					className={classes}
 					id='last-name'
-					placeholder='s'
+					placeholder='Last name'
 				/>
-				<label htmlFor='last-name'>Last name</label>
 				{typeof errors.lastName?.message === 'string' && (
 					<div className='invalid-feedback'>{errors.lastName?.message}</div>
 				)}
@@ -169,7 +165,10 @@ function Register() {
 	// Component
 	return (
 		<div className='register-box'>
-			<p id='register-title'>Sign up</p>
+			<span className='register-title'>Sign up to</span>
+			<Link to='/' className='logo register-title'>
+				coinmates
+			</Link>
 			{errorMessage != null && (
 				<div className='alert alert-danger login-alert' role='alert'>
 					{errorMessage}
@@ -192,6 +191,9 @@ function Register() {
 					Continue
 				</button>
 			</form>
+			<p>
+				Already have an account? <Link to='/login'>Sign in</Link>
+			</p>
 		</div>
 	)
 }
