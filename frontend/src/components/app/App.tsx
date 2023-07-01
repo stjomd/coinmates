@@ -15,6 +15,7 @@ import Header from '../header/Header'
 import {UserService} from '../../services/UserService'
 import {ReactNode} from 'react'
 import Home from '../home/Home'
+import PersonView from '../person-view/PersonView'
 
 function App() {
 	/**
@@ -106,6 +107,15 @@ function App() {
 				/>
 				{/* home dashboard */}
 				<Route path='/home' element={renderIfLoggedIn('/', <Home />)} />
+				{/* person view */}
+				<Route
+					path='/user/:id'
+					element={
+						<div className='centered'>
+							<PersonView />
+						</div>
+					}
+				/>
 				{/* all other routes: 404 */}
 				<Route path='*' element={<p>404</p>} />
 			</Routes>

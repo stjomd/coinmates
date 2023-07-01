@@ -1,7 +1,5 @@
 package at.stjomd.coinmatesserver.exception;
 
-import at.stjomd.coinmatesserver.entity.User;
-
 /**
  * An exception that signifies that a value was not found.
  */

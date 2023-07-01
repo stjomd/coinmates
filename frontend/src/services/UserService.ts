@@ -51,6 +51,20 @@ export class UserService {
 		}
 	}
 
+	static async getUser(id: number): Promise<User> {
+		const response = await fetch(this.uri + `/${id}`, {
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json',
+			},
+		})
+		if (response.ok) {
+			return response.json()
+		} else {
+			throw FetchError.fromResponseBody(await response.json())
+		}
+	}
+
 	/**
 	 * Saves authentication details into local storage, and reloads the page or
 	 * redirect the user to a specified URL.
