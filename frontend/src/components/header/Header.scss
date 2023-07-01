@@ -27,6 +27,11 @@ header {
 
 .header-logo {
 	font-size: 14pt;
+	margin-bottom: 0;
+}
+
+.header-link p {
+	margin-bottom: 0;
 }
 
 // ----- Dropdown --------------------------------------------------------------
@@ -44,6 +49,7 @@ header {
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
+	margin-bottom: 0;
 }
 
 .header-dropdown-content {
