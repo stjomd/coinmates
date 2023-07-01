@@ -1,0 +1,39 @@
+@use '../../colors';
+@use '../../fonts';
+
+.home-container {
+	min-height: 100%;
+	width: min(700px, 100vw - 30pt);
+	flex-grow: 1;
+	color: colors.$dark;
+	margin-top: 20pt;
+	// background-color: beige; // debug
+}
+
+.home-info-group p {
+	margin: 0;
+}
+
+.home-name {
+	font-size: 14pt;
+}
+
+#home-balance {
+	color: colors.$primary;
+	font-size: 20pt;
+	font-family: fonts.$display-font-family;
+}
+
+#home-bal-ok {
+	color: colors.$primary;
+}
+
+.home-history {
+	margin-top: 30pt;
+	& p.home-name {
+		margin-bottom: 0;
+	}
+	& hr {
+		margin: 0;
+	}
+}

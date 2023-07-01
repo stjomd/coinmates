@@ -14,6 +14,7 @@ import Register from '../register/Register'
 import Header from '../header/Header'
 import {UserService} from '../../services/UserService'
 import {ReactNode} from 'react'
+import Home from '../home/Home'
 
 function App() {
 	/**
@@ -104,7 +105,7 @@ function App() {
 					)}
 				/>
 				{/* home dashboard */}
-				<Route path='/home' element={renderIfLoggedIn('/', <p>Welcome!</p>)} />
+				<Route path='/home' element={renderIfLoggedIn('/', <Home />)} />
 				{/* all other routes: 404 */}
 				<Route path='*' element={<p>404</p>} />
 			</Routes>
