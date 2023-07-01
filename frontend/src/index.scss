@@ -1,0 +1,22 @@
+@use 'colors';
+@use 'fonts';
+
+html {
+	font-family: fonts.$primary-font-family;
+	color: colors.$dark;
+}
+
+html, body {
+	margin: 0;
+	height: 100%;
+	width: 100%;
+}
+
+div#root {
+	height: 100%;
+}
+
+// Override Bootstrap colors
+$primary: colors.$primary;
+$secondary: colors.$accent-blue;
+@import '../node_modules/bootstrap/scss/bootstrap';

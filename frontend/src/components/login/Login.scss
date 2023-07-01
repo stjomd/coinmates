@@ -1,0 +1,49 @@
+@use '../../colors';
+@use '../../fonts';
+
+.title {
+	font-family: fonts.$display-font-family;
+	font-size: 24pt;
+	color: colors.$primary;
+}
+
+.login-box {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: min(100vw - 20pt, 400px);
+}
+
+form {
+	width: 100%;
+}
+
+form input {
+	margin-bottom: 6pt;
+}
+
+button.login-btn {
+	width: 100%;
+	margin-bottom: 18pt;
+	color: white;
+	&:hover {
+		color: white;
+	}
+}
+
+.login-alert {
+	width: 100%;
+	min-height: 24pt;
+	line-height: 1.5;
+	// Does not work without !important
+	padding-left: 8pt !important;
+	padding-right: 8pt !important;
+	padding-top: 4pt !important;
+	padding-bottom: 5pt !important;
+	margin-bottom: 6pt !important;
+}
+
+.invalid-feedback {
+	margin-top: -6pt !important;
+	margin-bottom: 6pt;
+}

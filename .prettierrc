@@ -1,0 +1,7 @@
+arrowParens: avoid
+bracketSpacing: false
+semi: false
+quoteProps: consistent
+
+singleQuote: true
+jsxSingleQuote: true

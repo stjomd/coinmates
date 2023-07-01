@@ -1,0 +1,9 @@
+@use '../colors';
+@use '../fonts';
+
+// Defines reusable classes
+
+.logo {
+	font-family: fonts.$display-font-family;
+	color: colors.$primary;
+}

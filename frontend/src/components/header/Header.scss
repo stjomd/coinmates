@@ -1,0 +1,76 @@
+@use '../../colors';
+
+header {
+	display: flex;
+	justify-content: space-between;
+	align-items: baseline;
+	width: 100%;
+	padding-top: 10pt;
+	padding-bottom: 10pt;
+	padding-left: 15pt;
+	padding-right: 15pt;
+}
+
+.header-left {
+	display: flex;
+	align-items: baseline;
+	gap: 15pt;
+}
+
+.header-link {
+	color: colors.$dimmed;
+	text-decoration: none;
+	&:hover {
+		text-decoration: underline;
+	}
+}
+
+.header-logo {
+	font-size: 14pt;
+}
+
+// ----- Dropdown --------------------------------------------------------------
+
+.header-dropdown {
+	display: flex;
+	flex-direction: column;
+	align-items: end;
+}
+
+.header-dropdown-btn {
+	flex-shrink: 2;
+	min-width: 0;
+	max-width: 30vw;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.header-dropdown-content {
+	display: none;
+	margin-right: 0pt;
+	margin-top: 22pt;
+	min-width: fit-content;
+}
+
+.header-dropdown-content-show {
+	display: block;
+}
+
+.dropdown-menu li {
+	text-align: end;
+}
+
+.header-dropdown p {
+	cursor: pointer;
+	&:hover {
+		text-decoration: underline;
+	}
+}
+
+.dropdown-item-danger {
+	color: var(--bs-danger);
+	&:hover {
+		color: var(--bs-danger);
+	}
+}
