@@ -106,7 +106,15 @@ function App() {
 					)}
 				/>
 				{/* home dashboard */}
-				<Route path='/home' element={renderIfLoggedIn('/', <Home />)} />
+				<Route
+					path='/home'
+					element={renderIfLoggedIn(
+						'/',
+						<div className='horizcenter-top'>
+							<Home />
+						</div>
+					)}
+				/>
 				{/* person view */}
 				<Route
 					path='/user/:id'

@@ -6,7 +6,7 @@ function Home() {
 	const user = UserService.getAuth()
 
 	return (
-		<div className='home-container'>
+		<>
 			<div className='home-info-group'>
 				<p className='home-name'>Hi, {user?.firstName}!</p>
 				{/* <p className='home-balance'>0,00 &euro;</p> */}
@@ -19,7 +19,7 @@ function Home() {
 					<Payment />
 				</div>
 			</div>
-		</div>
+		</>
 	)
 }
 

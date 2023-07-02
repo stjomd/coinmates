@@ -7,3 +7,12 @@
 	font-family: fonts.$display-font-family;
 	color: colors.$primary;
 }
+
+.horizcenter-top {
+	min-height: 100%;
+	width: min(700px, 100vw - 30pt);
+	flex-grow: 1;
+	color: colors.$dark;
+	margin-top: 20pt;
+	// background-color: beige; // debug
+}
