@@ -25,6 +25,18 @@ function PersonView() {
 		}
 	}, [params])
 
+	const addFriend = () => {
+		if (signedInUser == null || signedInUser.id == null) {
+			return
+		}
+		if (user == null || user.id == null) {
+			return
+		}
+		UserService.addFriend(signedInUser.id, user.id)
+			.then(res => console.log(res))
+			.catch(err => console.error(err))
+	}
+
 	const redirectToHomeIfOwnPage = () => {
 		if (user != null && signedInUser != null && user.id === signedInUser.id) {
 			return <Navigate replace to='/home' />
@@ -37,7 +49,9 @@ function PersonView() {
 			{user != null && (
 				<>
 					<div className='pv-top'>
-						<p className='logo pv-name'>{`${user?.firstName} ${user?.lastName}`}</p>
+						<p className='logo pv-name'>
+							{`${user?.firstName} ${user?.lastName}`}
+						</p>
 						<p>
 							says hello to you on <span className='logo'>coinmates</span>
 						</p>
@@ -53,7 +67,7 @@ function PersonView() {
 								<p>
 									Add {user.firstName} as a friend and split bills with them.
 								</p>
-								<button className='btn btn-primary pv-btn'>
+								<button className='btn btn-primary pv-btn' onClick={addFriend}>
 									Add to friends
 								</button>
 							</>

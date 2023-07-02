@@ -1,6 +1,7 @@
 package at.stjomd.coinmatesserver.controller;
 
 import at.stjomd.coinmatesserver.entity.User;
+import at.stjomd.coinmatesserver.entity.dto.AddFriendDto;
 import at.stjomd.coinmatesserver.entity.dto.LoginDetailsDto;
 import at.stjomd.coinmatesserver.entity.dto.UserDto;
 import at.stjomd.coinmatesserver.exception.AuthenticationFailedException;
@@ -27,7 +28,9 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequestMapping("/api/v1/user")
-@CrossOrigin(origins = SecurityConfig.frontendOrigin)
+@CrossOrigin(origins = {
+	SecurityConfig.FRONTEND_ORIGIN, SecurityConfig.FRONTEND_ORIGIN_IP
+})
 public class UserController {
 
 	private final UserService userService;
@@ -70,10 +73,10 @@ public class UserController {
 	@PatchMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
 	public Set<Integer> addFriend(
-		@PathVariable Integer id, @RequestBody Integer friendId
+		@PathVariable Integer id, @Valid @RequestBody AddFriendDto friendDto
 	) throws NotFoundException {
-		log.info("PATCH /api/v1/user/{}: add friend id {}");
-		Set<User> friends = userService.addFriend(id, friendId);
+		log.info("PATCH /api/v1/user/{}: friendId = {}", friendDto.getId());
+		Set<User> friends = userService.addFriend(id, friendDto.getId());
 		return friends.stream().map(User::getId).collect(Collectors.toSet());
 	}
 

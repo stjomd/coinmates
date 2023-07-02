@@ -12,6 +12,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 @Data
 @Entity
@@ -50,6 +52,8 @@ public class User {
 	@Column(nullable = false)
 	private Status status;
 
+	@ToString.Exclude
+	@EqualsAndHashCode.Exclude
 	@ManyToMany(fetch = FetchType.LAZY)
 	private Set<User> friends;
 

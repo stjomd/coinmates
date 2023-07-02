@@ -9,7 +9,6 @@ import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import java.util.NoSuchElementException;
 import java.util.Set;
-import java.util.stream.Collectors;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -83,11 +82,16 @@ public class UserServiceImpl implements UserService {
 	public Set<User> addFriend(Integer id, Integer friendId)
 	throws NotFoundException {
 		log.trace("addFriend(id = {}, friendId = {})", id, friendId);
+		if (id == friendId) {
+			throw new IllegalArgumentException(
+				"Attempted to add self as friend: id = " + id
+			);
+		}
 		try {
 			User user = userRepository.findById(id).orElseThrow();
-			User friendUser = userRepository.findById(id).orElseThrow();
+			User friendUser = userRepository.findById(friendId).orElseThrow();
 			user.getFriends().add(friendUser);
-			user.getFriends().add(user);
+			friendUser.getFriends().add(user);
 			userRepository.save(user);
 			userRepository.save(friendUser);
 			return user.getFriends();

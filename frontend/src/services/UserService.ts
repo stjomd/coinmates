@@ -1,4 +1,5 @@
 import {serverUri} from '../Globals.ts'
+import {AddFriend} from '../entities/AddFriend.ts'
 import {LoginDetails} from '../entities/LoginDetails.ts'
 import {User} from '../entities/User.ts'
 import {FetchError} from './FetchError.ts'
@@ -51,8 +52,30 @@ export class UserService {
 		}
 	}
 
+	/**
+	 * Retrieves a user by the ID.
+	 * @param id the ID of the user.
+	 * @returns a promise containing the user.
+	 */
 	static async getUser(id: number): Promise<User> {
 		const response = await fetch(this.uri + `/${id}`, {
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json',
+			},
+		})
+		if (response.ok) {
+			return response.json()
+		} else {
+			throw FetchError.fromResponseBody(await response.json())
+		}
+	}
+
+	static async addFriend(id: number, friendId: number): Promise<Set<number>> {
+		const body = new AddFriend(friendId)
+		const response = await fetch(this.uri + `/${id}`, {
+			method: 'PATCH',
+			body: JSON.stringify(body),
 			headers: {
 				'Accept': 'application/json',
 				'Content-Type': 'application/json',
