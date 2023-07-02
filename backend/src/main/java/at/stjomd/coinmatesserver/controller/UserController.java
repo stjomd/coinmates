@@ -75,7 +75,7 @@ public class UserController {
 	public Set<Integer> addFriend(
 		@PathVariable Integer id, @Valid @RequestBody AddFriendDto friendDto
 	) throws NotFoundException {
-		log.info("PATCH /api/v1/user/{}: friendId = {}", friendDto.getId());
+		log.info("PATCH /api/v1/user/{}: friendId = {}", id, friendDto.getId());
 		Set<User> friends = userService.addFriend(id, friendDto.getId());
 		return friends.stream().map(User::getId).collect(Collectors.toSet());
 	}
