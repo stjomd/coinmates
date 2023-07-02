@@ -6,7 +6,7 @@ import {User} from '../entities/User.ts'
 import {FetchError} from './FetchError.ts'
 
 export class UserService {
-	private static readonly uri: string = serverUri + '/user'
+	private static readonly uri: string = serverUri + '/users'
 
 	/**
 	 * Sends a request to the server to authenticate the user. Does not store

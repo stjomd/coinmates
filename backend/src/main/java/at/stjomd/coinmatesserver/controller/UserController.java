@@ -14,7 +14,6 @@ import at.stjomd.coinmatesserver.service.user.UserService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import java.util.Set;
-import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/v1/user")
+@RequestMapping("/api/v1/users")
 @CrossOrigin(origins = {
 	SecurityConfig.FRONTEND_ORIGIN, SecurityConfig.FRONTEND_ORIGIN_IP
 })
@@ -46,7 +45,7 @@ public class UserController {
 	@ResponseStatus(HttpStatus.OK)
 	public UserDto getUser(@PathVariable Integer id)
 	throws NotFoundException {
-		log.info("GET /api/v1/user/{}", id);
+		log.info("GET /api/v1/users/{}", id);
 		User user = userService.getUser(id);
 		return userMapper.toDto(user);
 	}
@@ -55,7 +54,7 @@ public class UserController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public UserDto register(@Valid @RequestBody UserDto userDto)
 	throws UserAlreadyExistsException {
-		log.info("POST /api/v1/user: email = {}", userDto.getEmail());
+		log.info("POST /api/v1/users: email = {}", userDto.getEmail());
 		User user = userMapper.toEntity(userDto);
 		User registeredUser = userService.register(user);
 		return userMapper.toDto(registeredUser);
@@ -65,7 +64,7 @@ public class UserController {
 	@ResponseStatus(HttpStatus.OK)
 	public UserDto authenticate(@Valid @RequestBody LoginDetailsDto loginDto)
 	throws AuthenticationFailedException {
-		log.info("POST /api/v1/user/auth: email = {}", loginDto.getEmail());
+		log.info("POST /api/v1/users/auth: email = {}", loginDto.getEmail());
 		User loginUser = userMapper.toEntity(loginDto);
 		User registeredUser = userService.authenticate(loginUser);
 		return userMapper.toDto(registeredUser);
@@ -75,7 +74,7 @@ public class UserController {
 	@ResponseStatus(HttpStatus.OK)
 	public Set<FriendDto> getFriends(@PathVariable Integer id)
 	throws NotFoundException {
-		log.info("GET /api/v1/user/{}/friends", id);
+		log.info("GET /api/v1/users/{}/friends", id);
 		return userMapper.toFriendDtos(userService.getFriends(id));
 	}
 
@@ -84,7 +83,7 @@ public class UserController {
 	public Set<FriendDto> addFriend(
 		@PathVariable Integer id, @Valid @RequestBody AddFriendDto friendDto
 	) throws NotFoundException {
-		log.info("PATCH /api/v1/user/{}: friendId = {}", id, friendDto.getId());
+		log.info("PATCH /api/v1/users/{}: friendId = {}", id, friendDto.getId());
 		Set<User> friends = userService.addFriend(id, friendDto.getId());
 		return userMapper.toFriendDtos(friends);
 	}
