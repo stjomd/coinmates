@@ -16,6 +16,7 @@ import {UserService} from '../../services/UserService'
 import {ReactNode} from 'react'
 import Home from '../home/Home'
 import PersonView from '../person-view/PersonView'
+import SplitBill from '../split-bill/SplitBill'
 
 function App() {
 	/**
@@ -123,6 +124,16 @@ function App() {
 							<PersonView />
 						</div>
 					}
+				/>
+				{/* split bill */}
+				<Route
+					path='/bill'
+					element={renderIfLoggedIn(
+						'/',
+						<div className='horizcenter-top'>
+							<SplitBill />
+						</div>
+					)}
 				/>
 				{/* all other routes: 404 */}
 				<Route path='*' element={<p>404</p>} />

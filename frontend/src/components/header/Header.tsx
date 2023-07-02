@@ -81,6 +81,9 @@ function Header() {
 				<Link to='/home' className='header-link'>
 					<p>Home</p>
 				</Link>
+				<Link to='/bill' className='header-link'>
+					<p>Split Bills</p>
+				</Link>
 			</div>
 			{userItem()}
 		</header>
