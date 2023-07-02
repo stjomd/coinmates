@@ -48,6 +48,14 @@ public interface UserService {
 	User authenticate(User user) throws AuthenticationFailedException;
 
 	/**
+	 * Retrieves the set of a user's friends.
+	 * @param id the ID of the user.
+	 * @return the set of the user's friends.
+	 * @throws NotFoundException if the user with such ID does not exist.
+	 */
+	Set<User> getFriends(Integer id) throws NotFoundException;
+
+	/**
 	 * Adds a friend relationship between two users.
 	 * @param id the ID of one user making the request.
 	 * @param friendId the ID of the other user.

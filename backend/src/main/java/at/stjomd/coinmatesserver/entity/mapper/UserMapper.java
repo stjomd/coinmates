@@ -1,9 +1,10 @@
 package at.stjomd.coinmatesserver.entity.mapper;
 
 import at.stjomd.coinmatesserver.entity.User;
+import at.stjomd.coinmatesserver.entity.dto.FriendDto;
 import at.stjomd.coinmatesserver.entity.dto.LoginDetailsDto;
 import at.stjomd.coinmatesserver.entity.dto.UserDto;
-
+import java.util.Set;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.DecoratedWith;
 import org.mapstruct.Mapper;
@@ -13,6 +14,7 @@ import org.mapstruct.Mapping;
 @DecoratedWith(HidePasswordDecorator.class)
 public interface UserMapper {
 
+	@Mapping(target = "friends", ignore = true)
 	User toEntity(UserDto dto);
 	UserDto toDto(User entity);
 
@@ -20,5 +22,8 @@ public interface UserMapper {
 	@Mapping(source = "email", target = "email")
 	@Mapping(source = "password", target = "password")
 	User toEntity(LoginDetailsDto dto);
+
+	FriendDto toFriendDto(User entity);
+	Set<FriendDto> toFriendDtos(Set<User> entities);
 
 }

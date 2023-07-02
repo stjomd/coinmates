@@ -1,5 +1,6 @@
 import {serverUri} from '../Globals.ts'
 import {AddFriend} from '../entities/AddFriend.ts'
+import {Friend} from '../entities/Friend.ts'
 import {LoginDetails} from '../entities/LoginDetails.ts'
 import {User} from '../entities/User.ts'
 import {FetchError} from './FetchError.ts'
@@ -71,7 +72,7 @@ export class UserService {
 		}
 	}
 
-	static async addFriend(id: number, friendId: number): Promise<Set<number>> {
+	static async addFriend(id: number, friendId: number): Promise<Set<Friend>> {
 		const body = new AddFriend(friendId)
 		const response = await fetch(this.uri + `/${id}`, {
 			method: 'PATCH',

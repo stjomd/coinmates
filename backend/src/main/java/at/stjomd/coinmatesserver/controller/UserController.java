@@ -2,6 +2,7 @@ package at.stjomd.coinmatesserver.controller;
 
 import at.stjomd.coinmatesserver.entity.User;
 import at.stjomd.coinmatesserver.entity.dto.AddFriendDto;
+import at.stjomd.coinmatesserver.entity.dto.FriendDto;
 import at.stjomd.coinmatesserver.entity.dto.LoginDetailsDto;
 import at.stjomd.coinmatesserver.entity.dto.UserDto;
 import at.stjomd.coinmatesserver.exception.AuthenticationFailedException;
@@ -70,14 +71,22 @@ public class UserController {
 		return userMapper.toDto(registeredUser);
 	}
 
+	@GetMapping("/{id}/friends")
+	@ResponseStatus(HttpStatus.OK)
+	public Set<FriendDto> getFriends(@PathVariable Integer id)
+	throws NotFoundException {
+		log.info("GET /api/v1/user/{}/friends", id);
+		return userMapper.toFriendDtos(userService.getFriends(id));
+	}
+
 	@PatchMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
-	public Set<Integer> addFriend(
+	public Set<FriendDto> addFriend(
 		@PathVariable Integer id, @Valid @RequestBody AddFriendDto friendDto
 	) throws NotFoundException {
 		log.info("PATCH /api/v1/user/{}: friendId = {}", id, friendDto.getId());
 		Set<User> friends = userService.addFriend(id, friendDto.getId());
-		return friends.stream().map(User::getId).collect(Collectors.toSet());
+		return userMapper.toFriendDtos(friends);
 	}
 
 }

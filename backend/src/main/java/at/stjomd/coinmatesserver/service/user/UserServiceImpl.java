@@ -30,18 +30,18 @@ public class UserServiceImpl implements UserService {
 	public User getUser(Integer id) throws NotFoundException {
 		log.trace("getUser(id = {})", id);
 		return userRepository.findById(id)
-			.orElseThrow(() -> new NotFoundException(
-				"No user found with ID: " + id
-			));
+			.orElseThrow(() ->
+				new NotFoundException("No user found with ID: " + id)
+			);
 	}
 
 	@Override
 	public User getUser(String email) throws NotFoundException {
 		log.trace("getUser(email = {})", email);
 		return userRepository.findByEmail(email)
-			.orElseThrow(() -> new NotFoundException(
-				"No user found with email: " + email
-			));
+			.orElseThrow(() ->
+				new NotFoundException("No user found with email: " + email)
+			);
 	}
 
 	@Override
@@ -75,6 +75,15 @@ public class UserServiceImpl implements UserService {
 		}
 		log.debug("Authentication failed for email {}", user.getEmail());
 		throw new AuthenticationFailedException(user);
+	}
+
+	@Override
+	public Set<User> getFriends(Integer id) throws NotFoundException {
+		User user = userRepository.findById(id)
+			.orElseThrow(() ->
+				new NotFoundException("No user found with ID: " + id)
+			);
+		return user.getFriends();
 	}
 
 	@Override
