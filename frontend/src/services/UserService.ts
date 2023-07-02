@@ -72,6 +72,33 @@ export class UserService {
 		}
 	}
 
+	/**
+	 * Retrieves the set of the user's friends.
+	 * @param id the ID of the user.
+	 * @returns the set of friends.
+	 */
+	static async getFriends(id: number): Promise<Set<Friend>> {
+		const response = await fetch(this.uri + `/${id}/friends`, {
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json',
+			},
+		})
+		if (response.ok) {
+			return response.json()
+		} else {
+			throw FetchError.fromResponseBody(await response.json())
+		}
+	}
+
+	/**
+	 * Sends a request to the server to establish a friends relationship between
+	 * two users.
+	 * @param id the ID of the user making the request.
+	 * @param friendId the ID of the new friend.
+	 * @returns a promise containing the set of friends of the user making the
+	 * 					request.
+	 */
 	static async addFriend(id: number, friendId: number): Promise<Set<Friend>> {
 		const body = new AddFriend(friendId)
 		const response = await fetch(this.uri + `/${id}`, {

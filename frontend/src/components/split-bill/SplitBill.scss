@@ -1,0 +1,8 @@
+@use '../../colors';
+@use '../../fonts';
+
+input#splitb-amount {
+	color: colors.$primary;
+	font-family: fonts.$display-font-family;
+	text-align: center;
+}
