@@ -5,7 +5,11 @@ import at.stjomd.coinmatesserver.exception.AuthenticationFailedException;
 import at.stjomd.coinmatesserver.exception.NotFoundException;
 import at.stjomd.coinmatesserver.exception.UserAlreadyExistsException;
 import at.stjomd.coinmatesserver.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
+import java.util.NoSuchElementException;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -72,6 +76,24 @@ public class UserServiceImpl implements UserService {
 		}
 		log.debug("Authentication failed for email {}", user.getEmail());
 		throw new AuthenticationFailedException(user);
+	}
+
+	@Override
+	@Transactional
+	public Set<User> addFriend(Integer id, Integer friendId)
+	throws NotFoundException {
+		log.trace("addFriend(id = {}, friendId = {})", id, friendId);
+		try {
+			User user = userRepository.findById(id).orElseThrow();
+			User friendUser = userRepository.findById(id).orElseThrow();
+			user.getFriends().add(friendUser);
+			user.getFriends().add(user);
+			userRepository.save(user);
+			userRepository.save(friendUser);
+			return user.getFriends();
+		} catch (NoSuchElementException exc) {
+			throw new NotFoundException("No user found with ID: " + id, exc);
+		}
 	}
 
 }

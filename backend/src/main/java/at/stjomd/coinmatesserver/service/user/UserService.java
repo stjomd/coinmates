@@ -1,5 +1,6 @@
 package at.stjomd.coinmatesserver.service.user;
 
+import java.util.Set;
 import at.stjomd.coinmatesserver.entity.User;
 import at.stjomd.coinmatesserver.exception.AuthenticationFailedException;
 import at.stjomd.coinmatesserver.exception.NotFoundException;
@@ -45,5 +46,15 @@ public interface UserService {
 	 * @throws AuthenticationFailedException if authentication failed.
 	 */
 	User authenticate(User user) throws AuthenticationFailedException;
+
+	/**
+	 * Adds a friend relationship between two users.
+	 * @param id the ID of one user making the request.
+	 * @param friendId the ID of the other user.
+	 * @return the updated set of friends of the user making the request.
+	 * @throws NotFoundException if any of the two users could not be found.
+	 */
+	Set<User> addFriend(Integer id, Integer friendId)
+	throws NotFoundException;
 
 }

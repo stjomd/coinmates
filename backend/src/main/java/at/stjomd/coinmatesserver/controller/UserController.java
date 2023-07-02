@@ -11,9 +11,12 @@ import at.stjomd.coinmatesserver.security.SecurityConfig;
 import at.stjomd.coinmatesserver.service.user.UserService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -62,6 +65,16 @@ public class UserController {
 		User loginUser = userMapper.toEntity(loginDto);
 		User registeredUser = userService.authenticate(loginUser);
 		return userMapper.toDto(registeredUser);
+	}
+
+	@PatchMapping("/{id}")
+	@ResponseStatus(HttpStatus.OK)
+	public Set<Integer> addFriend(
+		@PathVariable Integer id, @RequestBody Integer friendId
+	) throws NotFoundException {
+		log.info("PATCH /api/v1/user/{}: add friend id {}");
+		Set<User> friends = userService.addFriend(id, friendId);
+		return friends.stream().map(User::getId).collect(Collectors.toSet());
 	}
 
 }
