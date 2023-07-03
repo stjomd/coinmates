@@ -8,21 +8,43 @@ function SplitBill() {
 	const [friends, setFriends] = useState(new Array<Friend>())
 	const [selectedFriends, setSelectedFriends] = useState(new Array<Friend>())
 
+	const [validationErrorMessage, setValidationErrorMessage] = useState<string>()
 	const [loadingErrorMessage, setLoadingErrorMessage] = useState<string>()
 
 	// Bill form
 	const [bill, updateBill] = useReducer((prev: Bill, next: any) => {
+		setValidationErrorMessage(undefined)
 		const newBill: Bill = {...prev, ...next}
+		let valid = true
+		const validationHints: string[] = []
 		if (newBill.title.length < 1) {
-			// invalid
+			validationHints.push('a title')
+			valid = false
+		}
+		if (newBill.description.length > 1000) {
+			validationHints.push('a shorter description (at most 1000 characters)')
+			valid = false
 		}
 		if (newBill.amountInteger < 0) {
-			// invalid
+			validationHints.push('a positive amount')
+			valid = false
 		}
 		if (newBill.amountFraction < 0 || newBill.amountFraction > 99) {
-			// invalid
+			validationHints.push('amount of cents between 0 and 99')
+			valid = false
 		}
-		console.log(newBill)
+		if (newBill.amountInteger === 0 && newBill.amountFraction === 0) {
+			validationHints.push('an amount')
+			valid = false
+		}
+		if (newBill.people.length === 0) {
+			validationHints.push('select people for this bill')
+			valid = false
+		}
+		if (!valid) {
+			setValidationErrorMessage('Please enter: ' + validationHints.join(', '))
+			return prev
+		}
 		return newBill
 	}, new Bill())
 
@@ -149,6 +171,19 @@ function SplitBill() {
 		return elements
 	}
 
+	/**
+	 * Constructs an alert with an error message.
+	 * @param message the error message to be displayed.
+	 * @returns a JSX element containing the alert.
+	 */
+	const errorAlert = (message: string) => {
+		return (
+			<div className='alert alert-danger unpadded-alert' role='alert'>
+				{message}
+			</div>
+		)
+	}
+
 	return (
 		<>
 			<h4>Split Bills</h4>
@@ -156,6 +191,7 @@ function SplitBill() {
 				Create a bill to split with your friends. Then they will be able to
 				transfer money to you.
 			</p>
+			{validationErrorMessage != null && errorAlert(validationErrorMessage)}
 			<div>
 				{/* Title */}
 				<div className='mb-3'>
@@ -204,7 +240,11 @@ function SplitBill() {
 						People
 					</label>
 					<ul className='list-group sb-list'>{selectedFriendItems()}</ul>
-					<ul className='list-group sb-list'>{friendItems()}</ul>
+					{loadingErrorMessage != null ? (
+						errorAlert(loadingErrorMessage)
+					) : (
+						<ul className='list-group sb-list'>{friendItems()}</ul>
+					)}
 				</div>
 			</div>
 		</>
