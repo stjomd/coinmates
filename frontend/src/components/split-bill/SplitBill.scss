@@ -7,8 +7,31 @@ input#splitb-amount {
 	text-align: center;
 }
 
-.sb-selected-list {
+.sb-list {
 	margin-bottom: 10pt;
+	& p {
+		margin: 0;
+	}
+	& .sb-list-item-unselected:hover {
+		background-color: rgba(colors.$primary, 0.1);
+		cursor: pointer;
+		& p::after {
+			content: 'Select';
+			margin-left: 10pt;
+			color: rgba(colors.$dark, 0.5);
+			font-style: italic;
+		}
+	}
+	& .sb-list-item-selected:hover {
+		background-color: rgba(colors.$accent-red, 0.1);
+		cursor: pointer;
+		& p::after {
+			content: 'Remove';
+			margin-left: 10pt;
+			color: rgba(colors.$dark, 0.5);
+			font-style: italic;
+		}
+	}
 }
 
 .sb-list-item-centered {
@@ -21,16 +44,16 @@ input#splitb-amount {
 	& p {
 		margin: 0;
 	}
-	& .sb-icon-add {
-		color: colors.$dimmed;
-		&:hover {
-			cursor: pointer;
-		}
-	}
-	& .sb-icon-remove {
-		color: colors.$accent-red;
-		&:hover {
-			cursor: pointer;
-		}
-	}
+	// & .sb-icon-add {
+	// 	color: colors.$dimmed;
+	// 	&:hover {
+	// 		cursor: pointer;
+	// 	}
+	// }
+	// & .sb-icon-remove {
+	// 	color: colors.$accent-red;
+	// 	&:hover {
+	// 		cursor: pointer;
+	// 	}
+	// }
 }

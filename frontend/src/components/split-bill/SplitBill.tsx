@@ -101,14 +101,12 @@ function SplitBill() {
 		const elements: JSX.Element[] = []
 		for (const friend of selectedFriends) {
 			elements.push(
-				<li key={friend.id} className='list-group-item list-group-item-primary'>
-					<div className='sb-list-item-box'>
-						<p>{`${friend.firstName} ${friend.lastName}`}</p>
-						<i
-							className='bi bi-dash-circle sb-icon-remove'
-							onClick={() => removeFriend(friend)}
-						/>
-					</div>
+				<li
+					key={friend.id}
+					className='list-group-item list-group-item-primary sb-list-item-selected'
+					onClick={() => removeFriend(friend)}
+				>
+					<p>{`${friend.firstName} ${friend.lastName}`}</p>
 				</li>
 			)
 		}
@@ -138,14 +136,18 @@ function SplitBill() {
 		)
 		for (const friend of unselectedFriends) {
 			elements.push(
-				<li key={friend.id} className='list-group-item'>
-					<div className='sb-list-item-box'>
-						<p>{`${friend.firstName} ${friend.lastName}`}</p>
-						<i
+				<li
+					key={friend.id}
+					className='list-group-item sb-list-item-unselected'
+					onClick={() => addFriend(friend)}
+				>
+					{/* <div className='sb-list-item-box'> */}
+					<p>{`${friend.firstName} ${friend.lastName}`}</p>
+					{/* <i
 							className='bi bi-plus-circle sb-icon-add'
 							onClick={() => addFriend(friend)}
-						/>
-					</div>
+						/> */}
+					{/* </div> */}
 				</li>
 			)
 		}
@@ -206,10 +208,8 @@ function SplitBill() {
 					<label htmlFor='splitb-people' className='form-label'>
 						People
 					</label>
-					<ul className='list-group sb-selected-list'>
-						{selectedFriendItems()}
-					</ul>
-					<ul className='list-group'>{friendItems()}</ul>
+					<ul className='list-group sb-list'>{selectedFriendItems()}</ul>
+					<ul className='list-group sb-list'>{friendItems()}</ul>
 				</div>
 			</div>
 		</>
