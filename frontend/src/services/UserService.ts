@@ -77,7 +77,7 @@ export class UserService {
 	 * @param id the ID of the user.
 	 * @returns the set of friends.
 	 */
-	static async getFriends(id: number): Promise<Set<Friend>> {
+	static async getFriends(id: number): Promise<Friend[]> {
 		const response = await fetch(this.uri + `/${id}/friends`, {
 			headers: {
 				'Accept': 'application/json',

@@ -7,6 +7,30 @@ input#splitb-amount {
 	text-align: center;
 }
 
-.sb-list-error {
+.sb-selected-list {
+	margin-bottom: 10pt;
+}
+
+.sb-list-item-centered {
 	text-align: center;
+}
+
+.sb-list-item-box {
+	display: flex;
+	justify-content: space-between;
+	& p {
+		margin: 0;
+	}
+	& .sb-icon-add {
+		color: colors.$dimmed;
+		&:hover {
+			cursor: pointer;
+		}
+	}
+	& .sb-icon-remove {
+		color: colors.$accent-red;
+		&:hover {
+			cursor: pointer;
+		}
+	}
 }

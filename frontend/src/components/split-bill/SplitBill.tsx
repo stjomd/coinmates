@@ -5,7 +5,9 @@ import './SplitBill.scss'
 import {Bill} from '../../entities/Bill'
 
 function SplitBill() {
-	const [friends, setFriends] = useState(new Set<Friend>())
+	const [friends, setFriends] = useState(new Array<Friend>())
+	const [selectedFriends, setSelectedFriends] = useState(new Array<Friend>())
+
 	const [errorMessage, setErrorMessage] = useState<string>()
 
 	// Load friends
@@ -19,6 +21,23 @@ function SplitBill() {
 			.then(res => setFriends(res))
 			.catch(() => setErrorMessage('Sorry, but an error occurred.'))
 	}, [])
+
+	// Add a friend to the selection
+	const addFriend = (friend: Friend) => {
+		if (selectedFriends.includes(friend)) {
+			return
+		}
+		const newList = [...selectedFriends, friend]
+		setSelectedFriends(newList)
+		dispatchForm({people: newList.map(item => item.id)})
+	}
+
+	// Remove a friend from the selection
+	const removeFriend = (friend: Friend) => {
+		const newList = selectedFriends.filter(item => item.id !== friend.id)
+		setSelectedFriends(newList)
+		dispatchForm({people: newList.map(item => item.id)})
+	}
 
 	// Bill form
 	const [form, dispatchForm] = useReducer((prev: Bill, next: any) => {
@@ -71,26 +90,62 @@ function SplitBill() {
 		return {}
 	}
 
+	const selectedFriendItems = () => {
+		if (selectedFriends.length === 0) {
+			return [
+				<li key={-2} className='list-group-item disabled sb-list-item-centered'>
+					None selected (choose from the list below)
+				</li>,
+			]
+		}
+		const elements: JSX.Element[] = []
+		for (const friend of selectedFriends) {
+			elements.push(
+				<li key={friend.id} className='list-group-item list-group-item-primary'>
+					<div className='sb-list-item-box'>
+						<p>{`${friend.firstName} ${friend.lastName}`}</p>
+						<i
+							className='bi bi-dash-circle sb-icon-remove'
+							onClick={() => removeFriend(friend)}
+						/>
+					</div>
+				</li>
+			)
+		}
+		return elements
+	}
+
 	/**
 	 * Constructs an array of friends to use in a `<select>`.
 	 * @returns an array of `<option>`s containing friends.
 	 */
 	const friendItems = () => {
+		// Only show an error message if an error occured
 		if (errorMessage != null) {
 			return [
 				<li
 					key={-1}
-					className='list-group-item list-group-item-danger sb-list-error'
+					className='list-group-item list-group-item-danger sb-list-item-centered'
 				>
 					{errorMessage}
 				</li>,
 			]
 		}
+		// Otherwise show friends
 		const elements: JSX.Element[] = []
-		for (const friend of friends) {
+		const unselectedFriends = friends.filter(
+			item => !selectedFriends.includes(item)
+		)
+		for (const friend of unselectedFriends) {
 			elements.push(
 				<li key={friend.id} className='list-group-item'>
-					{`${friend.firstName} ${friend.lastName}`}
+					<div className='sb-list-item-box'>
+						<p>{`${friend.firstName} ${friend.lastName}`}</p>
+						<i
+							className='bi bi-plus-circle sb-icon-add'
+							onClick={() => addFriend(friend)}
+						/>
+					</div>
 				</li>
 			)
 		}
@@ -151,6 +206,9 @@ function SplitBill() {
 					<label htmlFor='splitb-people' className='form-label'>
 						People
 					</label>
+					<ul className='list-group sb-selected-list'>
+						{selectedFriendItems()}
+					</ul>
 					<ul className='list-group'>{friendItems()}</ul>
 				</div>
 			</div>

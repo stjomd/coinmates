@@ -4,6 +4,6 @@ export class Bill {
 		public description: string = '',
 		public amountInteger: number = 0,
 		public amountFraction: number = 0,
-		public people: Set<number> = new Set()
+		public people: number[] = []
 	) {}
 }
