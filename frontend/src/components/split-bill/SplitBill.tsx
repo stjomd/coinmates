@@ -43,7 +43,6 @@ function SplitBill() {
 		}
 		if (!valid) {
 			setValidationErrorMessage('Please enter: ' + validationHints.join(', '))
-			return prev
 		}
 		return newBill
 	}, new Bill())
@@ -152,7 +151,6 @@ function SplitBill() {
 	 * @returns an array of `<li>` items.
 	 */
 	const friendItems = () => {
-		// Otherwise show friends
 		const elements: JSX.Element[] = []
 		const unselectedFriends = friends.filter(
 			item => !selectedFriends.includes(item)
