@@ -8,39 +8,10 @@ function SplitBill() {
 	const [friends, setFriends] = useState(new Array<Friend>())
 	const [selectedFriends, setSelectedFriends] = useState(new Array<Friend>())
 
-	const [errorMessage, setErrorMessage] = useState<string>()
-
-	// Load friends
-	useEffect(() => {
-		setErrorMessage(undefined)
-		const loggedInUser = UserService.getAuth()
-		if (loggedInUser == null || loggedInUser.id == null) {
-			return
-		}
-		UserService.getFriends(loggedInUser.id)
-			.then(res => setFriends(res))
-			.catch(() => setErrorMessage('Sorry, but an error occurred.'))
-	}, [])
-
-	// Add a friend to the selection
-	const addFriend = (friend: Friend) => {
-		if (selectedFriends.includes(friend)) {
-			return
-		}
-		const newList = [...selectedFriends, friend]
-		setSelectedFriends(newList)
-		dispatchForm({people: newList.map(item => item.id)})
-	}
-
-	// Remove a friend from the selection
-	const removeFriend = (friend: Friend) => {
-		const newList = selectedFriends.filter(item => item.id !== friend.id)
-		setSelectedFriends(newList)
-		dispatchForm({people: newList.map(item => item.id)})
-	}
+	const [loadingErrorMessage, setLoadingErrorMessage] = useState<string>()
 
 	// Bill form
-	const [form, dispatchForm] = useReducer((prev: Bill, next: any) => {
+	const [bill, updateBill] = useReducer((prev: Bill, next: any) => {
 		const newBill: Bill = {...prev, ...next}
 		if (newBill.title.length < 1) {
 			// invalid
@@ -54,6 +25,43 @@ function SplitBill() {
 		console.log(newBill)
 		return newBill
 	}, new Bill())
+
+	// Load friends
+	useEffect(() => {
+		setLoadingErrorMessage(undefined)
+		const loggedInUser = UserService.getAuth()
+		if (loggedInUser == null || loggedInUser.id == null) {
+			return
+		}
+		UserService.getFriends(loggedInUser.id)
+			.then(res => setFriends(res))
+			.catch(() => setLoadingErrorMessage('Sorry, but an error occurred.'))
+	}, [])
+
+	/**
+	 * Adds a friend to the set of selected friends. Also updates the form's set
+	 * of IDs.
+	 * @param friend the selected friend.
+	 */
+	const addFriend = (friend: Friend) => {
+		if (selectedFriends.includes(friend)) {
+			return
+		}
+		const newList = [...selectedFriends, friend]
+		setSelectedFriends(newList)
+		updateBill({people: newList.map(item => item.id)})
+	}
+
+	/**
+	 * Removes a friend to the set of selected friends. Also updates the form's
+	 * set of IDs.
+	 * @param friend the friend to be removed.
+	 */
+	const removeFriend = (friend: Friend) => {
+		const newList = selectedFriends.filter(item => item.id !== friend.id)
+		setSelectedFriends(newList)
+		updateBill({people: newList.map(item => item.id)})
+	}
 
 	/**
 	 * Parses an input string for the amount and returns an object containing
@@ -90,6 +98,10 @@ function SplitBill() {
 		return {}
 	}
 
+	/**
+	 * Constructs the items containing selected friends.
+	 * @returns an array of `<li>` items.
+	 */
 	const selectedFriendItems = () => {
 		if (selectedFriends.length === 0) {
 			return [
@@ -114,21 +126,10 @@ function SplitBill() {
 	}
 
 	/**
-	 * Constructs an array of friends to use in a `<select>`.
-	 * @returns an array of `<option>`s containing friends.
+	 * Constructs the items containing UNselected friends.
+	 * @returns an array of `<li>` items.
 	 */
 	const friendItems = () => {
-		// Only show an error message if an error occured
-		if (errorMessage != null) {
-			return [
-				<li
-					key={-1}
-					className='list-group-item list-group-item-danger sb-list-item-centered'
-				>
-					{errorMessage}
-				</li>,
-			]
-		}
 		// Otherwise show friends
 		const elements: JSX.Element[] = []
 		const unselectedFriends = friends.filter(
@@ -141,13 +142,7 @@ function SplitBill() {
 					className='list-group-item sb-list-item-unselected'
 					onClick={() => addFriend(friend)}
 				>
-					{/* <div className='sb-list-item-box'> */}
 					<p>{`${friend.firstName} ${friend.lastName}`}</p>
-					{/* <i
-							className='bi bi-plus-circle sb-icon-add'
-							onClick={() => addFriend(friend)}
-						/> */}
-					{/* </div> */}
 				</li>
 			)
 		}
@@ -172,7 +167,7 @@ function SplitBill() {
 						className='form-control'
 						id='splitb-title'
 						placeholder='Title'
-						onChange={event => dispatchForm({title: event.target.value})}
+						onChange={event => updateBill({title: event.target.value})}
 					/>
 				</div>
 				{/* Description */}
@@ -184,7 +179,7 @@ function SplitBill() {
 						className='form-control'
 						id='splitb-description'
 						placeholder='Description'
-						onChange={event => dispatchForm({description: event.target.value})}
+						onChange={event => updateBill({description: event.target.value})}
 					/>
 				</div>
 				{/* Amount */}
@@ -200,7 +195,7 @@ function SplitBill() {
 						className='form-control form-control-lg'
 						id='splitb-amount'
 						placeholder='0,00'
-						onChange={event => dispatchForm(parseAmount(event.target.value))}
+						onChange={event => updateBill(parseAmount(event.target.value))}
 					/>
 				</div>
 				{/* People */}
