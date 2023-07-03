@@ -23,3 +23,11 @@
 	padding-top: 4pt;
 	padding-bottom: 5pt;
 }
+
+.btn-whitetxt {
+	color: white;
+	&:hover,
+	&:active:hover {
+		color: white;
+	}
+}
