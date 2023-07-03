@@ -5,51 +5,66 @@ import './SplitBill.scss'
 import {Bill} from '../../entities/Bill'
 
 function SplitBill() {
+	// ----- Properties ----------------------------------------------------------
 	const [friends, setFriends] = useState(new Array<Friend>())
 	const [selectedFriends, setSelectedFriends] = useState(new Array<Friend>())
 
 	const [validationErrorMessage, setValidationErrorMessage] = useState<string>()
 	const [loadingErrorMessage, setLoadingErrorMessage] = useState<string>()
 
-	// Bill form
+	const [validationErrors, setValidationErrors] = useState<any>()
+
+	// ----- Form & Validation ---------------------------------------------------
+
+	/**
+	 * Validates the form input.
+	 * @param newBill the bill to be validated.
+	 * @returns an object containing two fields: `dirty` is a boolean indicating
+	 * 					if at least one input is invalid, and `errors` is an object
+	 * 					containing error messages for the respective input fields.
+	 */
+	const validate = () => {
+		const result: {dirty: boolean; errors: any} = {
+			dirty: false,
+			errors: {},
+		}
+		if (bill.title.length < 1) {
+			result.errors.title = 'Please enter a title.'
+			result.dirty = true
+		}
+		if (bill.description.length > 1000) {
+			result.errors.description =
+				'Description is too long (exceeds 1000 characters)'
+			result.dirty = true
+		}
+		if (bill.amountFraction < 0 || bill.amountFraction > 99) {
+			result.errors.amount = 'Please enter a valid amount of cents (0 to 99)'
+			result.dirty = true
+		}
+		if (bill.amountInteger < 0) {
+			result.errors.amount = 'Please enter a positive amount.'
+			result.dirty = true
+		}
+		if (bill.amountInteger === 0 && bill.amountFraction === 0) {
+			result.errors.amount = 'Please enter the amount.'
+			result.dirty = true
+		}
+		if (bill.people.length === 0) {
+			result.errors.people = 'Please select at least one friend.'
+			result.dirty = true
+		}
+		setValidationErrors(result.errors)
+		// return result
+	}
+
 	const [bill, updateBill] = useReducer((prev: Bill, next: any) => {
-		setValidationErrorMessage(undefined)
-		const newBill: Bill = {...prev, ...next}
-		let valid = true
-		const validationHints: string[] = []
-		if (newBill.title.length < 1) {
-			validationHints.push('a title')
-			valid = false
-		}
-		if (newBill.description.length > 1000) {
-			validationHints.push('a shorter description (at most 1000 characters)')
-			valid = false
-		}
-		if (newBill.amountInteger < 0) {
-			validationHints.push('a positive amount')
-			valid = false
-		}
-		if (newBill.amountFraction < 0 || newBill.amountFraction > 99) {
-			validationHints.push('amount of cents between 0 and 99')
-			valid = false
-		}
-		if (newBill.amountInteger === 0 && newBill.amountFraction === 0) {
-			validationHints.push('an amount')
-			valid = false
-		}
-		if (newBill.people.length === 0) {
-			validationHints.push('select people for this bill')
-			valid = false
-		}
-		if (!valid) {
-			setValidationErrorMessage('Please enter: ' + validationHints.join(', '))
-		}
-		return newBill
+		return {...prev, ...next}
 	}, new Bill())
+
+	// ----- Logic ---------------------------------------------------------------
 
 	// Load friends
 	useEffect(() => {
-		setLoadingErrorMessage(undefined)
 		const loggedInUser = UserService.getAuth()
 		if (loggedInUser == null || loggedInUser.id == null) {
 			return
@@ -119,6 +134,8 @@ function SplitBill() {
 		return {}
 	}
 
+	// ----- Component Elements --------------------------------------------------
+
 	/**
 	 * Constructs the items containing selected friends.
 	 * @returns an array of `<li>` items.
@@ -182,6 +199,7 @@ function SplitBill() {
 		)
 	}
 
+	// ----- Component -----------------------------------------------------------
 	return (
 		<>
 			<h4>Split Bills</h4>
@@ -189,7 +207,6 @@ function SplitBill() {
 				Create a bill to split with your friends. Then they will be able to
 				transfer money to you.
 			</p>
-			{validationErrorMessage != null && errorAlert(validationErrorMessage)}
 			<div>
 				{/* Title */}
 				<div className='mb-3'>
@@ -243,6 +260,15 @@ function SplitBill() {
 					) : (
 						<ul className='list-group sb-list'>{friendItems()}</ul>
 					)}
+				</div>
+				<div className='sb-buttons-container'>
+					<button
+						type='button'
+						className='btn btn-primary btn-whitetxt'
+						onClick={validate}
+					>
+						Split Bill
+					</button>
 				</div>
 			</div>
 		</>
