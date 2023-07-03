@@ -6,19 +6,18 @@ import {Bill} from '../../entities/Bill'
 
 function SplitBill() {
 	const [friends, setFriends] = useState(new Set<Friend>())
+	const [errorMessage, setErrorMessage] = useState<string>()
 
 	// Load friends
 	useEffect(() => {
+		setErrorMessage(undefined)
 		const loggedInUser = UserService.getAuth()
 		if (loggedInUser == null || loggedInUser.id == null) {
 			return
 		}
 		UserService.getFriends(loggedInUser.id)
-			.then(res => {
-				console.log(res)
-				setFriends(res)
-			})
-			.catch(err => console.log(err))
+			.then(res => setFriends(res))
+			.catch(() => setErrorMessage('Sorry, but an error occurred.'))
 	}, [])
 
 	// Bill form
@@ -76,13 +75,23 @@ function SplitBill() {
 	 * Constructs an array of friends to use in a `<select>`.
 	 * @returns an array of `<option>`s containing friends.
 	 */
-	const friendSelections = () => {
+	const friendItems = () => {
+		if (errorMessage != null) {
+			return [
+				<li
+					key={-1}
+					className='list-group-item list-group-item-danger sb-list-error'
+				>
+					{errorMessage}
+				</li>,
+			]
+		}
 		const elements: JSX.Element[] = []
 		for (const friend of friends) {
 			elements.push(
-				<option key={friend.id}>
+				<li key={friend.id} className='list-group-item'>
 					{`${friend.firstName} ${friend.lastName}`}
-				</option>
+				</li>
 			)
 		}
 		return elements
@@ -142,14 +151,7 @@ function SplitBill() {
 					<label htmlFor='splitb-people' className='form-label'>
 						People
 					</label>
-					<select
-						className='form-select'
-						aria-label='Select people'
-						defaultValue={-1}
-					>
-						<option key={-1}>Add friends...</option>
-						{friendSelections()}
-					</select>
+					<ul className='list-group'>{friendItems()}</ul>
 				</div>
 			</div>
 		</>
