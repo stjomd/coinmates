@@ -12,12 +12,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Amount {
 
-	@NotNull
-	@PositiveOrZero
+	@NotNull(message = "Integer part must be present")
+	@PositiveOrZero(message = "Integer part must be at least 0")
 	private Integer integer;
 
-	@NotNull
-	@PositiveOrZero @Max(99)
+	@NotNull(message = "Fractional part must be present")
+	@PositiveOrZero(message = "Fractional part must be at least 0")
+	@Max(value = 99, message = "Fractional part must be at most 99")
 	private Integer fraction;
 
 }

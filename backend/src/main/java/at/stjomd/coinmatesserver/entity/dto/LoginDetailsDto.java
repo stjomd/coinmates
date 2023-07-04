@@ -7,10 +7,11 @@ import lombok.Data;
 @Data
 public class LoginDetailsDto {
 
-	@NotNull @Email
+	@NotNull(message = "Email must be present")
+	@Email(message = "Email is invalid")
 	private String email;
 
-	@NotNull
+	@NotNull(message = "Password must be present")
 	private String password;
 
 }

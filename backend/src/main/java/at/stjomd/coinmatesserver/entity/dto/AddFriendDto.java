@@ -7,8 +7,8 @@ import lombok.Data;
 @Data
 public class AddFriendDto {
 
-	@NotNull
-	@PositiveOrZero
+	@NotNull(message = "ID must be present")
+	@PositiveOrZero(message = "ID cannot be negative")
 	private Integer id;
 
 }
