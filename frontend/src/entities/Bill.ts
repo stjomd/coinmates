@@ -1,13 +1,4 @@
-// For usage with useReducer
-export interface BillProperties {
-	title?: string
-	description?: string
-	amountInteger?: number
-	amountFraction?: number
-	people?: number[]
-}
-
-export class Bill implements BillProperties {
+export class Bill {
 	constructor(
 		public title: string = '',
 		public description: string = '',

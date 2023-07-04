@@ -2,7 +2,7 @@ import {useEffect, useReducer, useState} from 'react'
 import {Friend} from '../../entities/Friend'
 import {UserService} from '../../services/UserService'
 import './SplitBill.scss'
-import {Bill, BillProperties} from '../../entities/Bill'
+import {Bill} from '../../entities/Bill'
 import {BillValidationMessages, parseAmount, validate} from './SplitBillLogic'
 
 function SplitBill() {
@@ -14,7 +14,7 @@ function SplitBill() {
 	const [validationErrors, setValidationErrors] =
 		useState<BillValidationMessages>({})
 
-	const [bill, updateBill] = useReducer((prev: Bill, next: BillProperties) => {
+	const [bill, updateBill] = useReducer((prev: Bill, next: Partial<Bill>) => {
 		return {...prev, ...next}
 	}, new Bill())
 

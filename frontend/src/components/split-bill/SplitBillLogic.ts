@@ -1,4 +1,4 @@
-import {Bill, BillProperties} from '../../entities/Bill'
+import {Bill} from '../../entities/Bill'
 
 export interface BillValidationMessages {
 	title?: string
@@ -54,7 +54,7 @@ export function validate(bill: Bill) {
  * @returns an object with two keys, `amountInteger` and `amountFraction`, if
  * 					parsing was successful, or an empty object otherwise.
  */
-export function parseAmount(input: string): BillProperties {
+export function parseAmount(input: string): Partial<Bill> {
 	const separators = [',', '.']
 	// Check if input string contains no separators (implicit integer)
 	let isInteger = true
