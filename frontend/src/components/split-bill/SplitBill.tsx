@@ -20,6 +20,7 @@ function SplitBill() {
 		useState<BillValidationMessages>({})
 
 	const [amountString, setAmountString] = useState<string>('')
+	const [splitAmount, setSplitAmount] = useState(0)
 
 	const [bill, updateBill] = useReducer((prev: Bill, next: Partial<Bill>) => {
 		return {...prev, ...next}
@@ -29,6 +30,13 @@ function SplitBill() {
 
 	// Keep amount string and bill's amount properties in sync
 	useEffect(() => updateBill(parseAmount(amountString)), [amountString])
+
+	// Keep amount and split amount in sync
+	useEffect(() => {
+		// TODO: load from server; use debounce
+		const amount = bill.amountInteger + bill.amountFraction / 100
+		setSplitAmount(amount / (1 + bill.people.length))
+	}, [bill.amountInteger, bill.amountFraction, bill.people])
 
 	// Load friends
 	useEffect(() => {
@@ -88,7 +96,10 @@ function SplitBill() {
 					className='list-group-item list-group-item-primary sb-list-item-selected'
 					onClick={() => removeFriend(friend)}
 				>
-					{`${friend.firstName} ${friend.lastName}`}
+					<div className='sb-list-item-contents'>
+						<p>{`${friend.firstName} ${friend.lastName}`}</p>
+						<span className='sb-split-amt'>{splitAmount} &euro;</span>
+					</div>
 				</li>
 			)
 		}
@@ -208,7 +219,12 @@ function SplitBill() {
 						People
 					</label>
 					<ul className={inputClassName('list-group sb-list', 'people')}>
-						<li className='list-group-item list-group-item-primary'>You</li>
+						<li className='list-group-item list-group-item-primary'>
+							<div className='sb-list-item-contents'>
+								<p>You</p>
+								<span className='sb-split-amt'>{splitAmount} &euro;</span>
+							</div>
+						</li>
 						{selectedFriendItems()}
 					</ul>
 					<div className='sb-invalid'>{validationErrors.people}</div>
