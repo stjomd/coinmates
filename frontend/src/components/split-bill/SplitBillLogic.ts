@@ -1,5 +1,13 @@
 import {Bill} from '../../entities/Bill'
 
+/**
+ * Allowed separators between euros and cents in the amount field.
+ */
+export const separators = [',', '.']
+
+/**
+ * An object that represents validation error messages.
+ */
 export interface BillValidationMessages {
 	title?: string
 	description?: string
@@ -55,7 +63,6 @@ export function validate(bill: Bill) {
  * 					parsing was successful, or an empty object otherwise.
  */
 export function parseAmount(input: string): Partial<Bill> {
-	const separators = [',', '.']
 	// Check if input string contains no separators (implicit integer)
 	let isInteger = true
 	for (const separator of separators) {

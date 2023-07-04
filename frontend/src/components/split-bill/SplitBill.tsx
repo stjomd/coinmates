@@ -3,7 +3,12 @@ import {Friend} from '../../entities/Friend'
 import {UserService} from '../../services/UserService'
 import './SplitBill.scss'
 import {Bill} from '../../entities/Bill'
-import {BillValidationMessages, parseAmount, validate} from './SplitBillLogic'
+import {
+	BillValidationMessages,
+	parseAmount,
+	separators,
+	validate,
+} from './SplitBillLogic'
 
 function SplitBill() {
 	// ----- Properties ----------------------------------------------------------
@@ -14,11 +19,16 @@ function SplitBill() {
 	const [validationErrors, setValidationErrors] =
 		useState<BillValidationMessages>({})
 
+	const [amountString, setAmountString] = useState<string>('')
+
 	const [bill, updateBill] = useReducer((prev: Bill, next: Partial<Bill>) => {
 		return {...prev, ...next}
 	}, new Bill())
 
 	// ----- Logic ---------------------------------------------------------------
+
+	// Keep amount string and bill's amount properties in sync
+	useEffect(() => updateBill(parseAmount(amountString)), [amountString])
 
 	// Load friends
 	useEffect(() => {
@@ -153,8 +163,21 @@ function SplitBill() {
 			event.preventDefault()
 			return
 		}
-		// TODO: Only allow two digits after separator
-		// store amount string as state
+		// Only allow one separator
+		if (separators.includes(event.key)) {
+			for (const separator of separators) {
+				if (amountString.includes(separator)) {
+					event.preventDefault()
+				}
+			}
+		}
+		// Only allow two digits after separator
+		for (const separator of separators) {
+			const parts = amountString.split(separator)
+			if (parts.length === 2 && parts[1].length >= 2) {
+				event.preventDefault()
+			}
+		}
 	}
 
 	// ----- Component -----------------------------------------------------------
@@ -204,7 +227,8 @@ function SplitBill() {
 						className={inputClassName('form-control form-control-lg', 'amount')}
 						id='splitb-amount'
 						placeholder='0,00'
-						onChange={event => updateBill(parseAmount(event.target.value))}
+						value={amountString}
+						onChange={event => setAmountString(event.target.value)}
 						onKeyDown={filterAmountField}
 					/>
 				</div>
