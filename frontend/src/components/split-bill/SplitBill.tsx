@@ -54,7 +54,6 @@ function SplitBill() {
 			result.dirty = true
 		}
 		setValidationErrors(result.errors)
-		// return result
 	}
 
 	const [bill, updateBill] = useReducer((prev: Bill, next: any) => {
@@ -125,7 +124,10 @@ function SplitBill() {
 		for (const separator of separators) {
 			const parts = input.split(separator)
 			if (parts.length == 2) {
-				const [integer, fraction] = [Number(parts[0]), Number(parts[1])]
+				const [integer, fraction] = [
+					Number(parts[0]),
+					Number(parts[1].padEnd(2, '0')),
+				]
 				return !isNaN(integer) && !isNaN(fraction)
 					? {amountInteger: integer, amountFraction: fraction}
 					: {}
@@ -144,7 +146,7 @@ function SplitBill() {
 		if (selectedFriends.length === 0) {
 			return [
 				<li key={-2} className='list-group-item disabled sb-list-item-centered'>
-					None selected (choose from the list below)
+					No friends selected (choose from the list below)
 				</li>,
 			]
 		}
@@ -199,12 +201,37 @@ function SplitBill() {
 		)
 	}
 
+	/**
+	 * Determines the class names for `<input>` elements. If validation failed
+	 * for a property, appends a class name that displays fields as invalid.
+	 * @param className the class name(s) that must always apply.
+	 * @param property the property validated against.
+	 * @returns a string of class names.
+	 */
 	const inputClassName = (className: string, property: string) => {
 		if (validationErrors[property] != null) {
 			return className + ' is-invalid'
 		} else {
 			return className
 		}
+	}
+
+	/**
+	 * Limits keystrokes in the amount field (e.g. forbids to enter letters, etc.)
+	 * @param event the onKeyDown event.
+	 */
+	const filterAmountField = (event: React.KeyboardEvent<HTMLInputElement>) => {
+		// Always allow backspace
+		if (event.key === 'Backspace') {
+			return
+		}
+		// Only allow backspace, numbers and separators
+		if (!/[0-9.,]/.test(event.key)) {
+			event.preventDefault()
+			return
+		}
+		// TODO: Only allow two digits after separator
+		// store amount string as state
 	}
 
 	// ----- Component -----------------------------------------------------------
@@ -255,6 +282,7 @@ function SplitBill() {
 						id='splitb-amount'
 						placeholder='0,00'
 						onChange={event => updateBill(parseAmount(event.target.value))}
+						onKeyDown={filterAmountField}
 					/>
 				</div>
 				<div className='sb-invalid'>{validationErrors.amount}</div>
@@ -264,6 +292,7 @@ function SplitBill() {
 						People
 					</label>
 					<ul className={inputClassName('list-group sb-list', 'people')}>
+						<li className='list-group-item list-group-item-primary'>You</li>
 						{selectedFriendItems()}
 					</ul>
 					<div className='sb-invalid'>{validationErrors.people}</div>
