@@ -5,8 +5,8 @@ import './SplitBill.scss'
 import {Bill} from '../../entities/Bill'
 import {
 	BillValidationMessages,
+	filterAmountField,
 	parseAmount,
-	separators,
 	validate,
 } from './SplitBillLogic'
 
@@ -149,37 +149,6 @@ function SplitBill() {
 		}
 	}
 
-	/**
-	 * Limits keystrokes in the amount field (e.g. forbids to enter letters, etc.)
-	 * @param event the onKeyDown event.
-	 */
-	const filterAmountField = (event: React.KeyboardEvent<HTMLInputElement>) => {
-		// Always allow backspace
-		if (event.key === 'Backspace') {
-			return
-		}
-		// Only allow backspace, numbers and separators
-		if (!/[0-9.,]/.test(event.key)) {
-			event.preventDefault()
-			return
-		}
-		// Only allow one separator
-		if (separators.includes(event.key)) {
-			for (const separator of separators) {
-				if (amountString.includes(separator)) {
-					event.preventDefault()
-				}
-			}
-		}
-		// Only allow two digits after separator
-		for (const separator of separators) {
-			const parts = amountString.split(separator)
-			if (parts.length === 2 && parts[1].length >= 2) {
-				event.preventDefault()
-			}
-		}
-	}
-
 	// ----- Component -----------------------------------------------------------
 	return (
 		<>
@@ -229,7 +198,7 @@ function SplitBill() {
 						placeholder='0,00'
 						value={amountString}
 						onChange={event => setAmountString(event.target.value)}
-						onKeyDown={filterAmountField}
+						onKeyDown={event => filterAmountField(amountString, event)}
 					/>
 				</div>
 				<div className='sb-invalid'>{validationErrors.amount}</div>

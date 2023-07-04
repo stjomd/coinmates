@@ -90,3 +90,38 @@ export function parseAmount(input: string): Partial<Bill> {
 	}
 	return {}
 }
+
+/**
+ * Limits keystrokes in the amount field (e.g. forbids to enter letters, etc.)
+ * @param amountString the current input amount string.
+ * @param event the onKeyDown event.
+ */
+export function filterAmountField(
+	amountString: string,
+	event: React.KeyboardEvent<HTMLInputElement>
+) {
+	// Always allow backspace
+	if (event.key === 'Backspace') {
+		return
+	}
+	// Only allow backspace, numbers and separators
+	if (!/[0-9.,]/.test(event.key)) {
+		event.preventDefault()
+		return
+	}
+	// Only allow one separator
+	if (separators.includes(event.key)) {
+		for (const separator of separators) {
+			if (amountString.includes(separator)) {
+				event.preventDefault()
+			}
+		}
+	}
+	// Only allow two digits after separator
+	for (const separator of separators) {
+		const parts = amountString.split(separator)
+		if (parts.length === 2 && parts[1].length >= 2) {
+			event.preventDefault()
+		}
+	}
+}
