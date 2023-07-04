@@ -5,10 +5,18 @@ input#splitb-amount {
 	color: colors.$primary;
 	font-family: fonts.$display-font-family;
 	text-align: center;
+	&.is-invalid {
+		color: var(--bs-danger);
+	}
+	&::placeholder {
+		color: rgba(colors.$dark, 0.2);
+	}
 }
 
 .sb-list {
-	margin-bottom: 10pt;
+	&:not(:first-of-type) {
+		margin-top: 12pt;
+	}
 	& p {
 		margin: 0;
 	}
@@ -32,6 +40,9 @@ input#splitb-amount {
 			font-style: italic;
 		}
 	}
+	&.is-invalid li {
+		border-color: var(--bs-danger);
+	}
 }
 
 .sb-list-item-centered {
@@ -50,4 +61,13 @@ input#splitb-amount {
 	width: 100%;
 	display: flex;
 	justify-content: end;
+}
+
+.sb-form * .invalid-feedback {
+	margin-top: 0 !important;
+}
+
+.sb-invalid {
+	color: var(--bs-danger);
+	font-size: 0.875em;
 }

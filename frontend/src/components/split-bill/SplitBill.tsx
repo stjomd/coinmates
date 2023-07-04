@@ -12,7 +12,7 @@ function SplitBill() {
 	const [validationErrorMessage, setValidationErrorMessage] = useState<string>()
 	const [loadingErrorMessage, setLoadingErrorMessage] = useState<string>()
 
-	const [validationErrors, setValidationErrors] = useState<any>()
+	const [validationErrors, setValidationErrors] = useState<any>({})
 
 	// ----- Form & Validation ---------------------------------------------------
 
@@ -199,6 +199,14 @@ function SplitBill() {
 		)
 	}
 
+	const inputClassName = (className: string, property: string) => {
+		if (validationErrors[property] != null) {
+			return className + ' is-invalid'
+		} else {
+			return className
+		}
+	}
+
 	// ----- Component -----------------------------------------------------------
 	return (
 		<>
@@ -207,7 +215,7 @@ function SplitBill() {
 				Create a bill to split with your friends. Then they will be able to
 				transfer money to you.
 			</p>
-			<div>
+			<div className='sb-form'>
 				{/* Title */}
 				<div className='mb-3'>
 					<label htmlFor='splitb-title' className='form-label'>
@@ -215,11 +223,12 @@ function SplitBill() {
 					</label>
 					<input
 						type='text'
-						className='form-control'
+						className={inputClassName('form-control', 'title')}
 						id='splitb-title'
 						placeholder='Title'
 						onChange={event => updateBill({title: event.target.value})}
 					/>
+					<div className='invalid-feedback'>{validationErrors.title}</div>
 				</div>
 				{/* Description */}
 				<div className='mb-3'>
@@ -227,34 +236,37 @@ function SplitBill() {
 						Description
 					</label>
 					<textarea
-						className='form-control'
+						className={inputClassName('form-control', 'description')}
 						id='splitb-description'
 						placeholder='Description'
 						onChange={event => updateBill({description: event.target.value})}
 					/>
+					<div className='invalid-feedback'>{validationErrors.description}</div>
 				</div>
 				{/* Amount */}
 				<label htmlFor='splitb-amount' className='form-label'>
 					Amount
 				</label>
-				<div className='input-group mb-3'>
-					<span className='input-group-text' id='basic-addon1'>
-						&euro;
-					</span>
+				<div className='input-group'>
+					<span className='input-group-text'>&euro;</span>
 					<input
 						type='text'
-						className='form-control form-control-lg'
+						className={inputClassName('form-control form-control-lg', 'amount')}
 						id='splitb-amount'
 						placeholder='0,00'
 						onChange={event => updateBill(parseAmount(event.target.value))}
 					/>
 				</div>
+				<div className='sb-invalid'>{validationErrors.amount}</div>
 				{/* People */}
-				<div className='mb-3'>
+				<div className='mb-3 mt-3'>
 					<label htmlFor='splitb-people' className='form-label'>
 						People
 					</label>
-					<ul className='list-group sb-list'>{selectedFriendItems()}</ul>
+					<ul className={inputClassName('list-group sb-list', 'people')}>
+						{selectedFriendItems()}
+					</ul>
+					<div className='sb-invalid'>{validationErrors.people}</div>
 					{loadingErrorMessage != null ? (
 						errorAlert(loadingErrorMessage)
 					) : (
