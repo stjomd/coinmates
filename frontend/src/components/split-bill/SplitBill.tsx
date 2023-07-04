@@ -2,61 +2,19 @@ import {useEffect, useReducer, useState} from 'react'
 import {Friend} from '../../entities/Friend'
 import {UserService} from '../../services/UserService'
 import './SplitBill.scss'
-import {Bill} from '../../entities/Bill'
+import {Bill, BillProperties} from '../../entities/Bill'
+import {BillValidationMessages, parseAmount, validate} from './SplitBillLogic'
 
 function SplitBill() {
 	// ----- Properties ----------------------------------------------------------
 	const [friends, setFriends] = useState(new Array<Friend>())
 	const [selectedFriends, setSelectedFriends] = useState(new Array<Friend>())
 
-	const [validationErrorMessage, setValidationErrorMessage] = useState<string>()
 	const [loadingErrorMessage, setLoadingErrorMessage] = useState<string>()
+	const [validationErrors, setValidationErrors] =
+		useState<BillValidationMessages>({})
 
-	const [validationErrors, setValidationErrors] = useState<any>({})
-
-	// ----- Form & Validation ---------------------------------------------------
-
-	/**
-	 * Validates the form input.
-	 * @param newBill the bill to be validated.
-	 * @returns an object containing two fields: `dirty` is a boolean indicating
-	 * 					if at least one input is invalid, and `errors` is an object
-	 * 					containing error messages for the respective input fields.
-	 */
-	const validate = () => {
-		const result: {dirty: boolean; errors: any} = {
-			dirty: false,
-			errors: {},
-		}
-		if (bill.title.length < 1) {
-			result.errors.title = 'Please enter a title.'
-			result.dirty = true
-		}
-		if (bill.description.length > 1000) {
-			result.errors.description =
-				'Description is too long (exceeds 1000 characters)'
-			result.dirty = true
-		}
-		if (bill.amountFraction < 0 || bill.amountFraction > 99) {
-			result.errors.amount = 'Please enter a valid amount of cents (0 to 99)'
-			result.dirty = true
-		}
-		if (bill.amountInteger < 0) {
-			result.errors.amount = 'Please enter a positive amount.'
-			result.dirty = true
-		}
-		if (bill.amountInteger === 0 && bill.amountFraction === 0) {
-			result.errors.amount = 'Please enter the amount.'
-			result.dirty = true
-		}
-		if (bill.people.length === 0) {
-			result.errors.people = 'Please select at least one friend.'
-			result.dirty = true
-		}
-		setValidationErrors(result.errors)
-	}
-
-	const [bill, updateBill] = useReducer((prev: Bill, next: any) => {
+	const [bill, updateBill] = useReducer((prev: Bill, next: BillProperties) => {
 		return {...prev, ...next}
 	}, new Bill())
 
@@ -98,44 +56,6 @@ function SplitBill() {
 		updateBill({people: newList.map(item => item.id)})
 	}
 
-	/**
-	 * Parses an input string for the amount and returns an object containing
-	 * the integer and fraction part, to be used in the dispatch function.
-	 * Allowed separators: comma `,` and period `.`.
-	 * @param input the input string of the amount field.
-	 * @returns an object with two keys, `amountInteger` and `amountFraction`, if
-	 * 					parsing was successful, or an empty object otherwise.
-	 */
-	const parseAmount = (input: string) => {
-		const separators = [',', '.']
-		// Check if input string contains no separators (implicit integer)
-		let isInteger = true
-		for (const separator of separators) {
-			if (input.includes(separator)) {
-				isInteger = false
-				break
-			}
-		}
-		// If integer, return updater right away
-		if (isInteger) {
-			return {amountInteger: Number(input), amountFraction: 0}
-		}
-		// Otherwise split string (try all separators)
-		for (const separator of separators) {
-			const parts = input.split(separator)
-			if (parts.length == 2) {
-				const [integer, fraction] = [
-					Number(parts[0]),
-					Number(parts[1].padEnd(2, '0')),
-				]
-				return !isNaN(integer) && !isNaN(fraction)
-					? {amountInteger: integer, amountFraction: fraction}
-					: {}
-			}
-		}
-		return {}
-	}
-
 	// ----- Component Elements --------------------------------------------------
 
 	/**
@@ -158,7 +78,7 @@ function SplitBill() {
 					className='list-group-item list-group-item-primary sb-list-item-selected'
 					onClick={() => removeFriend(friend)}
 				>
-					<p>{`${friend.firstName} ${friend.lastName}`}</p>
+					{`${friend.firstName} ${friend.lastName}`}
 				</li>
 			)
 		}
@@ -181,7 +101,7 @@ function SplitBill() {
 					className='list-group-item sb-list-item-unselected'
 					onClick={() => addFriend(friend)}
 				>
-					<p>{`${friend.firstName} ${friend.lastName}`}</p>
+					{`${friend.firstName} ${friend.lastName}`}
 				</li>
 			)
 		}
@@ -208,7 +128,10 @@ function SplitBill() {
 	 * @param property the property validated against.
 	 * @returns a string of class names.
 	 */
-	const inputClassName = (className: string, property: string) => {
+	const inputClassName = (
+		className: string,
+		property: keyof BillValidationMessages
+	) => {
 		if (validationErrors[property] != null) {
 			return className + ' is-invalid'
 		} else {
@@ -306,7 +229,9 @@ function SplitBill() {
 					<button
 						type='button'
 						className='btn btn-primary btn-whitetxt'
-						onClick={validate}
+						onClick={() => {
+							setValidationErrors(validate(bill).errors)
+						}}
 					>
 						Split Bill
 					</button>
