@@ -9,6 +9,8 @@ import {
 	parseAmount,
 	validate,
 } from './SplitBillLogic'
+import {BillService} from '../../services/BillService'
+import {Amount} from '../../entities/Amount'
 
 function SplitBill() {
 	// ----- Properties ----------------------------------------------------------
@@ -33,9 +35,19 @@ function SplitBill() {
 
 	// Keep amount and split amount in sync
 	useEffect(() => {
-		// TODO: load from server; use debounce
-		const amount = bill.amountInteger + bill.amountFraction / 100
-		setSplitAmount(amount / (1 + bill.people.length))
+		if (bill.people.length == 0) {
+			setSplitAmount(bill.amountInteger + bill.amountFraction / 100)
+			return
+		} else if (bill.amountInteger === 0 && bill.amountFraction === 0) {
+			setSplitAmount(0)
+			return
+		}
+		BillService.splitAmount(
+			new Amount(bill.amountInteger, bill.amountFraction),
+			bill.people.length + 1
+		)
+			.then(res => setSplitAmount(res.integer + res.fraction / 100))
+			.catch(err => console.log(err))
 	}, [bill.amountInteger, bill.amountFraction, bill.people])
 
 	// Load friends
