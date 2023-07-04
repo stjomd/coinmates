@@ -6,6 +6,7 @@ import at.stjomd.coinmatesserver.entity.mapper.ErrorBodyMapper;
 import at.stjomd.coinmatesserver.exception.AuthenticationFailedException;
 import at.stjomd.coinmatesserver.exception.NotFoundException;
 import at.stjomd.coinmatesserver.exception.UserAlreadyExistsException;
+import at.stjomd.coinmatesserver.exception.ValidationFailedException;
 import lombok.extern.slf4j.Slf4j;
 import java.util.Date;
 
@@ -57,6 +58,8 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 		);
 	}
 
+	// ----- Exception Handlers ------------------------------------------------
+
 	// Authentication Fail
 	@ExceptionHandler(value = {AuthenticationFailedException.class})
 	protected ResponseEntity<Object> handleAuthFailed(
@@ -89,19 +92,41 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 		);
 	}
 
-	// Validation
+	// Validation (spring)
 	@Override
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(
 		MethodArgumentNotValidException exception, HttpHeaders headers,
 		HttpStatusCode status, WebRequest request
 	) {
 		log(exception);
+		// TODO: only returning first error now; fix to return all
 		HttpStatus overriddenStatus = HttpStatus.UNPROCESSABLE_ENTITY;
+		ErrorBody errorBody = new ErrorBody(
+			new Date(),
+			overriddenStatus.value(), overriddenStatus.getReasonPhrase(),
+			exception.getBindingResult().getFieldError().getDefaultMessage()
+		);
 		return handleExceptionInternal(
 			exception,
-			errorBody(exception, overriddenStatus),
+			errorBody,
 			headers,
 			overriddenStatus,
+			request
+		);
+	}
+
+	// Validation
+	@ExceptionHandler(value = {ValidationFailedException.class})
+	protected ResponseEntity<Object> handleValidationFailed(
+		ValidationFailedException exception, WebRequest request
+	) {
+		log(exception);
+		HttpStatus status = HttpStatus.UNPROCESSABLE_ENTITY;
+		return handleExceptionInternal(
+			exception,
+			errorBody(exception, status),
+			new HttpHeaders(),
+			status,
 			request
 		);
 	}
