@@ -23,7 +23,15 @@ function SplitBill() {
 		useState<BillValidationMessages>({})
 
 	const [amountString, setAmountString] = useState<string>('')
-	const [splitAmount, setSplitAmount] = useState('0.00')
+	const [splitAmount, updateSplitAmount] = useReducer(
+		(_: string, update: Amount | null) => {
+			if (update == null) {
+				return '...'
+			}
+			return `${update.integer},${String(update.fraction).padEnd(2, '0')}`
+		},
+		'0.00'
+	)
 
 	const [bill, updateBill] = useReducer((prev: Bill, next: Partial<Bill>) => {
 		return {...prev, ...next}
@@ -40,18 +48,18 @@ function SplitBill() {
 			new Amount(bill.amountInteger, bill.amountFraction),
 			bill.people.length + 1
 		)
-			.then(res => setSplitAmount(`${res.integer},${res.fraction}`))
+			.then(amount => updateSplitAmount(amount))
 			.catch(err => console.log(err))
 	}, 1000)
 
 	// Update split amount when bill's amount changed
 	useEffect(() => {
-		setSplitAmount('...')
+		updateSplitAmount(null)
 		if (bill.people.length == 0) {
-			setSplitAmount(`${bill.amountInteger},${bill.amountFraction}`)
+			updateSplitAmount(new Amount(bill.amountInteger, bill.amountFraction))
 			return
 		} else if (bill.amountInteger === 0 && bill.amountFraction === 0) {
-			setSplitAmount('0,00')
+			updateSplitAmount(new Amount(0, 0))
 			return
 		}
 		loadSplitAmountPreview()
@@ -154,19 +162,6 @@ function SplitBill() {
 	}
 
 	/**
-	 * Constructs an alert with an error message.
-	 * @param message the error message to be displayed.
-	 * @returns a JSX element containing the alert.
-	 */
-	const errorAlert = (message: string) => {
-		return (
-			<div className='alert alert-danger unpadded-alert' role='alert'>
-				{message}
-			</div>
-		)
-	}
-
-	/**
 	 * Determines the class names for `<input>` elements. If validation failed
 	 * for a property, appends a class name that displays fields as invalid.
 	 * @param className the class name(s) that must always apply.
@@ -253,7 +248,12 @@ function SplitBill() {
 					</ul>
 					<div className='sb-invalid'>{validationErrors.people}</div>
 					{loadingErrorMessage != null ? (
-						errorAlert(loadingErrorMessage)
+						<div
+							className='alert alert-danger mt-3 unpadded-alert'
+							role='alert'
+						>
+							{loadingErrorMessage}
+						</div>
 					) : (
 						<ul className='list-group sb-list'>{friendItems()}</ul>
 					)}
