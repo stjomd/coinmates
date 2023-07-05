@@ -1,5 +1,8 @@
 package at.stjomd.coinmatesserver.entity.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import at.stjomd.coinmatesserver.entity.User;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -17,6 +20,7 @@ public class UserDto {
 	@Size(max = 100, message = "Email must be at most 100 characters long")
 	private String email;
 
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	@NotNull(message = "Password must be present")
 	@Size(min = 10, message = "Password must be at least 10 characters long")
 	@Size(max = 50, message = "Password must be at most 50 characters long")
