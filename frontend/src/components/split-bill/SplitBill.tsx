@@ -23,7 +23,7 @@ function SplitBill() {
 		useState<BillValidationMessages>({})
 
 	const [amountString, setAmountString] = useState<string>('')
-	const [splitAmount, setSplitAmount] = useState(0)
+	const [splitAmount, setSplitAmount] = useState('0.00')
 
 	const [bill, updateBill] = useReducer((prev: Bill, next: Partial<Bill>) => {
 		return {...prev, ...next}
@@ -40,18 +40,18 @@ function SplitBill() {
 			new Amount(bill.amountInteger, bill.amountFraction),
 			bill.people.length + 1
 		)
-			.then(res => setSplitAmount(res.integer + res.fraction / 100))
+			.then(res => setSplitAmount(`${res.integer},${res.fraction}`))
 			.catch(err => console.log(err))
 	}, 1000)
 
-	// Keep amount and split amount in sync
+	// Update split amount when bill's amount changed
 	useEffect(() => {
-		setSplitAmount(0)
+		setSplitAmount('...')
 		if (bill.people.length == 0) {
-			setSplitAmount(bill.amountInteger + bill.amountFraction / 100)
+			setSplitAmount(`${bill.amountInteger},${bill.amountFraction}`)
 			return
 		} else if (bill.amountInteger === 0 && bill.amountFraction === 0) {
-			setSplitAmount(0)
+			setSplitAmount('0,00')
 			return
 		}
 		loadSplitAmountPreview()
