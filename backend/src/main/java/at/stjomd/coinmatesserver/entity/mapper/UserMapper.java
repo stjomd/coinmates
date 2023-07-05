@@ -14,16 +14,30 @@ import org.mapstruct.Mapping;
 @DecoratedWith(HidePasswordDecorator.class)
 public interface UserMapper {
 
+	// ----- UserDto -----------------------------------------------------------
+
 	@Mapping(target = "friends", ignore = true)
 	User toEntity(UserDto dto);
+
 	UserDto toDto(User entity);
+
+	// ----- LoginDetailsDto ---------------------------------------------------
 
 	@BeanMapping(ignoreByDefault = true)
 	@Mapping(source = "email", target = "email")
 	@Mapping(source = "password", target = "password")
-	User toEntity(LoginDetailsDto dto);
+	User toUser(LoginDetailsDto dto);
 
-	FriendDto toFriendDto(User entity);
+	// ----- FriendDto ---------------------------------------------------------
+
+	@BeanMapping(ignoreByDefault = true)
+	@Mapping(source = "id", target = "id")
+	User toUser(FriendDto friendDto);
+
+	FriendDto toFriendDto(User user);
+
 	Set<FriendDto> toFriendDtos(Set<User> entities);
+
+	Set<User> toUsers(Set<FriendDto> friendDtos);
 
 }

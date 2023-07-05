@@ -65,7 +65,7 @@ public class UserController {
 	public UserDto authenticate(@Valid @RequestBody LoginDetailsDto loginDto)
 	throws AuthenticationFailedException {
 		log.info("POST /api/v1/users/auth: email = {}", loginDto.getEmail());
-		User loginUser = userMapper.toEntity(loginDto);
+		User loginUser = userMapper.toUser(loginDto);
 		User registeredUser = userService.authenticate(loginUser);
 		return userMapper.toDto(registeredUser);
 	}
