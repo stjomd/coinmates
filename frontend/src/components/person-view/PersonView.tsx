@@ -3,6 +3,7 @@ import './PersonView.scss'
 import {UserService} from '../../services/UserService'
 import {useEffect, useState} from 'react'
 import {User} from '../../entities/User'
+import {AuthService} from '../../services/AuthService'
 
 function PersonView() {
 	const params = useParams()
@@ -19,7 +20,7 @@ function PersonView() {
 			.catch(err => {
 				console.log(err)
 			})
-		const loggedInUser = UserService.getAuth()
+		const loggedInUser = AuthService.getAuth()
 		if (loggedInUser != null) {
 			setSignedInUser(loggedInUser)
 		}
