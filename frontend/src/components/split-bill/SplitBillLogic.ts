@@ -32,7 +32,7 @@ export function validate(bill: Bill) {
 		result.errors.title = 'Please enter a title.'
 		result.dirty = true
 	}
-	if (bill.description.length > 1000) {
+	if (bill.description != null && bill.description.length > 1000) {
 		result.errors.description = 'Description is too long (max 1000 characters)'
 		result.dirty = true
 	}
@@ -48,7 +48,7 @@ export function validate(bill: Bill) {
 		result.errors.amount = 'Please enter the amount.'
 		result.dirty = true
 	}
-	if (bill.people.length === 0) {
+	if (bill.peopleIds.length === 0) {
 		result.errors.people = 'Please select at least one friend.'
 		result.dirty = true
 	}

@@ -36,7 +36,7 @@ function SplitBill() {
 
 	const [bill, updateBill] = useReducer((prev: Bill, next: Partial<Bill>) => {
 		return {...prev, ...next}
-	}, new Bill())
+	}, Bill.newEmpty(AuthService.getAuth()!.id!))
 
 	// ----- Logic ---------------------------------------------------------------
 
@@ -45,7 +45,7 @@ function SplitBill() {
 
 	// Load correct split amount from the server
 	const loadSplitAmountPreview = useDebouncedCallback(() => {
-		BillService.splitAmount(bill.amount, bill.people.length + 1)
+		BillService.splitAmount(bill.amount, bill.peopleIds.length + 1)
 			.then(amount => updateSplitAmount(amount))
 			.catch(err => console.log(err))
 	}, 1000)
@@ -53,7 +53,7 @@ function SplitBill() {
 	// Update split amount when bill's amount changed
 	useEffect(() => {
 		updateSplitAmount(null)
-		if (bill.people.length == 0) {
+		if (bill.peopleIds.length == 0) {
 			updateSplitAmount(bill.amount)
 			return
 		} else if (bill.amount.integer === 0 && bill.amount.fraction === 0) {
@@ -61,7 +61,7 @@ function SplitBill() {
 			return
 		}
 		loadSplitAmountPreview()
-	}, [bill.amount, bill.people, loadSplitAmountPreview])
+	}, [bill.amount, bill.peopleIds, loadSplitAmountPreview])
 
 	// Load friends
 	useEffect(() => {
@@ -85,7 +85,7 @@ function SplitBill() {
 		}
 		const newList = [...selectedFriends, friend]
 		setSelectedFriends(newList)
-		updateBill({people: newList.map(item => item.id)})
+		updateBill({peopleIds: newList.map(item => item.id)})
 	}
 
 	/**
@@ -96,7 +96,19 @@ function SplitBill() {
 	const removeFriend = (friend: Friend) => {
 		const newList = selectedFriends.filter(item => item.id !== friend.id)
 		setSelectedFriends(newList)
-		updateBill({people: newList.map(item => item.id)})
+		updateBill({peopleIds: newList.map(item => item.id)})
+	}
+
+	/**
+	 * Submits the form contents to the server.
+	 */
+	const submit = () => {
+		const validation = validate(bill)
+		if (validation.dirty) {
+			setValidationErrors(validation.errors)
+		} else {
+			BillService.createBill(bill).then(console.log).catch(console.error)
+		}
 	}
 
 	// ----- Component Elements --------------------------------------------------
@@ -255,9 +267,7 @@ function SplitBill() {
 					<button
 						type='button'
 						className='btn btn-primary btn-whitetxt'
-						onClick={() => {
-							setValidationErrors(validate(bill).errors)
-						}}
+						onClick={submit}
 					>
 						Split Bill
 					</button>

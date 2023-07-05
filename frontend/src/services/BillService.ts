@@ -1,5 +1,6 @@
 import {serverUri} from '../Globals'
 import {Amount} from '../entities/Amount'
+import {Bill} from '../entities/Bill'
 import {HttpService} from './HttpService'
 
 export abstract class BillService {
@@ -13,5 +14,9 @@ export abstract class BillService {
 	 */
 	static async splitAmount(amount: Amount, people: number): Promise<Amount> {
 		return HttpService.get(this.uri + '/split', {...amount, people: people})
+	}
+
+	static async createBill(bill: Bill): Promise<Bill> {
+		return HttpService.post(this.uri, bill)
 	}
 }
