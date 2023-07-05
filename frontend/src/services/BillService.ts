@@ -1,26 +1,17 @@
 import {serverUri} from '../Globals'
 import {Amount} from '../entities/Amount'
-import {FetchError} from './FetchError'
+import {HttpService} from './HttpService'
 
 export class BillService {
 	private static readonly uri: string = serverUri + '/bills'
 
+	/**
+	 * Retrieves a preview of the split amount.
+	 * @param amount the total amount.
+	 * @param people the amount of people.
+	 * @returns a promise containing the split amount.
+	 */
 	static async splitAmount(amount: Amount, people: number): Promise<Amount> {
-		const response = await fetch(
-			this.uri +
-				`/split?integer=${amount.integer}` +
-				`&fraction=${amount.fraction}&people=${people}`,
-			{
-				headers: {
-					'Accept': 'application/json',
-					'Content-Type': 'application/json',
-				},
-			}
-		)
-		if (response.ok) {
-			return response.json()
-		} else {
-			throw FetchError.fromResponseBody(await response.json())
-		}
+		return HttpService.get(this.uri + '/split', {...amount, people: people})
 	}
 }

@@ -3,7 +3,7 @@ import {AddFriend} from '../entities/AddFriend.ts'
 import {Friend} from '../entities/Friend.ts'
 import {LoginDetails} from '../entities/LoginDetails.ts'
 import {User} from '../entities/User.ts'
-import {FetchError} from './FetchError.ts'
+import {HttpService} from './HttpService.ts'
 
 export class UserService {
 	private static readonly uri: string = serverUri + '/users'
@@ -16,19 +16,7 @@ export class UserService {
 	 * @returns a promise containing the logged in user.
 	 */
 	static async authenticate(login: LoginDetails): Promise<User> {
-		const response = await fetch(this.uri + '/auth', {
-			method: 'POST',
-			body: JSON.stringify(login),
-			headers: {
-				'Accept': 'application/json',
-				'Content-Type': 'application/json',
-			},
-		})
-		if (response.ok) {
-			return response.json()
-		} else {
-			throw FetchError.fromResponseBody(await response.json())
-		}
+		return HttpService.post(this.uri + '/auth', login)
 	}
 
 	/**
@@ -38,19 +26,7 @@ export class UserService {
 	 * @returns a promise containing the registered user.
 	 */
 	static async register(user: User): Promise<User> {
-		const response = await fetch(this.uri, {
-			method: 'POST',
-			body: JSON.stringify(user),
-			headers: {
-				'Accept': 'application/json',
-				'Content-Type': 'application/json',
-			},
-		})
-		if (response.ok) {
-			return response.json()
-		} else {
-			throw FetchError.fromResponseBody(await response.json())
-		}
+		return HttpService.post(this.uri, user)
 	}
 
 	/**
@@ -59,17 +35,7 @@ export class UserService {
 	 * @returns a promise containing the user.
 	 */
 	static async getUser(id: number): Promise<User> {
-		const response = await fetch(this.uri + `/${id}`, {
-			headers: {
-				'Accept': 'application/json',
-				'Content-Type': 'application/json',
-			},
-		})
-		if (response.ok) {
-			return response.json()
-		} else {
-			throw FetchError.fromResponseBody(await response.json())
-		}
+		return HttpService.get(this.uri + `/${id}`)
 	}
 
 	/**
@@ -78,17 +44,7 @@ export class UserService {
 	 * @returns the set of friends.
 	 */
 	static async getFriends(id: number): Promise<Friend[]> {
-		const response = await fetch(this.uri + `/${id}/friends`, {
-			headers: {
-				'Accept': 'application/json',
-				'Content-Type': 'application/json',
-			},
-		})
-		if (response.ok) {
-			return response.json()
-		} else {
-			throw FetchError.fromResponseBody(await response.json())
-		}
+		return HttpService.get(this.uri + `/${id}/friends`)
 	}
 
 	/**
@@ -100,20 +56,7 @@ export class UserService {
 	 * 					request.
 	 */
 	static async addFriend(id: number, friendId: number): Promise<Set<Friend>> {
-		const body = new AddFriend(friendId)
-		const response = await fetch(this.uri + `/${id}`, {
-			method: 'PATCH',
-			body: JSON.stringify(body),
-			headers: {
-				'Accept': 'application/json',
-				'Content-Type': 'application/json',
-			},
-		})
-		if (response.ok) {
-			return response.json()
-		} else {
-			throw FetchError.fromResponseBody(await response.json())
-		}
+		return HttpService.patch(this.uri + `/${id}`, new AddFriend(friendId))
 	}
 
 	/**
