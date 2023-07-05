@@ -44,10 +44,7 @@ function SplitBill() {
 
 	// Load correct split amount from the server
 	const loadSplitAmountPreview = useDebouncedCallback(() => {
-		BillService.splitAmount(
-			new Amount(bill.amountInteger, bill.amountFraction),
-			bill.people.length + 1
-		)
+		BillService.splitAmount(bill.amount, bill.people.length + 1)
 			.then(amount => updateSplitAmount(amount))
 			.catch(err => console.log(err))
 	}, 1000)
@@ -56,19 +53,14 @@ function SplitBill() {
 	useEffect(() => {
 		updateSplitAmount(null)
 		if (bill.people.length == 0) {
-			updateSplitAmount(new Amount(bill.amountInteger, bill.amountFraction))
+			updateSplitAmount(bill.amount)
 			return
-		} else if (bill.amountInteger === 0 && bill.amountFraction === 0) {
+		} else if (bill.amount.integer === 0 && bill.amount.fraction === 0) {
 			updateSplitAmount(new Amount(0, 0))
 			return
 		}
 		loadSplitAmountPreview()
-	}, [
-		bill.amountInteger,
-		bill.amountFraction,
-		bill.people,
-		loadSplitAmountPreview,
-	])
+	}, [bill.amount, bill.people, loadSplitAmountPreview])
 
 	// Load friends
 	useEffect(() => {

@@ -1,3 +1,4 @@
+import {Amount} from '../../entities/Amount'
 import {Bill} from '../../entities/Bill'
 
 /**
@@ -35,15 +36,15 @@ export function validate(bill: Bill) {
 		result.errors.description = 'Description is too long (max 1000 characters)'
 		result.dirty = true
 	}
-	if (bill.amountFraction < 0 || bill.amountFraction > 99) {
+	if (bill.amount.fraction < 0 || bill.amount.fraction > 99) {
 		result.errors.amount = 'Please enter a valid amount of cents (0 to 99)'
 		result.dirty = true
 	}
-	if (bill.amountInteger < 0) {
+	if (bill.amount.integer < 0) {
 		result.errors.amount = 'Please enter a positive amount.'
 		result.dirty = true
 	}
-	if (bill.amountInteger === 0 && bill.amountFraction === 0) {
+	if (bill.amount.integer === 0 && bill.amount.fraction === 0) {
 		result.errors.amount = 'Please enter the amount.'
 		result.dirty = true
 	}
@@ -73,7 +74,7 @@ export function parseAmount(input: string): Partial<Bill> {
 	}
 	// If integer, return updater right away
 	if (isInteger) {
-		return {amountInteger: Number(input), amountFraction: 0}
+		return {amount: new Amount(Number(input), 0)}
 	}
 	// Otherwise split string (try all separators)
 	for (const separator of separators) {
@@ -84,7 +85,7 @@ export function parseAmount(input: string): Partial<Bill> {
 				Number(parts[1].padEnd(2, '0')),
 			]
 			return !isNaN(integer) && !isNaN(fraction)
-				? {amountInteger: integer, amountFraction: fraction}
+				? {amount: new Amount(integer, fraction)}
 				: {}
 		}
 	}
