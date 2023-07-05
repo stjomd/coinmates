@@ -8,8 +8,9 @@ import {User} from '../../entities/User'
 import PasswordHelper from '../password-helper/PasswordHelper'
 import {UserService} from '../../services/UserService'
 import {useState} from 'react'
-import {FetchError} from '../../services/FetchError'
 import {Link, NavLink} from 'react-router-dom'
+import {FetchError} from '../../services/HttpService'
+import {AuthService} from '../../services/AuthService'
 
 function Register() {
 	// Validation
@@ -39,7 +40,7 @@ function Register() {
 		if (passwordIsStrong) {
 			const user = Object.assign(new User(), data)
 			UserService.register(user)
-				.then(res => UserService.storeAuth(res as User, '/home'))
+				.then(user => AuthService.storeAuth(user, '/home'))
 				.catch(err => {
 					const error = err as FetchError
 					if (error.status === 409) {

@@ -12,6 +12,7 @@ import {
 import {BillService} from '../../services/BillService'
 import {Amount} from '../../entities/Amount'
 import {useDebouncedCallback} from 'use-debounce'
+import {AuthService} from '../../services/AuthService'
 
 function SplitBill() {
 	// ----- Properties ----------------------------------------------------------
@@ -64,7 +65,7 @@ function SplitBill() {
 
 	// Load friends
 	useEffect(() => {
-		const loggedInUser = UserService.getAuth()
+		const loggedInUser = AuthService.getAuth()
 		if (loggedInUser == null || loggedInUser.id == null) {
 			return
 		}

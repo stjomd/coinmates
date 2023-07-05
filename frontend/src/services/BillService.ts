@@ -2,7 +2,7 @@ import {serverUri} from '../Globals'
 import {Amount} from '../entities/Amount'
 import {HttpService} from './HttpService'
 
-export class BillService {
+export abstract class BillService {
 	private static readonly uri: string = serverUri + '/bills'
 
 	/**

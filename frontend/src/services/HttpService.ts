@@ -1,6 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {FetchError} from './FetchError'
-
 type Headers = object
 type Parameters = object
 type Method = 'DELETE' | 'GET' | 'PATCH' | 'POST' | 'PUT'
@@ -8,6 +6,18 @@ type Method = 'DELETE' | 'GET' | 'PATCH' | 'POST' | 'PUT'
 const jsonHeaders: Headers = {
 	'Accept': 'application/json',
 	'Content-Type': 'application/json',
+}
+
+/**
+ * A class that represents an error obtained from a response.
+ */
+export class FetchError {
+	constructor(
+		public timestamp: Date,
+		public status: number,
+		public statusText: string,
+		public message: string
+	) {}
 }
 
 /**
@@ -93,7 +103,7 @@ export abstract class HttpService {
 		if (response.ok) {
 			return response.json()
 		} else {
-			throw FetchError.fromResponseBody(await response.json())
+			throw (await response.json()) as FetchError
 		}
 	}
 

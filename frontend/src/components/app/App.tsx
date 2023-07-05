@@ -1,22 +1,17 @@
 import './App.scss'
 import '../../styles/global.scss'
 
-import {
-	BrowserRouter as Router,
-	Routes,
-	Route,
-	Navigate,
-} from 'react-router-dom'
+import {ReactNode} from 'react'
+import {BrowserRouter, Routes, Route, Navigate} from 'react-router-dom'
 
 import Landing from '../landing/Landing'
 import Login from '../login/Login'
 import Register from '../register/Register'
 import Header from '../header/Header'
-import {UserService} from '../../services/UserService'
-import {ReactNode} from 'react'
 import Home from '../home/Home'
 import PersonView from '../person-view/PersonView'
 import SplitBill from '../split-bill/SplitBill'
+import {AuthService} from '../../services/AuthService'
 
 function App() {
 	/**
@@ -28,7 +23,7 @@ function App() {
 	 * 					Otherwise renders the element.
 	 */
 	const renderIfNotLoggedIn = (url: string, element: ReactNode) => {
-		if (UserService.getAuth() != null) {
+		if (AuthService.getAuth() != null) {
 			return <Navigate replace to={url} />
 		} else {
 			return element
@@ -43,7 +38,7 @@ function App() {
 	 * 					Otherwise renders the element.
 	 */
 	const renderIfLoggedIn = (url: string, element: ReactNode) => {
-		if (UserService.getAuth() == null) {
+		if (AuthService.getAuth() == null) {
 			return <Navigate replace to={url} />
 		} else {
 			return element
@@ -150,13 +145,13 @@ function App() {
 	}
 
 	return (
-		<Router>
+		<BrowserRouter>
 			<div className='flexbox-container'>
 				{header()}
 				{content()}
 				{footer()}
 			</div>
-		</Router>
+		</BrowserRouter>
 	)
 }
 

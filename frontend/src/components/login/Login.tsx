@@ -4,8 +4,8 @@ import {useState} from 'react'
 import {UserService} from '../../services/UserService'
 import {LoginDetails} from '../../entities/LoginDetails'
 import {Link} from 'react-router-dom'
-import {User} from '../../entities/User'
-import {FetchError} from '../../services/FetchError'
+import {FetchError} from '../../services/HttpService'
+import {AuthService} from '../../services/AuthService'
 
 function Login() {
 	const [email, setEmail] = useState('')
@@ -31,7 +31,7 @@ function Login() {
 		}
 		const login = new LoginDetails(email, password)
 		UserService.authenticate(login)
-			.then(res => UserService.storeAuth(res as User, '/home'))
+			.then(user => AuthService.storeAuth(user, '/home'))
 			.catch(err => {
 				const error = err as FetchError
 				if (error.status === 401) {
