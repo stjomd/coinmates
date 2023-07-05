@@ -40,4 +40,14 @@ public interface UserMapper {
 
 	Set<User> toUsers(Set<FriendDto> friendDtos);
 
+	// ----- Integer IDs -------------------------------------------------------
+
+	default Integer map(User user) {
+		return user.getId();
+	}
+
+	default User map(Integer id) {
+		return User.builder().id(id).build();
+	}
+
 }

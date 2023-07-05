@@ -1,6 +1,7 @@
 package at.stjomd.coinmatesserver.service.bill;
 
 import at.stjomd.coinmatesserver.entity.Amount;
+import at.stjomd.coinmatesserver.entity.Bill;
 import at.stjomd.coinmatesserver.exception.ValidationFailedException;
 
 public interface BillService {
@@ -14,5 +15,12 @@ public interface BillService {
 	 * @throws ValidationFailedException if any of the arguments is invalid.
 	 */
 	Amount calculateSplitAmount(Amount amount, Integer people);
+
+	/**
+	 * Creates a bill entity.
+	 * @param bill the bill to be created.
+	 * @return the saved bill.
+	 */
+	Bill createBill(Bill bill);
 
 }

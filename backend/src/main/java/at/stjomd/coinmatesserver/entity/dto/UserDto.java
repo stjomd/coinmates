@@ -1,18 +1,19 @@
 package at.stjomd.coinmatesserver.entity.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import at.stjomd.coinmatesserver.entity.User;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
 public class UserDto {
 
+	@Positive
 	private Integer id;
 
 	@NotNull(message = "Email must be present")

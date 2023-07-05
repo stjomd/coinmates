@@ -3,11 +3,19 @@ package at.stjomd.coinmatesserver.service.bill;
 import org.springframework.stereotype.Component;
 
 import at.stjomd.coinmatesserver.entity.Amount;
+import at.stjomd.coinmatesserver.entity.Bill;
+import at.stjomd.coinmatesserver.repository.BillRepository;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
 public class BillServiceImpl implements BillService {
+
+	private final BillRepository billRepository;
+
+	public BillServiceImpl(BillRepository billRepository) {
+		this.billRepository = billRepository;
+	}
 
 	private final BillServiceValidator validator = new BillServiceValidator();
 
@@ -30,6 +38,11 @@ public class BillServiceImpl implements BillService {
 				Integer.parseInt(parts[1])
 			);
 		}
+	}
+
+	@Override
+	public Bill createBill(Bill bill) {
+		return billRepository.save(bill);
 	}
 
 }
