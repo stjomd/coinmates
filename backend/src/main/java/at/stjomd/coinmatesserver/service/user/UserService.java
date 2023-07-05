@@ -1,5 +1,6 @@
 package at.stjomd.coinmatesserver.service.user;
 
+import java.util.Collection;
 import java.util.Set;
 import at.stjomd.coinmatesserver.entity.User;
 import at.stjomd.coinmatesserver.exception.AuthenticationFailedException;
@@ -18,6 +19,13 @@ public interface UserService {
 	 * @throws NotFoundException if no user with such ID exists.
 	 */
 	User getUser(Integer id) throws NotFoundException;
+
+	/**
+	 * Retrieves users whose IDs are contained in a collection.
+	 * @param ids the ID of the user.
+	 * @return the set of users whose IDs are contained in the collection ids.
+	 */
+	Set<User> getUsers(Collection<Integer> ids);
 
 	/**
 	 * Retrieves the user with the specified email.
