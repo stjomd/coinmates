@@ -11,6 +11,7 @@ import {
 } from './SplitBillLogic'
 import {BillService} from '../../services/BillService'
 import {Amount} from '../../entities/Amount'
+import {useDebouncedCallback} from 'use-debounce'
 
 function SplitBill() {
 	// ----- Properties ----------------------------------------------------------
@@ -33,8 +34,19 @@ function SplitBill() {
 	// Keep amount string and bill's amount properties in sync
 	useEffect(() => updateBill(parseAmount(amountString)), [amountString])
 
+	// Load correct split amount from the server
+	const loadSplitAmountPreview = useDebouncedCallback(() => {
+		BillService.splitAmount(
+			new Amount(bill.amountInteger, bill.amountFraction),
+			bill.people.length + 1
+		)
+			.then(res => setSplitAmount(res.integer + res.fraction / 100))
+			.catch(err => console.log(err))
+	}, 1000)
+
 	// Keep amount and split amount in sync
 	useEffect(() => {
+		setSplitAmount(0)
 		if (bill.people.length == 0) {
 			setSplitAmount(bill.amountInteger + bill.amountFraction / 100)
 			return
@@ -42,13 +54,13 @@ function SplitBill() {
 			setSplitAmount(0)
 			return
 		}
-		BillService.splitAmount(
-			new Amount(bill.amountInteger, bill.amountFraction),
-			bill.people.length + 1
-		)
-			.then(res => setSplitAmount(res.integer + res.fraction / 100))
-			.catch(err => console.log(err))
-	}, [bill.amountInteger, bill.amountFraction, bill.people])
+		loadSplitAmountPreview()
+	}, [
+		bill.amountInteger,
+		bill.amountFraction,
+		bill.people,
+		loadSplitAmountPreview,
+	])
 
 	// Load friends
 	useEffect(() => {
