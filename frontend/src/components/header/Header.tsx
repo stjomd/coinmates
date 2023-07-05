@@ -1,11 +1,11 @@
-import {useEffect, useState} from 'react'
-import {UserService} from '../../services/UserService'
 import './Header.scss'
 
+import {useEffect, useState} from 'react'
 import {Link} from 'react-router-dom'
+import {AuthService} from '../../services/AuthService'
 
 function Header() {
-	const user = UserService.getAuth()
+	const user = AuthService.getAuth()
 
 	// Determines whether the dropdown is visible
 	const [showDropdown, setShowDropdown] = useState(false)
@@ -62,7 +62,7 @@ function Header() {
 						{/* <li className='dropdown-item'>Settings</li> */}
 						<li
 							className='dropdown-item dropdown-item-danger'
-							onClick={UserService.deleteAuth}
+							onClick={AuthService.deleteAuth}
 						>
 							Log out
 						</li>

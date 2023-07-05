@@ -1,9 +1,9 @@
-import {UserService} from '../../services/UserService'
+import {AuthService} from '../../services/AuthService'
 import Payment from '../payment/Payment'
 import './Home.scss'
 
 function Home() {
-	const user = UserService.getAuth()
+	const user = AuthService.getAuth()
 
 	return (
 		<>
