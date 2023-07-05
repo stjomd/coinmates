@@ -33,7 +33,7 @@ public class BillController {
 	@ResponseStatus(HttpStatus.OK)
 	public Amount previewSplitAmount(Amount amount, Integer people) {
 		log.info(
-			"GET /api/v1/bills/split ? integer={} & fraction={} & people={}",
+			"GET /api/v1/bills/split?integer={}&fraction={}&people={}",
 			amount.getInteger(), amount.getFraction(), people
 		);
 		return billService.calculateSplitAmount(amount, people);
@@ -43,8 +43,13 @@ public class BillController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public BillDto createBill(@Valid @RequestBody BillDto billDto) {
 		log.info("POST /api/v1/bills: {}", billDto);
-		Bill createdBill = billMapper.toEntity(billDto);
-		return billMapper.toDto(createdBill);
+		Bill ent = billMapper.toEntity(billDto);
+		// System.out.println(ent);
+		Bill createdBill = billService.createBill(ent);
+		// System.out.println(createdBill);
+		BillDto d = billMapper.toDto(createdBill);
+		// System.out.println(d);
+		return d;
 	}
 
 }

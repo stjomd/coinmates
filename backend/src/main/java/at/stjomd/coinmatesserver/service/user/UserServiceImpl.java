@@ -5,7 +5,6 @@ import at.stjomd.coinmatesserver.exception.AuthenticationFailedException;
 import at.stjomd.coinmatesserver.exception.NotFoundException;
 import at.stjomd.coinmatesserver.exception.UserAlreadyExistsException;
 import at.stjomd.coinmatesserver.repository.UserRepository;
-import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Collection;
@@ -13,6 +12,7 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service

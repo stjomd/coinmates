@@ -1,23 +1,29 @@
 package at.stjomd.coinmatesserver.service.bill;
 
-import org.springframework.stereotype.Component;
+import java.util.Date;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import at.stjomd.coinmatesserver.entity.Amount;
 import at.stjomd.coinmatesserver.entity.Bill;
+import at.stjomd.coinmatesserver.entity.User;
 import at.stjomd.coinmatesserver.repository.BillRepository;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@Component
+@Service
 public class BillServiceImpl implements BillService {
 
 	private final BillRepository billRepository;
+	private final BillServiceValidator validator;
 
-	public BillServiceImpl(BillRepository billRepository) {
+	public BillServiceImpl(
+		BillRepository billRepository, BillServiceValidator validator
+	) {
 		this.billRepository = billRepository;
+		this.validator = validator;
 	}
-
-	private final BillServiceValidator validator = new BillServiceValidator();
 
 	@Override
 	public Amount calculateSplitAmount(Amount amount, Integer people) {
@@ -41,8 +47,26 @@ public class BillServiceImpl implements BillService {
 	}
 
 	@Override
+	@Transactional
 	public Bill createBill(Bill bill) {
-		return billRepository.save(bill);
+		log.trace("createBill({})", bill);
+		// Remove creator from bill.people
+		for (User friend : bill.getPeople()) {
+			if (friend.getId().equals(bill.getCreator().getId())) {
+				log.debug(
+					"Removed creator (id = {}) from assigned people",
+					bill.getCreator().getId()
+				);
+				bill.getPeople().remove(friend);
+				break;
+			}
+		}
+		bill.setCreationDate(new Date());
+		// Validate and save
+		validator.createBill(bill);
+		Bill saved = billRepository.save(bill);
+		System.out.println(saved);
+		return saved;
 	}
 
 }

@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.Set;
 
 import at.stjomd.coinmatesserver.entity.Amount;
-import jakarta.validation.constraints.Max;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
@@ -19,12 +19,13 @@ public class BillDto {
 	private Integer id;
 
 	@NotBlank(message = "Title must be present")
-	@Max(value = 100, message = "Title must be at most 100 characters long")
+	@Size(max = 100, message = "Title must be at most 100 characters long")
 	private String title;
 
-	@Max(value = 1000, message = "Description must be at most 1000 characters long")
+	@Size(max = 1000, message = "Description must be at most 1000 characters long")
 	private String description;
 
+	@Valid
 	@NotNull(message = "Amount must be present")
 	private Amount amount;
 
