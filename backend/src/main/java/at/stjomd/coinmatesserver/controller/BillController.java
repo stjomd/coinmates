@@ -43,13 +43,8 @@ public class BillController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public BillDto createBill(@Valid @RequestBody BillDto billDto) {
 		log.info("POST /api/v1/bills: {}", billDto);
-		Bill ent = billMapper.toEntity(billDto);
-		// System.out.println(ent);
-		Bill createdBill = billService.createBill(ent);
-		// System.out.println(createdBill);
-		BillDto d = billMapper.toDto(createdBill);
-		// System.out.println(d);
-		return d;
+		Bill createdBill = billService.createBill(billMapper.toEntity(billDto));
+		return billMapper.toDto(createdBill);
 	}
 
 }

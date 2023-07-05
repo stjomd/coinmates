@@ -64,9 +64,7 @@ public class BillServiceImpl implements BillService {
 		bill.setCreationDate(new Date());
 		// Validate and save
 		validator.createBill(bill);
-		Bill saved = billRepository.save(bill);
-		System.out.println(saved);
-		return saved;
+		return billRepository.save(bill);
 	}
 
 }
