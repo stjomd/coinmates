@@ -45,7 +45,7 @@ function SplitBill() {
 
 	// Load correct split amount from the server
 	const loadSplitAmountPreview = useDebouncedCallback(() => {
-		BillService.splitAmount(bill.amount, bill.peopleIds.length + 1)
+		BillService.splitAmount(bill.amount, bill.people.length + 1)
 			.then(amount => updateSplitAmount(amount))
 			.catch(err => console.log(err))
 	}, 1000)
@@ -53,7 +53,7 @@ function SplitBill() {
 	// Update split amount when bill's amount changed
 	useEffect(() => {
 		updateSplitAmount(null)
-		if (bill.peopleIds.length == 0) {
+		if (bill.people.length == 0) {
 			updateSplitAmount(bill.amount)
 			return
 		} else if (bill.amount.integer === 0 && bill.amount.fraction === 0) {
@@ -61,7 +61,7 @@ function SplitBill() {
 			return
 		}
 		loadSplitAmountPreview()
-	}, [bill.amount, bill.peopleIds, loadSplitAmountPreview])
+	}, [bill.amount, bill.people, loadSplitAmountPreview])
 
 	// Load friends
 	useEffect(() => {
@@ -85,7 +85,7 @@ function SplitBill() {
 		}
 		const newList = [...selectedFriends, friend]
 		setSelectedFriends(newList)
-		updateBill({peopleIds: newList.map(item => item.id)})
+		updateBill({people: newList})
 	}
 
 	/**
@@ -96,7 +96,7 @@ function SplitBill() {
 	const removeFriend = (friend: UserShort) => {
 		const newList = selectedFriends.filter(item => item.id !== friend.id)
 		setSelectedFriends(newList)
-		updateBill({peopleIds: newList.map(item => item.id)})
+		updateBill({people: newList})
 	}
 
 	/**
