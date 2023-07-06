@@ -1,5 +1,6 @@
 package at.stjomd.coinmatesserver.service.user;
 
+import at.stjomd.coinmatesserver.entity.Bill;
 import at.stjomd.coinmatesserver.entity.User;
 import at.stjomd.coinmatesserver.exception.AuthenticationFailedException;
 import at.stjomd.coinmatesserver.exception.NotFoundException;
@@ -115,6 +116,16 @@ public class UserServiceImpl implements UserService {
 		} catch (NoSuchElementException exc) {
 			throw new NotFoundException("No user found with ID: " + id, exc);
 		}
+	}
+
+	@Override
+	@Transactional
+	public Set<Bill> getBillsCreatedBy(User user) throws NotFoundException {
+		User managedUser = userRepository.findById(user.getId())
+			.orElseThrow(() ->
+				new NotFoundException("No user found with ID: " + user.getId())
+			);
+		return managedUser.getCreatedBills();
 	}
 
 }

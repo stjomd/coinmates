@@ -2,6 +2,8 @@ package at.stjomd.coinmatesserver.service.user;
 
 import java.util.Collection;
 import java.util.Set;
+
+import at.stjomd.coinmatesserver.entity.Bill;
 import at.stjomd.coinmatesserver.entity.User;
 import at.stjomd.coinmatesserver.exception.AuthenticationFailedException;
 import at.stjomd.coinmatesserver.exception.NotFoundException;
@@ -72,5 +74,13 @@ public interface UserService {
 	 */
 	Set<User> addFriend(Integer id, Integer friendId)
 	throws NotFoundException;
+
+	/**
+	 * Retrieves the set of bills created by a specified user.
+	 * @param user the creator of the bills.
+	 * @return the set of bills where the creator is the specified user.
+	 * @throws NotFoundException if no such user exists.
+	 */
+	Set<Bill> getBillsCreatedBy(User user) throws NotFoundException;
 
 }

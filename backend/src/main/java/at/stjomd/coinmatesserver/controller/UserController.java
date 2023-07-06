@@ -1,13 +1,16 @@
 package at.stjomd.coinmatesserver.controller;
 
+import at.stjomd.coinmatesserver.entity.Bill;
 import at.stjomd.coinmatesserver.entity.User;
 import at.stjomd.coinmatesserver.entity.dto.AddFriendDto;
+import at.stjomd.coinmatesserver.entity.dto.BillDto;
 import at.stjomd.coinmatesserver.entity.dto.UserShortDto;
 import at.stjomd.coinmatesserver.entity.dto.LoginDetailsDto;
 import at.stjomd.coinmatesserver.entity.dto.UserDto;
 import at.stjomd.coinmatesserver.exception.AuthenticationFailedException;
 import at.stjomd.coinmatesserver.exception.NotFoundException;
 import at.stjomd.coinmatesserver.exception.UserAlreadyExistsException;
+import at.stjomd.coinmatesserver.entity.mapper.BillMapper;
 import at.stjomd.coinmatesserver.entity.mapper.UserMapper;
 import at.stjomd.coinmatesserver.security.SecurityConfig;
 import at.stjomd.coinmatesserver.service.user.UserService;
@@ -34,10 +37,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
 	private final UserService userService;
+	private final BillMapper billMapper;
 	private final UserMapper userMapper;
 
-	public UserController(UserService userService, UserMapper userMapper) {
+	public UserController(
+		UserService userService,
+		BillMapper billMapper, UserMapper userMapper
+	) {
 		this.userService = userService;
+		this.billMapper = billMapper;
 		this.userMapper = userMapper;
 	}
 
@@ -86,6 +94,16 @@ public class UserController {
 		log.info("PATCH /api/v1/users/{}: friendId = {}", id, friendDto.getId());
 		Set<User> friends = userService.addFriend(id, friendDto.getId());
 		return userMapper.toFriendDtos(friends);
+	}
+
+	@GetMapping("/{id}/bills")
+	@ResponseStatus(HttpStatus.OK)
+	public Set<BillDto> getCreatedBills(@PathVariable Integer id)
+	throws NotFoundException {
+		log.info("GET /api/v1/users/{}/bills", id);
+		User user = User.builder().id(id).build();
+		Set<Bill> bills = userService.getBillsCreatedBy(user);
+		return billMapper.toDtos(bills);
 	}
 
 }

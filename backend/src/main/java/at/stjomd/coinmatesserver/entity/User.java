@@ -10,6 +10,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -61,5 +62,10 @@ public class User {
 	@EqualsAndHashCode.Exclude
 	@ManyToMany(fetch = FetchType.LAZY)
 	private Set<User> friends;
+
+	@ToString.Exclude
+	@EqualsAndHashCode.Exclude
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "creator")
+	private Set<Bill> createdBills;
 
 }
