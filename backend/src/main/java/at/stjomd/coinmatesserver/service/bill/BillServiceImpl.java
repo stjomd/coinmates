@@ -74,7 +74,10 @@ public class BillServiceImpl implements BillService {
 		bill.setCreationDate(new Date());
 		// Validate and save
 		validator.createBill(bill);
-		return billRepository.save(bill);
+		Bill createdBill = billRepository.saveAndFlush(bill);
+		// Refresh to retrieve nested objects (users)
+		billRepository.refresh(createdBill);
+		return createdBill;
 	}
 
 }
