@@ -7,9 +7,11 @@ export class Bill {
 		public title: string,
 		public description: string | null,
 		public amount: Amount,
+		public splitAmount: Amount,
 		public creator: UserShort,
 		public people: UserShort[],
-		public creationDate: string
+		public creationDate: string,
+		public status: Bill.Status
 	) {}
 
 	public static newEmpty(creatorId: number): Bill {
@@ -18,9 +20,19 @@ export class Bill {
 			'',
 			null,
 			new Amount(0, 0),
+			new Amount(0, 0),
 			new UserShort(creatorId, '', ''),
 			[],
-			new Date().toISOString()
+			new Date().toISOString(),
+			Bill.Status.OPEN
 		)
+	}
+}
+
+// eslint-disable-next-line @typescript-eslint/no-namespace
+export namespace Bill {
+	export enum Status {
+		OPEN = 'OPEN',
+		CLOSED = 'CLOSED',
 	}
 }

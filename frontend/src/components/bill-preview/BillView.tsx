@@ -49,11 +49,18 @@ function BillView() {
 		)
 	}
 
+	const badge = () => {
+		console.log(bill)
+		if (bill?.status === Bill.Status.OPEN) {
+			return <span className='badge rounded-pill bg-secondary'>Open</span>
+		} else if (bill?.status === Bill.Status.CLOSED) {
+			return <span className='badge rounded-pill bg-primary'>Closed</span>
+		}
+	}
+
 	return (
 		<>
-			<h4>
-				Bill <span className='badge rounded-pill bg-secondary'>Open</span>
-			</h4>
+			<h4>Bill {badge()}</h4>
 			<h3 className='bv-title'>{bill?.title}</h3>
 			{bill?.description != null ? (
 				<p>{bill.description}</p>
@@ -63,7 +70,7 @@ function BillView() {
 			<p>
 				Total: {bill?.amount.integer},{bill?.amount.fraction} &euro;
 			</p>
-			<ul className='list-group sb-list'>{peopleItems()}</ul>
+			<ul className='list-group sb-list mb-3'>{peopleItems()}</ul>
 			{creationDateElement()}
 		</>
 	)
