@@ -36,7 +36,7 @@ function BillView() {
 			return
 		}
 		return (
-			<p>
+			<p className='bv-small-txt'>
 				Created on&nbsp;
 				{new Date(bill.creationDate).toLocaleDateString('en-UK', {
 					day: 'numeric',
@@ -60,17 +60,43 @@ function BillView() {
 
 	return (
 		<>
-			<h4>Bill {badge()}</h4>
-			<h3 className='bv-title'>{bill?.title}</h3>
+			<h4>Bill</h4>
+			<h3 className='bv-title'>
+				{bill?.title} {badge()}
+			</h3>
 			{bill?.description != null ? (
 				<p>{bill.description}</p>
 			) : (
 				<p>No description provided.</p>
 			)}
-			<p>
-				Total: {bill?.amount.integer},{bill?.amount.fraction} &euro;
-			</p>
-			<ul className='list-group sb-list mb-3'>{peopleItems()}</ul>
+			<div className='bv-amounts-box'>
+				<div>
+					<p className='bv-small-txt'>Total</p>
+					<p className='logo bv-amount'>
+						{bill?.amount.integer},{bill?.amount.fraction} &euro;
+					</p>
+				</div>
+				<div>
+					<p className='bv-small-txt'>Per person</p>
+					<p className='logo bv-amount'>
+						{bill?.splitAmount.integer},{bill?.splitAmount.fraction} &euro;
+					</p>
+				</div>
+				<div>
+					<p className='bv-small-txt'>Pending</p>
+					<p className='logo bv-amount bv-amount-pending'>??,?? &euro;</p>
+				</div>
+			</div>
+			<p className='bv-small-txt mb-1'>People assigned to this bill</p>
+			<ul className='list-group mb-3'>
+				<li
+					key={bill?.creator.id}
+					className='list-group-item list-group-item-primary'
+				>
+					You
+				</li>
+				{peopleItems()}
+			</ul>
 			{creationDateElement()}
 		</>
 	)

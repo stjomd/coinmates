@@ -2,9 +2,30 @@
 
 .bv-title {
 	color: colors.$primary;
-	font-weight: bold;
+	font-weight: 800;
 }
 
-h4 span.badge {
+span.badge {
 	scale: 0.8;
+}
+
+.bv-small-txt {
+	color: rgba(colors.$dark, 0.7);
+	font-size: 0.875rem;
+	font-weight: bold;
+	margin: 0;
+}
+
+.bv-amount {
+	font-size: 20pt;
+	margin-bottom: 8px;
+	&.bv-amount-pending {
+		color: colors.$accent-blue;
+	}
+}
+
+.bv-amounts-box {
+	display: flex;
+	flex-wrap: wrap;
+	column-gap: 30pt;
 }
