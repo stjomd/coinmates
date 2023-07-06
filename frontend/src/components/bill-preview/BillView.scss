@@ -1,0 +1,6 @@
+@use '../../colors';
+
+.bv-title {
+	color: colors.$primary;
+	font-weight: bold;
+}

@@ -12,6 +12,7 @@ import Home from '../home/Home'
 import PersonView from '../person-view/PersonView'
 import SplitBill from '../split-bill/SplitBill'
 import {AuthService} from '../../services/AuthService'
+import BillView from '../bill-preview/BillView'
 
 function App() {
 	/**
@@ -129,6 +130,15 @@ function App() {
 							<SplitBill />
 						</div>
 					)}
+				/>
+				{/* bill preview */}
+				<Route
+					path='/bill/:id'
+					element={
+						<div className='horizcenter-top'>
+							<BillView />
+						</div>
+					}
 				/>
 				{/* all other routes: 404 */}
 				<Route path='*' element={<p>404</p>} />
