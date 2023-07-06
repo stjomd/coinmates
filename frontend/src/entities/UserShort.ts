@@ -1,4 +1,4 @@
-export class Friend {
+export class UserShort {
 	constructor(
 		public id: number,
 		public firstName: string,

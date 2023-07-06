@@ -1,6 +1,6 @@
 import {serverUri} from '../Globals.ts'
 import {AddFriend} from '../entities/AddFriend.ts'
-import {Friend} from '../entities/Friend.ts'
+import {UserShort} from '../entities/UserShort.ts'
 import {LoginDetails} from '../entities/LoginDetails.ts'
 import {User} from '../entities/User.ts'
 import {HttpService} from './HttpService.ts'
@@ -43,7 +43,7 @@ export abstract class UserService {
 	 * @param id the ID of the user.
 	 * @returns the set of friends.
 	 */
-	static async getFriends(id: number): Promise<Friend[]> {
+	static async getFriends(id: number): Promise<UserShort[]> {
 		return HttpService.get(this.uri + `/${id}/friends`)
 	}
 
@@ -55,7 +55,10 @@ export abstract class UserService {
 	 * @returns a promise containing the set of friends of the user making the
 	 * 					request.
 	 */
-	static async addFriend(id: number, friendId: number): Promise<Set<Friend>> {
+	static async addFriend(
+		id: number,
+		friendId: number
+	): Promise<Set<UserShort>> {
 		return HttpService.patch(this.uri + `/${id}`, new AddFriend(friendId))
 	}
 }

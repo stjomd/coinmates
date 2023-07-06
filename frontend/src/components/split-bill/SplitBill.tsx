@@ -1,5 +1,5 @@
 import {useEffect, useReducer, useState} from 'react'
-import {Friend} from '../../entities/Friend'
+import {UserShort} from '../../entities/UserShort'
 import {UserService} from '../../services/UserService'
 import './SplitBill.scss'
 import {Bill} from '../../entities/Bill'
@@ -16,8 +16,8 @@ import {AuthService} from '../../services/AuthService'
 
 function SplitBill() {
 	// ----- Properties ----------------------------------------------------------
-	const [friends, setFriends] = useState(new Array<Friend>())
-	const [selectedFriends, setSelectedFriends] = useState(new Array<Friend>())
+	const [friends, setFriends] = useState(new Array<UserShort>())
+	const [selectedFriends, setSelectedFriends] = useState(new Array<UserShort>())
 
 	const [loadingErrorMessage, setLoadingErrorMessage] = useState<string>()
 	const [validationErrors, setValidationErrors] =
@@ -79,7 +79,7 @@ function SplitBill() {
 	 * of IDs.
 	 * @param friend the selected friend.
 	 */
-	const addFriend = (friend: Friend) => {
+	const addFriend = (friend: UserShort) => {
 		if (selectedFriends.includes(friend)) {
 			return
 		}
@@ -93,7 +93,7 @@ function SplitBill() {
 	 * set of IDs.
 	 * @param friend the friend to be removed.
 	 */
-	const removeFriend = (friend: Friend) => {
+	const removeFriend = (friend: UserShort) => {
 		const newList = selectedFriends.filter(item => item.id !== friend.id)
 		setSelectedFriends(newList)
 		updateBill({peopleIds: newList.map(item => item.id)})
