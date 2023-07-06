@@ -48,7 +48,7 @@ export function validate(bill: Bill) {
 		result.errors.amount = 'Please enter the amount.'
 		result.dirty = true
 	}
-	if (bill.peopleIds.length === 0) {
+	if (bill.people.length === 0) {
 		result.errors.people = 'Please select at least one friend.'
 		result.dirty = true
 	}

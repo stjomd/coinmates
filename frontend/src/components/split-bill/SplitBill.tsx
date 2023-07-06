@@ -13,6 +13,7 @@ import {BillService} from '../../services/BillService'
 import {Amount} from '../../entities/Amount'
 import {useDebouncedCallback} from 'use-debounce'
 import {AuthService} from '../../services/AuthService'
+import {Navigate} from 'react-router-dom'
 
 function SplitBill() {
 	// ----- Properties ----------------------------------------------------------
@@ -22,6 +23,8 @@ function SplitBill() {
 	const [loadingErrorMessage, setLoadingErrorMessage] = useState<string>()
 	const [validationErrors, setValidationErrors] =
 		useState<BillValidationMessages>({})
+
+	const [redirectToBillId, setRedirectToBillId] = useState<number>()
 
 	const [amountString, setAmountString] = useState<string>('')
 	const [splitAmount, updateSplitAmount] = useReducer(
@@ -107,7 +110,9 @@ function SplitBill() {
 		if (validation.dirty) {
 			setValidationErrors(validation.errors)
 		} else {
-			BillService.createBill(bill).then(console.log).catch(console.error)
+			BillService.createBill(bill)
+				.then(res => setRedirectToBillId(res.id!))
+				.catch(console.error)
 		}
 	}
 
@@ -187,6 +192,9 @@ function SplitBill() {
 	// ----- Component -----------------------------------------------------------
 	return (
 		<>
+			{redirectToBillId != null && (
+				<Navigate replace to={`/bill/${redirectToBillId}`} />
+			)}
 			<h4>Split Bills</h4>
 			<p>
 				Create a bill to split with your friends. Then they will be able to
