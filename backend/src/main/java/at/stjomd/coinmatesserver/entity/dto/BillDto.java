@@ -29,14 +29,13 @@ public class BillDto {
 	@NotNull(message = "Amount must be present")
 	private Amount amount;
 
-	@NotNull(message = "Creator ID must be present")
-	@Positive(message = "ID must be positive")
-	private Integer creatorId;
+	@Valid
+	@NotNull(message = "Creator must be present")
+	private FriendDto creator;
 
-	@NotNull(message = "People IDs must be present")
-	@Size(min = 1, message = "People IDs must include at least one ID")
-	private Set<@Positive(message = "People IDs must be positive") Integer>
-	peopleIds;
+	@NotNull(message = "Assigned eople must be present")
+	@Size(min = 1, message = "Assigned people must include at least one person")
+	private Set<@Valid FriendDto> people;
 
 	@Past(message = "Creation date must be in the past")
 	private Date creationDate;

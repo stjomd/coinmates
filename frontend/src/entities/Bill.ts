@@ -1,4 +1,5 @@
 import {Amount} from './Amount'
+import {Friend} from './Friend'
 
 export class Bill {
 	constructor(
@@ -6,12 +7,20 @@ export class Bill {
 		public title: string,
 		public description: string | null,
 		public amount: Amount,
-		public creatorId: number,
-		public peopleIds: number[],
+		public creator: Friend,
+		public people: Friend[],
 		public creationDate: Date
 	) {}
 
 	public static newEmpty(creatorId: number): Bill {
-		return new Bill(null, '', null, new Amount(0, 0), creatorId, [], new Date())
+		return new Bill(
+			null,
+			'',
+			null,
+			new Amount(0, 0),
+			new Friend(creatorId, '', ''),
+			[],
+			new Date()
+		)
 	}
 }
