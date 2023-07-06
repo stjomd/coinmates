@@ -33,7 +33,7 @@ public class BillDto {
 	@NotNull(message = "Creator must be present")
 	private UserShortDto creator;
 
-	@NotNull(message = "Assigned eople must be present")
+	@NotNull(message = "Assigned people must be present")
 	@Size(min = 1, message = "Assigned people must include at least one person")
 	private Set<@Valid UserShortDto> people;
 
