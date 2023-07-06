@@ -120,10 +120,11 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@Transactional
-	public Set<Bill> getBillsCreatedBy(User user) throws NotFoundException {
-		User managedUser = userRepository.findById(user.getId())
+	public Set<Bill> getBillsCreatedByUser(Integer id)
+	throws NotFoundException {
+		User managedUser = userRepository.findById(id)
 			.orElseThrow(() ->
-				new NotFoundException("No user found with ID: " + user.getId())
+				new NotFoundException("No user found with ID: " + id)
 			);
 		return managedUser.getCreatedBills();
 	}

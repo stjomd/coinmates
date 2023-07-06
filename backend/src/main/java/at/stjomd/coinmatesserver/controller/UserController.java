@@ -101,8 +101,7 @@ public class UserController {
 	public Set<BillDto> getCreatedBills(@PathVariable Integer id)
 	throws NotFoundException {
 		log.info("GET /api/v1/users/{}/bills", id);
-		User user = User.builder().id(id).build();
-		Set<Bill> bills = userService.getBillsCreatedBy(user);
+		Set<Bill> bills = userService.getBillsCreatedByUser(id);
 		return billMapper.toDtos(bills);
 	}
 

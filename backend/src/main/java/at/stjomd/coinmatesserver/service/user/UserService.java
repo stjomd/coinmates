@@ -77,10 +77,10 @@ public interface UserService {
 
 	/**
 	 * Retrieves the set of bills created by a specified user.
-	 * @param user the creator of the bills.
+	 * @param id the ID of the user.
 	 * @return the set of bills where the creator is the specified user.
 	 * @throws NotFoundException if no such user exists.
 	 */
-	Set<Bill> getBillsCreatedBy(User user) throws NotFoundException;
+	Set<Bill> getBillsCreatedByUser(Integer id) throws NotFoundException;
 
 }
