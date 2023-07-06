@@ -2,6 +2,7 @@ package at.stjomd.coinmatesserver.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,9 +41,9 @@ public class BillController {
 		return billService.calculateSplitAmount(amount, people);
 	}
 
-	@GetMapping("/:id")
+	@GetMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
-	public BillDto getBill(Integer id) throws NotFoundException {
+	public BillDto getBill(@PathVariable Integer id) throws NotFoundException {
 		log.info("GET /api/v1/bills/{}", id);
 		return billMapper.toDto(billService.getBill(id));
 	}
