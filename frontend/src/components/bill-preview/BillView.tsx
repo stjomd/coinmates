@@ -23,7 +23,7 @@ function BillView() {
 		const items: JSX.Element[] = []
 		for (const person of bill.people) {
 			items.push(
-				<li className='list-group-item'>
+				<li key={person.id} className='list-group-item'>
 					{person.firstName} {person.lastName}
 				</li>
 			)
@@ -31,9 +31,29 @@ function BillView() {
 		return items
 	}
 
+	const creationDateElement = () => {
+		if (bill == null) {
+			return
+		}
+		return (
+			<p>
+				Created on&nbsp;
+				{new Date(bill.creationDate).toLocaleDateString('en-UK', {
+					day: 'numeric',
+					month: 'long',
+					year: 'numeric',
+					hour: 'numeric',
+					minute: 'numeric',
+				})}
+			</p>
+		)
+	}
+
 	return (
 		<>
-			<h4>Bill</h4>
+			<h4>
+				Bill <span className='badge rounded-pill bg-secondary'>Open</span>
+			</h4>
 			<h3 className='bv-title'>{bill?.title}</h3>
 			{bill?.description != null ? (
 				<p>{bill.description}</p>
@@ -44,6 +64,7 @@ function BillView() {
 				Total: {bill?.amount.integer},{bill?.amount.fraction} &euro;
 			</p>
 			<ul className='list-group sb-list'>{peopleItems()}</ul>
+			{creationDateElement()}
 		</>
 	)
 }

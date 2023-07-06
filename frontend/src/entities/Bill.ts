@@ -9,7 +9,7 @@ export class Bill {
 		public amount: Amount,
 		public creator: UserShort,
 		public people: UserShort[],
-		public creationDate: Date
+		public creationDate: string
 	) {}
 
 	public static newEmpty(creatorId: number): Bill {
@@ -20,7 +20,7 @@ export class Bill {
 			new Amount(0, 0),
 			new UserShort(creatorId, '', ''),
 			[],
-			new Date()
+			new Date().toISOString()
 		)
 	}
 }
