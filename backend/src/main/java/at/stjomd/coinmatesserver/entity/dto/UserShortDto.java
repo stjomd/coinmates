@@ -5,7 +5,7 @@ import jakarta.validation.constraints.Positive;
 import lombok.Data;
 
 @Data
-public class FriendDto {
+public class UserShortDto {
 
 	@NotNull(message = "ID must be present")
 	@Positive(message = "ID must be positive")

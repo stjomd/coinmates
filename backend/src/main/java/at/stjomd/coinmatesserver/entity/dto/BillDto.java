@@ -31,11 +31,11 @@ public class BillDto {
 
 	@Valid
 	@NotNull(message = "Creator must be present")
-	private FriendDto creator;
+	private UserShortDto creator;
 
 	@NotNull(message = "Assigned eople must be present")
 	@Size(min = 1, message = "Assigned people must include at least one person")
-	private Set<@Valid FriendDto> people;
+	private Set<@Valid UserShortDto> people;
 
 	@Past(message = "Creation date must be in the past")
 	private Date creationDate;

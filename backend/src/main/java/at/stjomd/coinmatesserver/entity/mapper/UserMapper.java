@@ -1,7 +1,7 @@
 package at.stjomd.coinmatesserver.entity.mapper;
 
 import at.stjomd.coinmatesserver.entity.User;
-import at.stjomd.coinmatesserver.entity.dto.FriendDto;
+import at.stjomd.coinmatesserver.entity.dto.UserShortDto;
 import at.stjomd.coinmatesserver.entity.dto.LoginDetailsDto;
 import at.stjomd.coinmatesserver.entity.dto.UserDto;
 import java.util.Set;
@@ -32,13 +32,13 @@ public interface UserMapper {
 
 	@BeanMapping(ignoreByDefault = true)
 	@Mapping(source = "id", target = "id")
-	User toUser(FriendDto friendDto);
+	User toUser(UserShortDto friendDto);
 
-	FriendDto toFriendDto(User user);
+	UserShortDto toFriendDto(User user);
 
-	Set<FriendDto> toFriendDtos(Set<User> entities);
+	Set<UserShortDto> toFriendDtos(Set<User> entities);
 
-	Set<User> toUsers(Set<FriendDto> friendDtos);
+	Set<User> toUsers(Set<UserShortDto> friendDtos);
 
 	// ----- Integer IDs -------------------------------------------------------
 

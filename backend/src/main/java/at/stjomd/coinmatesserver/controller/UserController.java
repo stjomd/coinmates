@@ -2,7 +2,7 @@ package at.stjomd.coinmatesserver.controller;
 
 import at.stjomd.coinmatesserver.entity.User;
 import at.stjomd.coinmatesserver.entity.dto.AddFriendDto;
-import at.stjomd.coinmatesserver.entity.dto.FriendDto;
+import at.stjomd.coinmatesserver.entity.dto.UserShortDto;
 import at.stjomd.coinmatesserver.entity.dto.LoginDetailsDto;
 import at.stjomd.coinmatesserver.entity.dto.UserDto;
 import at.stjomd.coinmatesserver.exception.AuthenticationFailedException;
@@ -72,7 +72,7 @@ public class UserController {
 
 	@GetMapping("/{id}/friends")
 	@ResponseStatus(HttpStatus.OK)
-	public Set<FriendDto> getFriends(@PathVariable Integer id)
+	public Set<UserShortDto> getFriends(@PathVariable Integer id)
 	throws NotFoundException {
 		log.info("GET /api/v1/users/{}/friends", id);
 		return userMapper.toFriendDtos(userService.getFriends(id));
@@ -80,7 +80,7 @@ public class UserController {
 
 	@PatchMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
-	public Set<FriendDto> addFriend(
+	public Set<UserShortDto> addFriend(
 		@PathVariable Integer id, @Valid @RequestBody AddFriendDto friendDto
 	) throws NotFoundException {
 		log.info("PATCH /api/v1/users/{}: friendId = {}", id, friendDto.getId());
