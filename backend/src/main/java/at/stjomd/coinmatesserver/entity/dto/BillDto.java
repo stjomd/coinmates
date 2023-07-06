@@ -6,7 +6,7 @@ import java.util.Set;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import at.stjomd.coinmatesserver.entity.Amount;
-import at.stjomd.coinmatesserver.entity.Bill.Status;
+import at.stjomd.coinmatesserver.entity.Bill;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -47,6 +47,6 @@ public class BillDto {
 	private Date creationDate;
 
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
-	private Status status;
+	private Bill.Status status;
 
 }
