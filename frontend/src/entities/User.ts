@@ -14,12 +14,12 @@ export class User {
 // eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace User {
 	export enum Role {
-		REGULAR,
-		ADMIN,
+		REGULAR = 'REGULAR',
+		ADMIN = 'ADMIN',
 	}
 	export enum Status {
-		ACTIVE,
-		RESTRICTED,
-		DELETED,
+		ACTIVE = 'ACTIVE',
+		RESTRICTED = 'RESTRICTED',
+		DELETED = 'DELETED',
 	}
 }
