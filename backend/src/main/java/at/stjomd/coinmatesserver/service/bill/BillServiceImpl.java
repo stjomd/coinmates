@@ -26,6 +26,12 @@ public class BillServiceImpl implements BillService {
 		this.validator = validator;
 	}
 
+	public Amount splitAmount(Bill bill) {
+		return calculateSplitAmount(
+			bill.getAmount(), bill.getPeople().size() + 1
+		);
+	}
+
 	@Override
 	public Amount calculateSplitAmount(Amount amount, Integer people) {
 		log.trace("calculateSplitAmount({}, {})", amount, people);
@@ -50,10 +56,12 @@ public class BillServiceImpl implements BillService {
 	@Override
 	public Bill getBill(Integer id) throws NotFoundException {
 		log.trace("getBill(id = {})", id);
-		return billRepository.findById(id)
+		Bill bill = billRepository.findById(id)
 			.orElseThrow(() ->
 				new NotFoundException("No bill found with ID: " + id)
 			);
+		bill.setSplitAmount(splitAmount(bill));
+		return bill;
 	}
 
 	@Override
@@ -72,11 +80,13 @@ public class BillServiceImpl implements BillService {
 			}
 		}
 		bill.setCreationDate(new Date());
+		bill.setStatus(Bill.Status.OPEN);
 		// Validate and save
 		validator.createBill(bill);
 		Bill createdBill = billRepository.saveAndFlush(bill);
 		// Refresh to retrieve nested objects (users)
 		billRepository.refresh(createdBill);
+		createdBill.setSplitAmount(splitAmount(createdBill));
 		return createdBill;
 	}
 
