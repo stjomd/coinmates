@@ -2,6 +2,7 @@ package at.stjomd.coinmatesserver.service.bill;
 
 import at.stjomd.coinmatesserver.entity.Amount;
 import at.stjomd.coinmatesserver.entity.Bill;
+import at.stjomd.coinmatesserver.exception.NotFoundException;
 import at.stjomd.coinmatesserver.exception.ValidationFailedException;
 
 public interface BillService {
@@ -15,6 +16,14 @@ public interface BillService {
 	 * @throws ValidationFailedException if any of the arguments is invalid.
 	 */
 	Amount calculateSplitAmount(Amount amount, Integer people);
+
+	/**
+	 * Retrieves a bill with the specified ID.
+	 * @param id the ID of the bill.
+	 * @return the bill with the specified ID.
+	 * @throws NotFoundException if no bill with such ID exists.
+	 */
+	Bill getBill(Integer id) throws NotFoundException;
 
 	/**
 	 * Creates a bill entity.

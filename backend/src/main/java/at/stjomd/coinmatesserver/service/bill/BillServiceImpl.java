@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import at.stjomd.coinmatesserver.entity.Amount;
 import at.stjomd.coinmatesserver.entity.Bill;
 import at.stjomd.coinmatesserver.entity.User;
+import at.stjomd.coinmatesserver.exception.NotFoundException;
 import at.stjomd.coinmatesserver.repository.BillRepository;
 import lombok.extern.slf4j.Slf4j;
 
@@ -44,6 +45,15 @@ public class BillServiceImpl implements BillService {
 				Integer.parseInt(parts[1])
 			);
 		}
+	}
+
+	@Override
+	public Bill getBill(Integer id) throws NotFoundException {
+		log.trace("getBill(id = {})", id);
+		return billRepository.findById(id)
+			.orElseThrow(() ->
+				new NotFoundException("No bill found with ID: " + id)
+			);
 	}
 
 	@Override

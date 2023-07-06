@@ -12,6 +12,7 @@ import at.stjomd.coinmatesserver.entity.Amount;
 import at.stjomd.coinmatesserver.entity.Bill;
 import at.stjomd.coinmatesserver.entity.dto.BillDto;
 import at.stjomd.coinmatesserver.entity.mapper.BillMapper;
+import at.stjomd.coinmatesserver.exception.NotFoundException;
 import at.stjomd.coinmatesserver.service.bill.BillService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -37,6 +38,13 @@ public class BillController {
 			amount.getInteger(), amount.getFraction(), people
 		);
 		return billService.calculateSplitAmount(amount, people);
+	}
+
+	@GetMapping("/:id")
+	@ResponseStatus(HttpStatus.OK)
+	public BillDto getBill(Integer id) throws NotFoundException {
+		log.info("GET /api/v1/bills/{}", id);
+		return billMapper.toDto(billService.getBill(id));
 	}
 
 	@PostMapping
