@@ -68,4 +68,9 @@ public class User {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "creator")
 	private Set<Bill> createdBills;
 
+	@ToString.Exclude
+	@EqualsAndHashCode.Exclude
+	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "people")
+	private Set<Bill> assignedBills;
+
 }

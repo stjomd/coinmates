@@ -1,6 +1,7 @@
 package at.stjomd.coinmatesserver.service.user;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 import at.stjomd.coinmatesserver.entity.Bill;
@@ -82,5 +83,23 @@ public interface UserService {
 	 * @throws NotFoundException if no such user exists.
 	 */
 	Set<Bill> getBillsCreatedByUser(Integer id) throws NotFoundException;
+
+	/**
+	 * Retrieves the set of bills assigned to a specified user.
+	 * @param id the ID of the user.
+	 * @return the set of bills assigned to the specified user.
+	 * @throws NotFoundException if no such user exists.
+	 */
+	Set<Bill> getBillsAssignedToUser(Integer id) throws NotFoundException;
+
+	/**
+	 * Retrieves the set of all bills associated with a specified user.
+	 * @param id the ID of the user.
+	 * @return a list of bills associated with the specified user, that is
+	 * 		   bills either created by, or assigned to the user. Sorted by
+	 * 		   creation date.
+	 * @throws NotFoundException if no such user exists.
+	 */
+	List<Bill> getAllBillsForUser(Integer id) throws NotFoundException;
 
 }

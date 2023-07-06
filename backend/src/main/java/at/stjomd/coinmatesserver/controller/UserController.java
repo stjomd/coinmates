@@ -16,6 +16,8 @@ import at.stjomd.coinmatesserver.security.SecurityConfig;
 import at.stjomd.coinmatesserver.service.user.UserService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.List;
 import java.util.Set;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -98,10 +100,10 @@ public class UserController {
 
 	@GetMapping("/{id}/bills")
 	@ResponseStatus(HttpStatus.OK)
-	public Set<BillDto> getCreatedBills(@PathVariable Integer id)
+	public List<BillDto> getAllBillsForUser(@PathVariable Integer id)
 	throws NotFoundException {
 		log.info("GET /api/v1/users/{}/bills", id);
-		Set<Bill> bills = userService.getBillsCreatedByUser(id);
+		List<Bill> bills = userService.getAllBillsForUser(id);
 		return billMapper.toDtos(bills);
 	}
 

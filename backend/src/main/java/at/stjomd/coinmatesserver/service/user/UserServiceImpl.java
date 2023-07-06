@@ -8,9 +8,16 @@ import at.stjomd.coinmatesserver.exception.UserAlreadyExistsException;
 import at.stjomd.coinmatesserver.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -119,14 +126,28 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	@Transactional
 	public Set<Bill> getBillsCreatedByUser(Integer id)
 	throws NotFoundException {
-		User managedUser = userRepository.findById(id)
-			.orElseThrow(() ->
-				new NotFoundException("No user found with ID: " + id)
-			);
-		return managedUser.getCreatedBills();
+		User user = getUser(id);
+		return user.getCreatedBills();
+	}
+
+	@Override
+	public Set<Bill> getBillsAssignedToUser(Integer id)
+	throws NotFoundException {
+		User user = getUser(id);
+		return user.getAssignedBills();
+	}
+
+	@Override
+	public List<Bill> getAllBillsForUser(Integer id) throws NotFoundException {
+		User user = getUser(id);
+		List<Bill> union = new ArrayList<>(user.getCreatedBills());
+		union.addAll(user.getAssignedBills());
+		Collections.sort(union,
+			(a, b) -> 1 - a.getCreationDate().compareTo(b.getCreationDate())
+		);
+		return union;
 	}
 
 }

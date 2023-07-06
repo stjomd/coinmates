@@ -1,6 +1,7 @@
 package at.stjomd.coinmatesserver.controller;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,6 +15,7 @@ import at.stjomd.coinmatesserver.entity.Bill;
 import at.stjomd.coinmatesserver.entity.dto.BillDto;
 import at.stjomd.coinmatesserver.entity.mapper.BillMapper;
 import at.stjomd.coinmatesserver.exception.NotFoundException;
+import at.stjomd.coinmatesserver.security.SecurityConfig;
 import at.stjomd.coinmatesserver.service.bill.BillService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +23,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
 @RequestMapping("/api/v1/bills")
+@CrossOrigin(origins = {
+	SecurityConfig.FRONTEND_ORIGIN, SecurityConfig.FRONTEND_ORIGIN_IP
+})
 public class BillController {
 
 	private final BillService billService;
