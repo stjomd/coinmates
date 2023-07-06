@@ -3,7 +3,10 @@ package at.stjomd.coinmatesserver.entity.dto;
 import java.util.Date;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import at.stjomd.coinmatesserver.entity.Amount;
+import at.stjomd.coinmatesserver.entity.Bill.Status;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -29,6 +32,9 @@ public class BillDto {
 	@NotNull(message = "Amount must be present")
 	private Amount amount;
 
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+	private Amount splitAmount;
+
 	@Valid
 	@NotNull(message = "Creator must be present")
 	private UserShortDto creator;
@@ -39,5 +45,8 @@ public class BillDto {
 
 	@Past(message = "Creation date must be in the past")
 	private Date creationDate;
+
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+	private Status status;
 
 }
