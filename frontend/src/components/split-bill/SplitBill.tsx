@@ -111,7 +111,11 @@ function SplitBill() {
 			setValidationErrors(validation.errors)
 		} else {
 			BillService.createBill(bill)
-				.then(res => setRedirectToBillId(res.id!))
+				.then(res => {
+					if (res.id != null) {
+						setRedirectToBillId(res.id)
+					}
+				})
 				.catch(console.error)
 		}
 	}
