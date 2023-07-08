@@ -1,4 +1,5 @@
 import {Amount} from './Amount'
+import {Payment} from './Payment'
 import {UserShort} from './UserShort'
 
 export class Bill {
@@ -11,7 +12,8 @@ export class Bill {
 		public creator: UserShort,
 		public people: UserShort[],
 		public creationDate: string,
-		public status: Bill.Status
+		public status: Bill.Status,
+		public payments: Payment[]
 	) {}
 
 	public static newEmpty(creatorId: number): Bill {
@@ -24,7 +26,8 @@ export class Bill {
 			new UserShort(creatorId, '', ''),
 			[],
 			new Date().toISOString(),
-			Bill.Status.OPEN
+			Bill.Status.OPEN,
+			[]
 		)
 	}
 }
