@@ -12,7 +12,7 @@ import Home from '../home/Home'
 import PersonView from '../person-view/PersonView'
 import SplitBill from '../split-bill/SplitBill'
 import {AuthService} from '../../services/AuthService'
-import BillView from '../bill-preview/BillView'
+import BillView from '../bill-view/BillView'
 
 function App() {
 	/**

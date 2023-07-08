@@ -1,5 +1,6 @@
 import {AuthService} from '../../services/AuthService'
-import Payment from '../payment/Payment'
+import BillCard from '../bill-card/BillCard'
+import BillView from '../bill-view/BillView'
 import './Home.scss'
 
 function Home() {
@@ -16,7 +17,7 @@ function Home() {
 				<p className='home-name'>History</p>
 				<hr />
 				<div className='home-payments'>
-					<Payment />
+					<BillCard />
 				</div>
 			</div>
 		</>
