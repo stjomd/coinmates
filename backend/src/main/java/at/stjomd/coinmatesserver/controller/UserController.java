@@ -1,23 +1,19 @@
 package at.stjomd.coinmatesserver.controller;
 
-import at.stjomd.coinmatesserver.entity.Bill;
 import at.stjomd.coinmatesserver.entity.User;
 import at.stjomd.coinmatesserver.entity.dto.AddFriendDto;
-import at.stjomd.coinmatesserver.entity.dto.BillDto;
 import at.stjomd.coinmatesserver.entity.dto.UserShortDto;
 import at.stjomd.coinmatesserver.entity.dto.LoginDetailsDto;
 import at.stjomd.coinmatesserver.entity.dto.UserDto;
 import at.stjomd.coinmatesserver.exception.AuthenticationFailedException;
 import at.stjomd.coinmatesserver.exception.NotFoundException;
 import at.stjomd.coinmatesserver.exception.UserAlreadyExistsException;
-import at.stjomd.coinmatesserver.entity.mapper.BillMapper;
 import at.stjomd.coinmatesserver.entity.mapper.UserMapper;
 import at.stjomd.coinmatesserver.security.SecurityConfig;
 import at.stjomd.coinmatesserver.service.user.UserService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.List;
 import java.util.Set;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -39,15 +35,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
 	private final UserService userService;
-	private final BillMapper billMapper;
 	private final UserMapper userMapper;
 
 	public UserController(
-		UserService userService,
-		BillMapper billMapper, UserMapper userMapper
+		UserService userService, UserMapper userMapper
 	) {
 		this.userService = userService;
-		this.billMapper = billMapper;
 		this.userMapper = userMapper;
 	}
 
@@ -96,15 +89,6 @@ public class UserController {
 		log.info("PATCH /api/v1/users/{}: friendId = {}", id, friendDto.getId());
 		Set<User> friends = userService.addFriend(id, friendDto.getId());
 		return userMapper.toFriendDtos(friends);
-	}
-
-	@GetMapping("/{id}/bills")
-	@ResponseStatus(HttpStatus.OK)
-	public List<BillDto> getAllBillsForUser(@PathVariable Integer id)
-	throws NotFoundException {
-		log.info("GET /api/v1/users/{}/bills", id);
-		List<Bill> bills = userService.getAllBillsForUser(id);
-		return billMapper.toDtos(bills);
 	}
 
 }

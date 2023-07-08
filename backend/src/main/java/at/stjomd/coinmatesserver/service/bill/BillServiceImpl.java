@@ -1,6 +1,10 @@
 package at.stjomd.coinmatesserver.service.bill;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,6 +14,7 @@ import at.stjomd.coinmatesserver.entity.Bill;
 import at.stjomd.coinmatesserver.entity.User;
 import at.stjomd.coinmatesserver.exception.NotFoundException;
 import at.stjomd.coinmatesserver.repository.BillRepository;
+import at.stjomd.coinmatesserver.service.user.UserService;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -19,11 +24,15 @@ public class BillServiceImpl implements BillService {
 	private final BillRepository billRepository;
 	private final BillServiceValidator validator;
 
+	private final UserService userService;
+
 	public BillServiceImpl(
-		BillRepository billRepository, BillServiceValidator validator
+		BillRepository billRepository, BillServiceValidator validator,
+		UserService userService
 	) {
 		this.billRepository = billRepository;
 		this.validator = validator;
+		this.userService = userService;
 	}
 
 	public Amount splitAmount(Bill bill) {
@@ -88,6 +97,31 @@ public class BillServiceImpl implements BillService {
 		billRepository.refresh(createdBill);
 		createdBill.setSplitAmount(splitAmount(createdBill));
 		return createdBill;
+	}
+
+	@Override
+	public Set<Bill> getBillsCreatedByUser(Integer id)
+	throws NotFoundException {
+		User user = userService.getUser(id);
+		return user.getCreatedBills();
+	}
+
+	@Override
+	public Set<Bill> getBillsAssignedToUser(Integer id)
+	throws NotFoundException {
+		User user = userService.getUser(id);
+		return user.getAssignedBills();
+	}
+
+	@Override
+	public List<Bill> getAllBillsForUser(Integer id) throws NotFoundException {
+		User user = userService.getUser(id);
+		List<Bill> union = new ArrayList<>(user.getCreatedBills());
+		union.addAll(user.getAssignedBills());
+		Collections.sort(union,
+			(a, b) -> -a.getCreationDate().compareTo(b.getCreationDate())
+		);
+		return union;
 	}
 
 }

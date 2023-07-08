@@ -1,5 +1,7 @@
 package at.stjomd.coinmatesserver.controller;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -59,6 +61,15 @@ public class BillController {
 		log.info("POST /api/v1/bills: {}", billDto);
 		Bill createdBill = billService.createBill(billMapper.toEntity(billDto));
 		return billMapper.toDto(createdBill);
+	}
+
+	@GetMapping
+	@ResponseStatus(HttpStatus.OK)
+	public List<BillDto> getAllBillsForUser(Integer user)
+	throws NotFoundException {
+		log.info("GET /api/v1/bills?user=", user);
+		List<Bill> bills = billService.getAllBillsForUser(user);
+		return billMapper.toDtos(bills);
 	}
 
 }
