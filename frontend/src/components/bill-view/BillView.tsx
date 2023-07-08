@@ -68,7 +68,7 @@ function BillView() {
 			items.push(
 				<li key={person.id} className={personClassName(person.id, personPaid)}>
 					<div className='bv-person-box'>
-						<span>
+						<span className='bv-person-user-name'>
 							{person.firstName} {person.lastName}
 						</span>
 						{personPaid && <span>Paid</span>}
