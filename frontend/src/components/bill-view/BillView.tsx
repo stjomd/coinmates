@@ -23,9 +23,10 @@ function BillView() {
 	 * Determines the class name of the list item corresponding to a person with
 	 * the specified ID.
 	 * @param personId the ID of the person of the list item.
+	 * @param highlight indicates if the row should be highlighted in green.
 	 * @returns the class name of the list item.
 	 */
-	const personClassName = (personId: number) => {
+	const personClassName = (personId: number, highlight: boolean) => {
 		if (bill == null) {
 			return ''
 		}
@@ -33,7 +34,7 @@ function BillView() {
 		if (personId === user?.id) {
 			className += 'bv-list-user '
 		}
-		if (personId === bill.creator.id) {
+		if (highlight || personId === bill.creator.id) {
 			className += 'list-group-item-primary '
 		}
 		return className
@@ -49,14 +50,29 @@ function BillView() {
 		}
 		const items: JSX.Element[] = []
 		items.push(
-			<li key={bill.creator.id} className={personClassName(bill.creator.id)}>
-				{bill.creator.firstName} {bill.creator.lastName}
+			<li
+				key={bill.creator.id}
+				className={personClassName(bill.creator.id, true)}
+			>
+				<div className='bv-person-box'>
+					<span className='bv-person-user-name'>
+						{bill.creator.firstName} {bill.creator.lastName}
+					</span>
+					<span>Receiver</span>
+				</div>
 			</li>
 		)
 		for (const person of bill.people) {
+			const personPaid =
+				bill.payments.filter(p => p.userId === person.id).length > 0
 			items.push(
-				<li key={person.id} className={personClassName(person.id)}>
-					{person.firstName} {person.lastName}
+				<li key={person.id} className={personClassName(person.id, personPaid)}>
+					<div className='bv-person-box'>
+						<span>
+							{person.firstName} {person.lastName}
+						</span>
+						{personPaid && <span>Paid</span>}
+					</div>
 				</li>
 			)
 		}
@@ -90,7 +106,6 @@ function BillView() {
 	 * @returns a JSX element with the badge.
 	 */
 	const badge = () => {
-		console.log(bill)
 		if (bill?.status === Bill.Status.OPEN) {
 			return <span className='badge rounded-pill bg-secondary'>Open</span>
 		} else if (bill?.status === Bill.Status.CLOSED) {

@@ -32,7 +32,12 @@ span.badge {
 	margin-bottom: 14pt;
 }
 
-.bv-list-user {
+.bv-person-box {
+	display: flex;
+	justify-content: space-between;
+}
+
+.bv-list-user .bv-person-box span.bv-person-user-name {
 	font-weight: bold;
 	&::after {
 		content: ' (You)';
