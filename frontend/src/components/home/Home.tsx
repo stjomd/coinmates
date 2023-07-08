@@ -4,7 +4,6 @@ import BillCard from '../bill-card/BillCard'
 import './Home.scss'
 import {Bill} from '../../entities/Bill'
 import {BillService} from '../../services/BillService'
-import {set} from 'react-hook-form'
 
 function Home() {
 	const user = AuthService.getAuth()
@@ -19,7 +18,7 @@ function Home() {
 	const billElements = () => {
 		const elements: JSX.Element[] = []
 		for (const bill of bills) {
-			elements.push(<BillCard />)
+			elements.push(<BillCard bill={bill} />)
 		}
 		return elements
 	}
