@@ -52,3 +52,7 @@
 		color: colors.$primary;
 	}
 }
+
+.bc-card:hover .bc-title {
+	text-decoration: underline;
+}

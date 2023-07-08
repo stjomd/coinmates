@@ -4,6 +4,7 @@ import BillCard from '../bill-card/BillCard'
 import './Home.scss'
 import {Bill} from '../../entities/Bill'
 import {BillService} from '../../services/BillService'
+import {Link} from 'react-router-dom'
 
 function Home() {
 	const user = AuthService.getAuth()
@@ -18,7 +19,11 @@ function Home() {
 	const billElements = () => {
 		const elements: JSX.Element[] = []
 		for (const bill of bills) {
-			elements.push(<BillCard bill={bill} />)
+			elements.push(
+				<Link className='home-bill-link' to={`/bill/${bill.id}`}>
+					<BillCard bill={bill} />
+				</Link>
+			)
 		}
 		return elements
 	}
@@ -30,9 +35,7 @@ function Home() {
 				<p id='home-bal-ok'>Everything's good, you do not owe anyone.</p>
 			</div>
 			<div className='home-history'>
-				<p className='home-name'>History</p>
-				<hr />
-				<div className='home-payments'>{billElements()}</div>
+				<div className='home-bills'>{billElements()}</div>
 			</div>
 		</>
 	)

@@ -44,7 +44,7 @@ function BillCard({bill}: {bill: Bill}) {
 	}
 
 	return (
-		<ul className='list-group'>
+		<ul className='list-group bc-card'>
 			<li className='list-group-item'>
 				<div className='bc-container'>
 					<div className='bc-date'>
