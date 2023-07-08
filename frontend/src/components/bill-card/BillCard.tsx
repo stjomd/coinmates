@@ -64,7 +64,7 @@ function BillCard({bill}: {bill: Bill}) {
 			<li className='list-group-item'>
 				<div className='bc-container'>
 					<div className='bc-date'>
-						<span>{date.getDay()}</span>
+						<span>{date.getDate()}</span>
 						<span>{months[date.getMonth()]}</span>
 					</div>
 					<div className='bc-details'>
