@@ -26,6 +26,9 @@ function PersonView() {
 		}
 	}, [params])
 
+	/**
+	 * Sends a request to add this user to logged in user's friends.
+	 */
 	const addFriend = () => {
 		if (signedInUser == null || signedInUser.id == null) {
 			return
@@ -38,12 +41,17 @@ function PersonView() {
 			.catch(err => console.error(err))
 	}
 
+	/**
+	 * Redirect to home if this is the signed in user's page.
+	 * @returns a JSX `<Navigate>` element.
+	 */
 	const redirectToHomeIfOwnPage = () => {
 		if (user != null && signedInUser != null && user.id === signedInUser.id) {
 			return <Navigate replace to='/home' />
 		}
 	}
 
+	// The component
 	return (
 		<div className='pv-content'>
 			{redirectToHomeIfOwnPage()}

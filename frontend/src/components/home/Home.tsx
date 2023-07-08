@@ -10,12 +10,17 @@ function Home() {
 	const user = AuthService.getAuth()
 	const [bills, setBills] = useState<Bill[]>([])
 
+	// Load user's bills
 	useEffect(() => {
 		if (user?.id != null) {
 			BillService.getAllBills(user.id).then(setBills).catch(console.error)
 		}
 	}, [user?.id])
 
+	/**
+	 * Constructs bill cards.
+	 * @returns an array of JSX elements containing bill cards.
+	 */
 	const billElements = () => {
 		const elements: JSX.Element[] = []
 		for (const bill of bills) {
@@ -28,6 +33,7 @@ function Home() {
 		return elements
 	}
 
+	// The component
 	return (
 		<>
 			<div className='home-info-group'>

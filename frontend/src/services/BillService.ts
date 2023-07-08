@@ -16,14 +16,29 @@ export abstract class BillService {
 		return HttpService.get(this.uri + '/split', {...amount, people: people})
 	}
 
+	/**
+	 * Retrieves a bill by its ID.
+	 * @param id the ID of the bill.
+	 * @returns a promise containing the bill with the specified ID.
+	 */
 	static async getBill(id: number): Promise<Bill> {
 		return HttpService.get(this.uri + `/${id}`)
 	}
 
+	/**
+	 * Retrieves all bill for a specific user.
+	 * @param userId the ID of the user.
+	 * @returns a promise containing the bill with the specified ID.
+	 */
 	static async getAllBills(userId: number): Promise<Bill[]> {
 		return HttpService.get(this.uri, {user: userId})
 	}
 
+	/**
+	 * Creates a bill.
+	 * @param id the bill entity.
+	 * @returns a promise containing the created bill.
+	 */
 	static async createBill(bill: Bill): Promise<Bill> {
 		return HttpService.post(this.uri, bill)
 	}

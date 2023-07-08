@@ -10,6 +10,7 @@ function BillView() {
 	const {id: billId} = useParams()
 	const [bill, setBill] = useState<Bill>()
 
+	// Load bill
 	useEffect(() => {
 		if (billId != null) {
 			BillService.getBill(+billId)
@@ -18,7 +19,16 @@ function BillView() {
 		}
 	}, [billId])
 
-	const personClassName = (personId: number, bill: Bill) => {
+	/**
+	 * Determines the class name of the list item corresponding to a person with
+	 * the specified ID.
+	 * @param personId the ID of the person of the list item.
+	 * @returns the class name of the list item.
+	 */
+	const personClassName = (personId: number) => {
+		if (bill == null) {
+			return ''
+		}
 		let className = 'list-group-item '
 		if (personId === user?.id) {
 			className += 'bv-list-user '
@@ -29,22 +39,23 @@ function BillView() {
 		return className
 	}
 
+	/**
+	 * Constructs the entries for the people list.
+	 * @returns an array of JSX elements, containing entries for the people list.
+	 */
 	const peopleItems = () => {
 		if (bill == null || user == null) {
 			return
 		}
 		const items: JSX.Element[] = []
 		items.push(
-			<li
-				key={bill.creator.id}
-				className={personClassName(bill.creator.id, bill)}
-			>
+			<li key={bill.creator.id} className={personClassName(bill.creator.id)}>
 				{bill.creator.firstName} {bill.creator.lastName}
 			</li>
 		)
 		for (const person of bill.people) {
 			items.push(
-				<li key={person.id} className={personClassName(person.id, bill)}>
+				<li key={person.id} className={personClassName(person.id)}>
 					{person.firstName} {person.lastName}
 				</li>
 			)
@@ -52,6 +63,10 @@ function BillView() {
 		return items
 	}
 
+	/**
+	 * Constructs a `<p>` element containing the creation date of the bill.
+	 * @returns a `<p>` element with the creation date.
+	 */
 	const creationDateElement = () => {
 		if (bill == null) {
 			return
@@ -70,6 +85,10 @@ function BillView() {
 		)
 	}
 
+	/**
+	 * Constructs a badge showing the bill's status.
+	 * @returns a JSX element with the badge.
+	 */
 	const badge = () => {
 		console.log(bill)
 		if (bill?.status === Bill.Status.OPEN) {
@@ -79,6 +98,7 @@ function BillView() {
 		}
 	}
 
+	// The component
 	return (
 		<>
 			<h4>Bill</h4>
