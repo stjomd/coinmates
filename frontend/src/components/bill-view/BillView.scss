@@ -31,3 +31,10 @@ span.badge {
 	margin-top: 24pt;
 	margin-bottom: 14pt;
 }
+
+.bv-list-user {
+	font-weight: bold;
+	&::after {
+		content: ' (You)';
+	}
+}

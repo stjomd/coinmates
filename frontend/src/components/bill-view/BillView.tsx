@@ -3,8 +3,10 @@ import './BillView.scss'
 import {useEffect, useState} from 'react'
 import {Bill} from '../../entities/Bill'
 import {BillService} from '../../services/BillService'
+import {AuthService} from '../../services/AuthService'
 
 function BillView() {
+	const user = AuthService.getAuth()
 	const {id: billId} = useParams()
 	const [bill, setBill] = useState<Bill>()
 
@@ -16,14 +18,33 @@ function BillView() {
 		}
 	}, [billId])
 
+	const personClassName = (personId: number, bill: Bill) => {
+		let className = 'list-group-item '
+		if (personId === user?.id) {
+			className += 'bv-list-user '
+		}
+		if (personId === bill.creator.id) {
+			className += 'list-group-item-primary '
+		}
+		return className
+	}
+
 	const peopleItems = () => {
-		if (bill == null) {
+		if (bill == null || user == null) {
 			return
 		}
 		const items: JSX.Element[] = []
+		items.push(
+			<li
+				key={bill.creator.id}
+				className={personClassName(bill.creator.id, bill)}
+			>
+				{bill.creator.firstName} {bill.creator.lastName}
+			</li>
+		)
 		for (const person of bill.people) {
 			items.push(
-				<li key={person.id} className='list-group-item'>
+				<li key={person.id} className={personClassName(person.id, bill)}>
 					{person.firstName} {person.lastName}
 				</li>
 			)
@@ -88,15 +109,7 @@ function BillView() {
 				</div>
 			</div>
 			<p className='bv-small-txt mb-1'>People assigned to this bill</p>
-			<ul className='list-group mb-3'>
-				<li
-					key={bill?.creator.id}
-					className='list-group-item list-group-item-primary'
-				>
-					You
-				</li>
-				{peopleItems()}
-			</ul>
+			<ul className='list-group mb-3'>{peopleItems()}</ul>
 			{creationDateElement()}
 		</>
 	)
