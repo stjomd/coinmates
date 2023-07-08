@@ -9,7 +9,9 @@ import org.mapstruct.Mapping;
 import at.stjomd.coinmatesserver.entity.Bill;
 import at.stjomd.coinmatesserver.entity.dto.BillDto;
 
-@Mapper(componentModel = "spring", uses = {UserMapper.class})
+@Mapper(
+	componentModel = "spring", uses = {UserMapper.class, PaymentMapper.class}
+)
 public interface BillMapper {
 
 	BillDto toDto(Bill entity);

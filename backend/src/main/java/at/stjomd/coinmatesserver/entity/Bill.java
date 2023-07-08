@@ -75,7 +75,7 @@ public class Bill {
 
 	@ToString.Exclude
 	@EqualsAndHashCode.Exclude
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "bill")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "bill")
 	private Set<Payment> payments;
 
 }
