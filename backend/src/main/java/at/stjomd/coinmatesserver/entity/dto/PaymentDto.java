@@ -23,7 +23,6 @@ public class PaymentDto {
 	@Valid
 	private Amount amount;
 
-	@NotNull
 	@Past
 	private Date date;
 

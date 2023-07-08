@@ -14,8 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import at.stjomd.coinmatesserver.entity.Amount;
 import at.stjomd.coinmatesserver.entity.Bill;
+import at.stjomd.coinmatesserver.entity.Payment;
 import at.stjomd.coinmatesserver.entity.dto.BillDto;
+import at.stjomd.coinmatesserver.entity.dto.PaymentDto;
 import at.stjomd.coinmatesserver.entity.mapper.BillMapper;
+import at.stjomd.coinmatesserver.entity.mapper.PaymentMapper;
 import at.stjomd.coinmatesserver.exception.NotFoundException;
 import at.stjomd.coinmatesserver.security.SecurityConfig;
 import at.stjomd.coinmatesserver.service.bill.BillService;
@@ -32,10 +35,16 @@ public class BillController {
 
 	private final BillService billService;
 	private final BillMapper billMapper;
+	private final PaymentMapper paymentMapper;
 
-	public BillController(BillService billService, BillMapper billMapper) {
+	public BillController(
+		BillService billService,
+		BillMapper billMapper,
+		PaymentMapper paymentMapper
+	) {
 		this.billService = billService;
 		this.billMapper = billMapper;
+		this.paymentMapper = paymentMapper;
 	}
 
 	@GetMapping("/split")
@@ -70,6 +79,18 @@ public class BillController {
 		log.info("GET /api/v1/bills?user=", user);
 		List<Bill> bills = billService.getAllBillsForUser(user);
 		return billMapper.toDtos(bills);
+	}
+
+	@PostMapping("/{billId}/payments")
+	@ResponseStatus(HttpStatus.CREATED)
+	public PaymentDto submitPayment(
+		@PathVariable Integer billId,
+		@Valid @RequestBody PaymentDto paymentDto
+	) throws NotFoundException {
+		log.info("POST /api/v1/bills/{}/payments: {}", billId, paymentDto);
+		Payment entity = paymentMapper.toEntity(paymentDto);
+		Payment savedEntity = billService.submitPayment(entity);
+		return paymentMapper.toDto(savedEntity);
 	}
 
 }

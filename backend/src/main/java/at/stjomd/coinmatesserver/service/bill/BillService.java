@@ -5,6 +5,7 @@ import java.util.Set;
 
 import at.stjomd.coinmatesserver.entity.Amount;
 import at.stjomd.coinmatesserver.entity.Bill;
+import at.stjomd.coinmatesserver.entity.Payment;
 import at.stjomd.coinmatesserver.exception.NotFoundException;
 import at.stjomd.coinmatesserver.exception.ValidationFailedException;
 
@@ -60,5 +61,13 @@ public interface BillService {
 	 * @throws NotFoundException if no such user exists.
 	 */
 	List<Bill> getAllBillsForUser(Integer id) throws NotFoundException;
+
+	/**
+	 * Saves the payment and assigns it to the appropriate bill.
+	 * @param payment the payment to save.
+	 * @return the saved payment entity.
+	 * @throws NotFoundException if the corresponding bill could not be found.
+	 */
+	Payment submitPayment(Payment payment) throws NotFoundException;
 
 }

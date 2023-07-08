@@ -9,9 +9,11 @@ import at.stjomd.coinmatesserver.entity.dto.PaymentDto;
 @Mapper(componentModel = "spring", uses = {UserMapper.class, BillMapper.class})
 public interface PaymentMapper {
 
+	@Mapping(source = "user", target = "userId")
 	@Mapping(source = "bill", target = "billId")
 	PaymentDto toDto(Payment entity);
 
+	@Mapping(source = "userId", target = "user")
 	@Mapping(source = "billId", target = "bill")
 	Payment toEntity(PaymentDto dto);
 

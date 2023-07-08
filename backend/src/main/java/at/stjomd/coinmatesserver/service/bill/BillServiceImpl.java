@@ -11,9 +11,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import at.stjomd.coinmatesserver.entity.Amount;
 import at.stjomd.coinmatesserver.entity.Bill;
+import at.stjomd.coinmatesserver.entity.Payment;
 import at.stjomd.coinmatesserver.entity.User;
 import at.stjomd.coinmatesserver.exception.NotFoundException;
+import at.stjomd.coinmatesserver.exception.ValidationFailedException;
 import at.stjomd.coinmatesserver.repository.BillRepository;
+import at.stjomd.coinmatesserver.repository.PaymentRepository;
 import at.stjomd.coinmatesserver.service.user.UserService;
 import lombok.extern.slf4j.Slf4j;
 
@@ -22,15 +25,17 @@ import lombok.extern.slf4j.Slf4j;
 public class BillServiceImpl implements BillService {
 
 	private final BillRepository billRepository;
-	private final BillServiceValidator validator;
+	private final PaymentRepository paymentRepository;
 
+	private final BillServiceValidator validator;
 	private final UserService userService;
 
 	public BillServiceImpl(
-		BillRepository billRepository, BillServiceValidator validator,
-		UserService userService
+		BillRepository billRepository, PaymentRepository paymentRepository,
+		BillServiceValidator validator, UserService userService
 	) {
 		this.billRepository = billRepository;
+		this.paymentRepository = paymentRepository;
 		this.validator = validator;
 		this.userService = userService;
 	}
@@ -102,6 +107,7 @@ public class BillServiceImpl implements BillService {
 	@Override
 	public Set<Bill> getBillsCreatedByUser(Integer id)
 	throws NotFoundException {
+		log.trace("getBillsCreatedByUser({})", id);
 		User user = userService.getUser(id);
 		return user.getCreatedBills();
 	}
@@ -109,12 +115,14 @@ public class BillServiceImpl implements BillService {
 	@Override
 	public Set<Bill> getBillsAssignedToUser(Integer id)
 	throws NotFoundException {
+		log.trace("getBillsAssignedToUser({})", id);
 		User user = userService.getUser(id);
 		return user.getAssignedBills();
 	}
 
 	@Override
 	public List<Bill> getAllBillsForUser(Integer id) throws NotFoundException {
+		log.trace("getAllBillsForUser({})", id);
 		User user = userService.getUser(id);
 		List<Bill> union = new ArrayList<>(user.getCreatedBills());
 		union.addAll(user.getAssignedBills());
@@ -122,6 +130,27 @@ public class BillServiceImpl implements BillService {
 			(a, b) -> -a.getCreationDate().compareTo(b.getCreationDate())
 		);
 		return union;
+	}
+
+	@Override
+	public Payment submitPayment(Payment payment) throws NotFoundException {
+		log.trace("submitPayment({})", payment);
+		validator.submitPayment(payment);
+		// Retrieve managed bill entity and check if split amount matches
+		Bill bill = getBill(payment.getBill().getId());
+		Amount splitAmount = splitAmount(bill);
+		if (!splitAmount.equals(payment.getAmount())) {
+			throw new ValidationFailedException(String.format(
+				"Payment amount does not match bill's requested amount (of "
+				+ "%d,%d)",
+				splitAmount.getInteger(),
+				splitAmount.getFraction()
+			));
+		}
+		// Set date and save
+		payment.setDate(new Date());
+		Payment savedPayment = paymentRepository.save(payment);
+		return savedPayment;
 	}
 
 }
