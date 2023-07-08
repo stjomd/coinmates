@@ -20,6 +20,10 @@ export abstract class BillService {
 		return HttpService.get(this.uri + `/${id}`)
 	}
 
+	static async getAllBills(userId: number): Promise<Bill[]> {
+		return HttpService.get(this.uri, {user: userId})
+	}
+
 	static async createBill(bill: Bill): Promise<Bill> {
 		return HttpService.post(this.uri, bill)
 	}
