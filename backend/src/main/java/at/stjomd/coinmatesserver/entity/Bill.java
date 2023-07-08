@@ -16,12 +16,19 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Transient;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Bill {
 
@@ -65,5 +72,10 @@ public class Bill {
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
 	private Status status;
+
+	@ToString.Exclude
+	@EqualsAndHashCode.Exclude
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "bill")
+	private Set<Payment> payments;
 
 }
