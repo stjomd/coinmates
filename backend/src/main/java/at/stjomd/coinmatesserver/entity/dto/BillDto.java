@@ -49,4 +49,7 @@ public class BillDto {
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private Bill.Status status;
 
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+	private Set<PaymentDto> payments;
+
 }
