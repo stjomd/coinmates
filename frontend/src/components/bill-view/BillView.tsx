@@ -30,7 +30,7 @@ function BillView() {
 				})
 				.catch(() => window.location.replace('/error'))
 		}
-	}, [billId])
+	}, [billId, user?.id])
 
 	const pay = () => {
 		setIsSubmitting(true)

@@ -25,7 +25,7 @@ function Home() {
 		const elements: JSX.Element[] = []
 		for (const bill of bills) {
 			elements.push(
-				<Link className='home-bill-link' to={`/bill/${bill.id}`}>
+				<Link key={bill.id} className='home-bill-link' to={`/bill/${bill.id}`}>
 					<BillCard bill={bill} />
 				</Link>
 			)
