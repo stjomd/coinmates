@@ -15,14 +15,10 @@
 	font-family: fonts.$display-font-family;
 }
 
-#home-bal-ok {
-	color: colors.$primary;
-}
-
 // History
 
 .home-history {
-	margin-top: 30pt;
+	margin-top: 20pt;
 	& p.home-name {
 		margin-bottom: 0;
 	}

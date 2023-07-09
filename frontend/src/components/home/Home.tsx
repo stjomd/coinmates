@@ -38,7 +38,10 @@ function Home() {
 		<>
 			<div className='home-info-group'>
 				<p className='home-name'>Hi, {user?.firstName}!</p>
-				<p id='home-bal-ok'>Everything's good, you do not owe anyone.</p>
+				<p>
+					Here's a list of recent bills you've created or been assigned to by
+					your friends.
+				</p>
 			</div>
 			<div className='home-history'>
 				<div className='home-bills'>{billElements()}</div>
