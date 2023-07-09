@@ -1,12 +1,12 @@
 package at.stjomd.coinmatesserver.service.user;
 
 import at.stjomd.coinmatesserver.entity.User;
+import at.stjomd.coinmatesserver.exception.AccessForbiddenException;
 import at.stjomd.coinmatesserver.exception.NotFoundException;
 import at.stjomd.coinmatesserver.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Collection;
-import java.util.NoSuchElementException;
 import java.util.Set;
 
 import org.springframework.stereotype.Service;
@@ -47,7 +47,13 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public Set<User> getFriends(Integer id) throws NotFoundException {
+	public Set<User> getFriends(Integer id, User authenticatedUser)
+	throws AccessForbiddenException, NotFoundException {
+		if (!id.equals(authenticatedUser.getId())) {
+			throw new AccessForbiddenException(
+				"Attempted to retrieve friends of other user"
+			);
+		}
 		User user = userRepository.findById(id)
 			.orElseThrow(() ->
 				new NotFoundException("No user found with ID: " + id)
@@ -57,25 +63,31 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@Transactional
-	public Set<User> addFriend(Integer id, Integer friendId)
-	throws NotFoundException {
+	public Set<User> addFriend(
+		Integer id, Integer friendId, User authenticatedUser
+	) throws AccessForbiddenException, NotFoundException {
 		log.trace("addFriend(id = {}, friendId = {})", id, friendId);
-		if (id == friendId) {
+		if (!id.equals(authenticatedUser.getId())) {
+			throw new AccessForbiddenException(
+				"Attempted to add friend to other user"
+			);
+		}
+		if (id.equals(friendId)) {
 			throw new IllegalArgumentException(
 				"Attempted to add self as friend: id = " + id
 			);
 		}
-		try {
-			User user = userRepository.findById(id).orElseThrow();
-			User friendUser = userRepository.findById(friendId).orElseThrow();
-			user.getFriends().add(friendUser);
-			friendUser.getFriends().add(user);
-			userRepository.save(user);
-			userRepository.save(friendUser);
-			return user.getFriends();
-		} catch (NoSuchElementException exc) {
-			throw new NotFoundException("No user found with ID: " + id, exc);
-		}
+		User user = userRepository.findById(id)
+			.orElseThrow(() ->
+				new NotFoundException("No user found with ID: " + id)
+			);
+		User friendUser = userRepository.findById(friendId)
+			.orElseThrow(() ->
+				new NotFoundException("No user found with ID: " + friendId)
+			);
+		user.getFriends().add(friendUser);
+		friendUser.getFriends().add(user);
+		return user.getFriends();
 	}
 
 }

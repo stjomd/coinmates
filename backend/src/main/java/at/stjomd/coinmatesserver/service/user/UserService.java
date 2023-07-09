@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Set;
 
 import at.stjomd.coinmatesserver.entity.User;
+import at.stjomd.coinmatesserver.exception.AccessForbiddenException;
 import at.stjomd.coinmatesserver.exception.NotFoundException;
 
 /**
@@ -37,19 +38,26 @@ public interface UserService {
 	/**
 	 * Retrieves the set of a user's friends.
 	 * @param id the ID of the user.
+	 * @param authenticatedUser the user currently authenticated.
 	 * @return the set of the user's friends.
+	 * @throws AccessForbiddenException if attempting to retrieve friends of
+	 * 		   anyone else but the logged in user.
 	 * @throws NotFoundException if the user with such ID does not exist.
 	 */
-	Set<User> getFriends(Integer id) throws NotFoundException;
+	Set<User> getFriends(Integer id, User authenticatedUser)
+	throws AccessForbiddenException, NotFoundException;
 
 	/**
 	 * Adds a friend relationship between two users.
-	 * @param id the ID of one user making the request.
+	 * @param id the ID of the user making the request.
 	 * @param friendId the ID of the other user.
+	 * @param authenticatedUser the user currently authenticated.
 	 * @return the updated set of friends of the user making the request.
+	 * @throws AccessForbiddenException if attempting to add a friend to anyone
+	 * 		   else but the logged in user.
 	 * @throws NotFoundException if any of the two users could not be found.
 	 */
-	Set<User> addFriend(Integer id, Integer friendId)
-	throws NotFoundException;
+	Set<User> addFriend(Integer id, Integer friendId, User authenticatedUser)
+	throws AccessForbiddenException, NotFoundException;
 
 }

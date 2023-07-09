@@ -4,6 +4,7 @@ import at.stjomd.coinmatesserver.entity.User;
 import at.stjomd.coinmatesserver.entity.dto.AddFriendDto;
 import at.stjomd.coinmatesserver.entity.dto.UserShortDto;
 import at.stjomd.coinmatesserver.entity.dto.UserDto;
+import at.stjomd.coinmatesserver.exception.AccessForbiddenException;
 import at.stjomd.coinmatesserver.exception.NotFoundException;
 import at.stjomd.coinmatesserver.entity.mapper.UserMapper;
 import at.stjomd.coinmatesserver.security.SecurityConfig;
@@ -13,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.Set;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -51,19 +53,28 @@ public class UserController {
 
 	@GetMapping("/{id}/friends")
 	@ResponseStatus(HttpStatus.OK)
-	public Set<UserShortDto> getFriends(@PathVariable Integer id)
-	throws NotFoundException {
+	public Set<UserShortDto> getFriends(
+		@PathVariable Integer id,
+		@AuthenticationPrincipal User authenticatedUser
+	) throws NotFoundException, AccessForbiddenException {
 		log.info("GET /api/v1/users/{}/friends", id);
-		return userMapper.toShortDtos(userService.getFriends(id));
+		return userMapper.toShortDtos(
+			userService.getFriends(id, authenticatedUser)
+		);
 	}
 
 	@PatchMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
 	public Set<UserShortDto> addFriend(
-		@PathVariable Integer id, @Valid @RequestBody AddFriendDto friendDto
-	) throws NotFoundException {
-		log.info("PATCH /api/v1/users/{}: friendId = {}", id, friendDto.getId());
-		Set<User> friends = userService.addFriend(id, friendDto.getId());
+		@PathVariable Integer id, @Valid @RequestBody AddFriendDto friendDto,
+		@AuthenticationPrincipal User authenticatedUser
+	) throws AccessForbiddenException, NotFoundException {
+		log.info(
+			"PATCH /api/v1/users/{}: friendId = {}", id, friendDto.getId()
+		);
+		Set<User> friends = userService.addFriend(
+			id, friendDto.getId(), authenticatedUser
+		);
 		return userMapper.toShortDtos(friends);
 	}
 
