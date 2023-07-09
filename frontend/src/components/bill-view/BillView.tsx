@@ -169,20 +169,26 @@ function BillView() {
 	}
 
 	/**
-	 * Calculates and returns a string with the pending amount.
-	 * @returns a string with the pending amount.
+	 * Construct an element displaying the pending amount
+	 * @returns a JSX element with the pending amount.
 	 */
 	const pendingAmount = () => {
-		if (bill == null) {
-			return '...'
+		let string = '...'
+		let className = 'logo bv-amount '
+		if (bill != null) {
+			const splitAmount =
+				Number(bill.splitAmount.integer) +
+				Number(bill.splitAmount.fraction) / 100
+			const unpaidPersons = bill.people.length - bill.payments.length
+			const pending = splitAmount * unpaidPersons
+			if (pending > 0) {
+				className += 'bv-amount-pending'
+			}
+			const pendingInteger = Math.trunc(pending)
+			const pendingFraction = Math.round((pending - pendingInteger) * 100)
+			string = `${pendingInteger},${String(pendingFraction).padEnd(2, '0')}`
 		}
-		const splitAmount =
-			Number(bill.splitAmount.integer) + Number(bill.splitAmount.fraction) / 100
-		const unpaidPersons = bill.people.length - bill.payments.length
-		const pending = splitAmount * unpaidPersons
-		const pendingInteger = Math.trunc(pending)
-		const pendingFraction = Math.round((pending - pendingInteger) * 100)
-		return `${pendingInteger},${String(pendingFraction).padEnd(2, '0')}`
+		return <p className={className}>{string} &euro;</p>
 	}
 
 	// The component
@@ -212,9 +218,7 @@ function BillView() {
 				</div>
 				<div>
 					<p className='bv-small-txt'>Pending</p>
-					<p className='logo bv-amount bv-amount-pending'>
-						{pendingAmount()} &euro;
-					</p>
+					{pendingAmount()}
 				</div>
 			</div>
 			<p className='bv-small-txt mb-1'>People assigned to this bill</p>
