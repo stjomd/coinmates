@@ -1,6 +1,11 @@
 package at.stjomd.coinmatesserver.entity;
 
+import java.util.Collection;
 import java.util.Set;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -24,7 +29,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @Entity
 @Table(name = "_user")
-public class User {
+public class User implements UserDetails {
 
 	public enum Role {
 		REGULAR, ADMIN
@@ -72,5 +77,37 @@ public class User {
 	@EqualsAndHashCode.Exclude
 	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "people")
 	private Set<Bill> assignedBills;
+
+	// ----- UserDetails -------------------------------------------------------
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return Set.of();
+	}
+
+	@Override
+	public String getUsername() {
+		return email;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return true;
+	}
 
 }
