@@ -15,6 +15,24 @@ header {
 	display: flex;
 	align-items: baseline;
 	gap: 15pt;
+	margin-right: 15pt;
+}
+
+.header-right {
+	display: flex;
+	justify-content: space-between;
+	flex-grow: 1;
+	gap: 15pt;
+}
+
+.header-right-collapsed {
+	color: colors.$primary;
+	display: none;
+}
+
+.header-links {
+	display: flex;
+	gap: 15pt;
 }
 
 .header-link {
@@ -32,6 +50,15 @@ header {
 
 .header-link p {
 	margin-bottom: 0;
+}
+
+@media (max-width: 500px) {
+	.header-right {
+		display: none;
+	}
+	.header-right-collapsed {
+		display: block;
+	}
 }
 
 // ----- Dropdown --------------------------------------------------------------

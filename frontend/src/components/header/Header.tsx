@@ -78,14 +78,21 @@ function Header() {
 				<Link to='/' style={{textDecoration: 'none'}}>
 					<p className='logo header-logo'>coinmates</p>
 				</Link>
-				<Link to='/home' className='header-link'>
-					<p>Home</p>
-				</Link>
-				<Link to='/bill' className='header-link'>
-					<p>Split Bills</p>
-				</Link>
 			</div>
-			{userItem()}
+			<div className='header-right'>
+				<div className='header-links'>
+					<Link to='/home' className='header-link'>
+						<p>Home</p>
+					</Link>
+					<Link to='/bill' className='header-link'>
+						<p>Split Bills</p>
+					</Link>
+				</div>
+				{userItem()}
+			</div>
+			<div className='header-right-collapsed'>
+				<i className='bi bi-list' />
+			</div>
 		</header>
 	)
 }
