@@ -133,6 +133,7 @@ public class BillServiceImpl implements BillService {
 	}
 
 	@Override
+	@Transactional
 	public Payment submitPayment(Payment payment) throws NotFoundException {
 		log.trace("submitPayment({})", payment);
 		validator.submitPayment(payment);
@@ -147,9 +148,23 @@ public class BillServiceImpl implements BillService {
 				splitAmount.getFraction()
 			));
 		}
-		// Set date and save
+		// Determine if this is the last payment for this bill
+		int paidPersons = 0;
+		for (User user : bill.getPeople()) {
+			for (Payment submittedPayment : bill.getPayments()) {
+				if (user.getId().equals(submittedPayment.getUser().getId())) {
+					paidPersons += 1; break;
+				}
+			}
+		}
+		boolean lastPayment = paidPersons == bill.getPeople().size() - 1;
+		// Set date, save payment, close bill if needed
 		payment.setDate(new Date());
 		Payment savedPayment = paymentRepository.save(payment);
+		if (lastPayment) {
+			bill.setStatus(Bill.Status.CLOSED);
+			billRepository.save(bill);
+		}
 		return savedPayment;
 	}
 

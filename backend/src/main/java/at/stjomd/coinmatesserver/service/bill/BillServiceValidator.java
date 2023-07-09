@@ -107,6 +107,10 @@ public class BillServiceValidator {
 			fail("Internal error");
 			return;
 		}
+		// Bill must not be closed
+		if (bill.getStatus() == Bill.Status.CLOSED) {
+			fail("Bill is already closed");
+		}
 		// Person paying must be assigned to bill.people
 		boolean payerAssigned = false;
 		for (User user : bill.getPeople()) {
