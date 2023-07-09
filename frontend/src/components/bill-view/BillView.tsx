@@ -44,16 +44,12 @@ function BillView() {
 			bill.splitAmount,
 			new Date().toISOString()
 		)
-		console.log(payment)
 		BillService.submitPayment(payment)
 			.then(() => {
 				window.location.reload()
 				setIsSubmitting(false)
 			})
-			.catch(err => {
-				console.error(err)
-				setIsSubmitting(false)
-			})
+			.catch(() => setIsSubmitting(false))
 	}
 
 	/**

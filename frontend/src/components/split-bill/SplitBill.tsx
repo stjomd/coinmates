@@ -20,7 +20,8 @@ function SplitBill() {
 	const [friends, setFriends] = useState(new Array<UserShort>())
 	const [selectedFriends, setSelectedFriends] = useState(new Array<UserShort>())
 
-	const [loadingErrorMessage, setLoadingErrorMessage] = useState<string>()
+	const [errorMessage, setErrorMessage] = useState<string>()
+	const [friendsErrorMessage, setFriendsErrorMessage] = useState<string>()
 	const [validationErrors, setValidationErrors] =
 		useState<BillValidationMessages>({})
 
@@ -48,9 +49,12 @@ function SplitBill() {
 
 	// Load correct split amount from the server
 	const loadSplitAmountPreview = useDebouncedCallback(() => {
+		setErrorMessage(undefined)
 		BillService.splitAmount(bill.amount, bill.people.length + 1)
 			.then(amount => updateSplitAmount(amount))
-			.catch(err => console.log(err))
+			.catch(() =>
+				setErrorMessage('Sorry, could not load split amount preview.')
+			)
 	}, 1000)
 
 	// Update split amount when bill's amount changed
@@ -74,7 +78,7 @@ function SplitBill() {
 		}
 		UserService.getFriends(loggedInUser.id)
 			.then(res => setFriends(res))
-			.catch(() => setLoadingErrorMessage('Sorry, but an error occurred.'))
+			.catch(() => setFriendsErrorMessage('Sorry, but an error occurred.'))
 	}, [])
 
 	/**
@@ -116,7 +120,9 @@ function SplitBill() {
 						setRedirectToBillId(res.id)
 					}
 				})
-				.catch(console.error)
+				.catch(() =>
+					setErrorMessage('Sorry, could not submit bill. Please try again.')
+				)
 		}
 	}
 
@@ -264,17 +270,22 @@ function SplitBill() {
 						{selectedFriendItems()}
 					</ul>
 					<div className='sb-invalid'>{validationErrors.people}</div>
-					{loadingErrorMessage != null ? (
+					{friendsErrorMessage != null ? (
 						<div
 							className='alert alert-danger mt-3 unpadded-alert'
 							role='alert'
 						>
-							{loadingErrorMessage}
+							{friendsErrorMessage}
 						</div>
 					) : (
 						<ul className='list-group sb-list'>{friendItems()}</ul>
 					)}
 				</div>
+				{errorMessage != null && (
+					<div className='alert alert-danger unpadded-alert' role='alert'>
+						{errorMessage}
+					</div>
+				)}
 				<div className='sb-buttons-container'>
 					<button
 						type='button'

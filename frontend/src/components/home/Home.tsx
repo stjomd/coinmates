@@ -29,7 +29,6 @@ function Home() {
 	 * @returns an array of JSX elements containing bill cards.
 	 */
 	const billElements = () => {
-		console.log(errorMessage)
 		const elements: JSX.Element[] = []
 		for (const bill of bills) {
 			elements.push(

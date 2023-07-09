@@ -12,6 +12,8 @@ function PersonView() {
 	const [user, setUser] = useState<User>()
 	const [friends, setFriends] = useState<User[]>()
 
+	const [errorMessage, setErrorMessage] = useState<string>()
+
 	// Load user
 	useEffect(() => {
 		if (params.id == null || signedInUser?.id == null) {
@@ -19,12 +21,10 @@ function PersonView() {
 		}
 		UserService.getUser(+params.id)
 			.then(res => setUser(res as User))
-			.catch(() => {
-				window.location.replace('/error')
-			})
+			.catch(() => window.location.replace('/error'))
 		UserService.getFriends(signedInUser?.id)
 			.then(setFriends)
-			.catch(console.error)
+			.catch(() => window.location.replace('/error'))
 	}, [params, signedInUser?.id])
 
 	/**
@@ -50,7 +50,7 @@ function PersonView() {
 		}
 		UserService.addFriend(signedInUser.id, user.id)
 			.then(() => window.location.reload())
-			.catch(err => console.error(err))
+			.catch(() => setErrorMessage('Could not add friend, please retry.'))
 	}
 
 	/**
@@ -94,6 +94,14 @@ function PersonView() {
 							</>
 						) : (
 							<p>You are friends with {user.firstName}!</p>
+						)}
+						{errorMessage != null && (
+							<div
+								className='alert alert-danger pv-alert unpadded-alert'
+								role='alert'
+							>
+								{errorMessage}
+							</div>
 						)}
 					</div>
 				</>
