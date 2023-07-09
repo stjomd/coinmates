@@ -14,3 +14,7 @@ logging:
     file.name: ./backend/log/backend.log
     level:
         root: INFO
+
+server.servlet.session.cookie:
+    secure: true
+    same-site: none

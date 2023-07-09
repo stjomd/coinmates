@@ -1,10 +1,8 @@
 import './Login.scss'
 
 import {useState} from 'react'
-import {UserService} from '../../services/UserService'
 import {LoginDetails} from '../../entities/LoginDetails'
 import {Link} from 'react-router-dom'
-import {FetchError} from '../../services/HttpService'
 import {AuthService} from '../../services/AuthService'
 
 function Login() {
@@ -30,18 +28,11 @@ function Login() {
 			return
 		}
 		const login = new LoginDetails(email, password)
-		UserService.authenticate(login)
-			.then(user => AuthService.storeAuth(user, '/home'))
-			.catch(err => {
-				const error = err as FetchError
-				if (error.status === 401) {
-					setErrorMessage('Your email or password is incorrect, please retry.')
-				} else if (error.status === 422) {
-					setErrorMessage('Your data is invalid, please check and try again.')
-				} else {
-					setErrorMessage('Sorry, but an error occurred. Please try again.')
-				}
-			})
+		AuthService.login(login)
+			.then(res => AuthService.storeAuth(res, '/home'))
+			.catch(() =>
+				setErrorMessage('Your email or password is incorrect, please retry.')
+			)
 	}
 
 	/**

@@ -99,6 +99,7 @@ export abstract class HttpService {
 			method: method,
 			body: JSON.stringify(body),
 			headers: {...jsonHeaders, ...headers},
+			credentials: 'include',
 		})
 		if (response.ok) {
 			return response.json()

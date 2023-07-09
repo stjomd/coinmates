@@ -2,6 +2,7 @@ package at.stjomd.coinmatesserver.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -9,8 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.security.web.header.writers.StaticHeadersWriter;
 
 import at.stjomd.coinmatesserver.repository.UserRepository;
 
@@ -54,25 +54,20 @@ public class SecurityConfig {
 	throws Exception {
 		return http
 			.authorizeHttpRequests(ahr -> ahr
-				.requestMatchers("/api/v1/test/login").permitAll()
-				.requestMatchers("/api/v1/test/open/**").permitAll()
+				.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+				.requestMatchers("/api/v1/auth/**").permitAll()
 				.anyRequest().authenticated()
+			)
+			.headers(headers -> headers
+				.addHeaderWriter(new StaticHeadersWriter(
+					"Access-Control-Allow-Origin", FRONTEND_ORIGIN
+				))
+				.addHeaderWriter(new StaticHeadersWriter(
+					"Access-Control-Allow-Credentials", "true"
+				))
 			)
 			.csrf(csrf -> csrf.disable())
 			.build();
-	}
-
-	@Bean
-	WebMvcConfigurer corsConfigurer() {
-		return new WebMvcConfigurer() {
-			@Override
-			public void addCorsMappings(CorsRegistry registry) {
-				registry
-					.addMapping("/api/**")
-					.allowedOrigins(FRONTEND_ORIGIN)
-					.allowedOrigins(FRONTEND_ORIGIN_IP);
-			}
-		};
 	}
 
 }

@@ -1,6 +1,20 @@
-import { User } from '../entities/User'
+import {serverUri} from '../Globals'
+import {LoginDetails} from '../entities/LoginDetails'
+import {User} from '../entities/User'
+import {HttpService} from './HttpService'
 
 export abstract class AuthService {
+	private static readonly uri: string = serverUri + '/auth'
+
+	/**
+	 * Sends a request for authentication.
+	 * @param details login details.
+	 * @returns a promise with the logged in user.
+	 */
+	static async login(details: LoginDetails): Promise<User> {
+		return HttpService.post(this.uri + '/login', details)
+	}
+
 	/**
 	 * Saves authentication details into local storage, and reloads the page or
 	 * redirect the user to a specified URL.

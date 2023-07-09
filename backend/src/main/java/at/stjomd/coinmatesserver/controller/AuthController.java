@@ -1,9 +1,8 @@
 package at.stjomd.coinmatesserver.controller;
 
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import at.stjomd.coinmatesserver.entity.User;
 import at.stjomd.coinmatesserver.entity.dto.LoginDetailsDto;
+import at.stjomd.coinmatesserver.entity.dto.UserDto;
+import at.stjomd.coinmatesserver.entity.mapper.UserMapper;
+import at.stjomd.coinmatesserver.security.SecurityConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -18,10 +20,17 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1/auth")
+@CrossOrigin(origins = {SecurityConfig.FRONTEND_ORIGIN, SecurityConfig.FRONTEND_ORIGIN_IP})
 public class AuthController {
 
+	private final UserMapper userMapper;
+
+	public AuthController(UserMapper userMapper) {
+		this.userMapper = userMapper;
+	}
+
 	@PostMapping("/login")
-	public String login(
+	public UserDto login(
 		@Valid @RequestBody LoginDetailsDto form,
 		BindingResult bindingResult,
 		HttpServletRequest request
@@ -36,7 +45,7 @@ public class AuthController {
 		}
 		var auth = (Authentication) request.getUserPrincipal();
 		var user = (User) auth.getPrincipal();
-		return user.toString();
+		return userMapper.toDto(user);
 	}
 
 }
