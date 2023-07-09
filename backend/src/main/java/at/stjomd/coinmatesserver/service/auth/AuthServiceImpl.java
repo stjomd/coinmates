@@ -33,9 +33,8 @@ public class AuthServiceImpl implements AuthService {
 		try {
 			request.login(user.getEmail(), user.getPassword());
 		} catch (ServletException exception) {
-			exception.printStackTrace();
 			throw new AuthenticationFailedException(
-				"Invalid username or password", exception
+				exception.getMessage(), exception
 			);
 		}
 		Authentication auth = (Authentication) request.getUserPrincipal();

@@ -148,20 +148,4 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 		);
 	}
 
-	// Servlet Exception
-	@ExceptionHandler(value = {ServletException.class})
-	protected ResponseEntity<Object> handleServlet(
-		ServletException exception, WebRequest request
-	) {
-		log(exception);
-		HttpStatus status = HttpStatus.BAD_REQUEST;
-		return handleExceptionInternal(
-			exception,
-			errorBody(exception, status),
-			new HttpHeaders(),
-			status,
-			request
-		);
-	}
-
 }
