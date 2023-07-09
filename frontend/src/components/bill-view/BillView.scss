@@ -43,3 +43,11 @@ span.badge {
 		content: ' (You)';
 	}
 }
+
+.bv-pay-link {
+	font-weight: bold;
+	&:hover {
+		text-decoration: underline;
+		cursor: pointer;
+	}
+}

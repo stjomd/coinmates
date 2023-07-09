@@ -4,6 +4,7 @@ import {useEffect, useState} from 'react'
 import {Bill} from '../../entities/Bill'
 import {BillService} from '../../services/BillService'
 import {AuthService} from '../../services/AuthService'
+import {UserShort} from '../../entities/UserShort'
 
 function BillView() {
 	const user = AuthService.getAuth()
@@ -40,6 +41,23 @@ function BillView() {
 		return className
 	}
 
+	const personItem = (
+		person: UserShort,
+		paid: boolean,
+		rightElement?: JSX.Element
+	) => {
+		return (
+			<li key={person.id} className={personClassName(person.id, paid)}>
+				<div className='bv-person-box'>
+					<span className='bv-person-user-name'>
+						{person.firstName} {person.lastName}
+					</span>
+					{rightElement != null && rightElement}
+				</div>
+			</li>
+		)
+	}
+
 	/**
 	 * Constructs the entries for the people list.
 	 * @returns an array of JSX elements, containing entries for the people list.
@@ -49,32 +67,22 @@ function BillView() {
 			return
 		}
 		const items: JSX.Element[] = []
-		items.push(
-			<li
-				key={bill.creator.id}
-				className={personClassName(bill.creator.id, true)}
-			>
-				<div className='bv-person-box'>
-					<span className='bv-person-user-name'>
-						{bill.creator.firstName} {bill.creator.lastName}
-					</span>
-					<span>Receiver</span>
-				</div>
-			</li>
-		)
+		items.push(personItem(bill.creator, true, <span>Creator</span>))
 		for (const person of bill.people) {
 			const personPaid =
 				bill.payments.filter(p => p.userId === person.id).length > 0
-			items.push(
-				<li key={person.id} className={personClassName(person.id, personPaid)}>
-					<div className='bv-person-box'>
-						<span className='bv-person-user-name'>
-							{person.firstName} {person.lastName}
-						</span>
-						{personPaid && <span>Paid</span>}
-					</div>
-				</li>
-			)
+			let rightElement = <></>
+			if (personPaid) {
+				rightElement = <span>Paid</span>
+			} else if (person.id === user.id) {
+				rightElement = (
+					<span className='bv-pay-link'>
+						Pay {bill.splitAmount.integer},
+						{String(bill.splitAmount.fraction).padEnd(2, '0')} &euro;
+					</span>
+				)
+			}
+			items.push(personItem(person, personPaid, rightElement))
 		}
 		return items
 	}
