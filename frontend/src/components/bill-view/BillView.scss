@@ -37,9 +37,9 @@ span.badge {
 	justify-content: space-between;
 }
 
-.bv-list-user .bv-person-box span.bv-person-user-name {
+.bv-list-user {
 	font-weight: bold;
-	&::after {
+	& .bv-person-box span.bv-person-user-name::after {
 		content: ' (You)';
 	}
 }

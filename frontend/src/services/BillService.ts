@@ -1,6 +1,7 @@
 import {serverUri} from '../Globals'
 import {Amount} from '../entities/Amount'
 import {Bill} from '../entities/Bill'
+import {Payment} from '../entities/Payment'
 import {HttpService} from './HttpService'
 
 export abstract class BillService {
@@ -41,5 +42,14 @@ export abstract class BillService {
 	 */
 	static async createBill(bill: Bill): Promise<Bill> {
 		return HttpService.post(this.uri, bill)
+	}
+
+	/**
+	 * Creates a payment for a bill.
+	 * @param payment the payment entity.
+	 * @returns a promise containing the created payment.
+	 */
+	static async submitPayment(payment: Payment): Promise<Payment> {
+		return HttpService.post(this.uri + `/${payment.billId}/payments`, payment)
 	}
 }

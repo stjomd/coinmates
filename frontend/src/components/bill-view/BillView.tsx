@@ -5,20 +5,56 @@ import {Bill} from '../../entities/Bill'
 import {BillService} from '../../services/BillService'
 import {AuthService} from '../../services/AuthService'
 import {UserShort} from '../../entities/UserShort'
+import {Payment} from '../../entities/Payment'
 
 function BillView() {
 	const user = AuthService.getAuth()
 	const {id: billId} = useParams()
 	const [bill, setBill] = useState<Bill>()
 
+	const [isSubmitting, setIsSubmitting] = useState(false)
+	const [didPay, setDidPay] = useState(false)
+
 	// Load bill
 	useEffect(() => {
 		if (billId != null) {
 			BillService.getBill(+billId)
-				.then(setBill)
+				.then(res => {
+					setBill(res)
+					// Check if user has paid
+					const paid =
+						user == null
+							? false
+							: res.payments.filter(p => p.id === user.id).length > 0
+					setDidPay(paid)
+				})
 				.catch(() => window.location.replace('/error'))
 		}
 	}, [billId])
+
+	const pay = () => {
+		setIsSubmitting(true)
+		if (user == null || user.id == null || bill == null || bill.id == null) {
+			return
+		}
+		const payment = new Payment(
+			0,
+			user.id,
+			bill.id,
+			bill.splitAmount,
+			new Date().toISOString()
+		)
+		console.log(payment)
+		BillService.submitPayment(payment)
+			.then(() => {
+				setDidPay(true)
+				setIsSubmitting(false)
+			})
+			.catch(err => {
+				console.error(err)
+				setIsSubmitting(false)
+			})
+	}
 
 	/**
 	 * Determines the class name of the list item corresponding to a person with
@@ -41,6 +77,13 @@ function BillView() {
 		return className
 	}
 
+	/**
+	 * Constructs the element representing one single person entry.
+	 * @param person the person.
+	 * @param paid indicated if this person has paid.
+	 * @param rightElement the element to insert on the right side of the entry.
+	 * @returns
+	 */
 	const personItem = (
 		person: UserShort,
 		paid: boolean,
@@ -74,12 +117,16 @@ function BillView() {
 			let rightElement = <></>
 			if (personPaid) {
 				rightElement = <span>Paid</span>
+			} else if (isSubmitting) {
+				rightElement = <span>...</span>
 			} else if (person.id === user.id) {
-				rightElement = (
-					<span className='bv-pay-link'>
+				rightElement = !didPay ? (
+					<span className='bv-pay-link' onClick={pay}>
 						Pay {bill.splitAmount.integer},
 						{String(bill.splitAmount.fraction).padEnd(2, '0')} &euro;
 					</span>
+				) : (
+					<span>Paid</span>
 				)
 			}
 			items.push(personItem(person, personPaid, rightElement))
