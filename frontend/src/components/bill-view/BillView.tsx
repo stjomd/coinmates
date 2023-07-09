@@ -198,11 +198,7 @@ function BillView() {
 			<h3 className='bv-title'>
 				{bill?.title} {badge()}
 			</h3>
-			{bill?.description != null ? (
-				<p>{bill.description}</p>
-			) : (
-				<p>No description provided.</p>
-			)}
+			{bill?.description != null && <p>{bill.description}</p>}
 			<div className='bv-amounts-box'>
 				<div>
 					<p className='bv-small-txt'>Total</p>
