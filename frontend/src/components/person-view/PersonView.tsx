@@ -7,24 +7,36 @@ import {AuthService} from '../../services/AuthService'
 
 function PersonView() {
 	const params = useParams()
+	const signedInUser = AuthService.getAuth()
+
 	const [user, setUser] = useState<User>()
-	const [signedInUser, setSignedInUser] = useState<User>()
+	const [friends, setFriends] = useState<User[]>()
 
 	// Load user
 	useEffect(() => {
-		if (params.id == null) {
+		if (params.id == null || signedInUser?.id == null) {
 			return
 		}
 		UserService.getUser(+params.id)
 			.then(res => setUser(res as User))
-			.catch(err => {
-				console.log(err)
+			.catch(() => {
+				window.location.replace('/error')
 			})
-		const loggedInUser = AuthService.getAuth()
-		if (loggedInUser != null) {
-			setSignedInUser(loggedInUser)
+		UserService.getFriends(signedInUser?.id)
+			.then(setFriends)
+			.catch(console.error)
+	}, [params, signedInUser?.id])
+
+	/**
+	 * Checks if signed in user is friends with the user whose page is shown.
+	 * @returns a boolean indicating if signed in user is friends with this user.
+	 */
+	const isFriend = () => {
+		if (friends == null || user == null) {
+			return false
 		}
-	}, [params])
+		return friends.filter(f => f.id === user.id).length > 0
+	}
 
 	/**
 	 * Sends a request to add this user to logged in user's friends.
@@ -37,7 +49,7 @@ function PersonView() {
 			return
 		}
 		UserService.addFriend(signedInUser.id, user.id)
-			.then(res => console.log(res))
+			.then(() => window.location.reload())
 			.catch(err => console.error(err))
 	}
 
@@ -71,7 +83,7 @@ function PersonView() {
 								Sign in to add {user.firstName} as a friend and split bills with
 								them.
 							</p>
-						) : (
+						) : !isFriend() ? (
 							<>
 								<p>
 									Add {user.firstName} as a friend and split bills with them.
@@ -80,11 +92,12 @@ function PersonView() {
 									Add to friends
 								</button>
 							</>
+						) : (
+							<p>You are friends with {user.firstName}!</p>
 						)}
 					</div>
 				</>
 			)}
-			{user == null && <p>404</p>}
 		</div>
 	)
 }
