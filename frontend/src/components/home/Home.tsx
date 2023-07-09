@@ -9,11 +9,18 @@ import {Link} from 'react-router-dom'
 function Home() {
 	const user = AuthService.getAuth()
 	const [bills, setBills] = useState<Bill[]>([])
+	const [errorMessage, setErrorMessage] = useState<string>()
 
 	// Load user's bills
 	useEffect(() => {
 		if (user?.id != null) {
-			BillService.getAllBills(user.id).then(setBills).catch(console.error)
+			BillService.getAllBills(user.id)
+				.then(setBills)
+				.catch(() =>
+					setErrorMessage(
+						'Sorry, an error occured while loading bills. Please refresh.'
+					)
+				)
 		}
 	}, [user?.id])
 
@@ -22,6 +29,7 @@ function Home() {
 	 * @returns an array of JSX elements containing bill cards.
 	 */
 	const billElements = () => {
+		console.log(errorMessage)
 		const elements: JSX.Element[] = []
 		for (const bill of bills) {
 			elements.push(
@@ -45,10 +53,18 @@ function Home() {
 			</div>
 			<div className='home-history'>
 				<div className='home-bills'>
-					{bills.length > 0 ? (
-						billElements()
-					) : (
-						<div className='home-no-bills'>You do not have any bills yet.</div>
+					{errorMessage == null &&
+						(bills.length > 0 ? (
+							billElements()
+						) : (
+							<div className='home-no-bills'>
+								You do not have any bills yet.
+							</div>
+						))}
+					{errorMessage != null && (
+						<div className='alert alert-danger unpadded-alert' role='alert'>
+							{errorMessage}
+						</div>
 					)}
 				</div>
 			</div>
