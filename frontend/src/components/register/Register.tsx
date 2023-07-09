@@ -6,7 +6,6 @@ import {z as zod} from 'zod'
 import {User} from '../../entities/User'
 
 import PasswordHelper from '../password-helper/PasswordHelper'
-import {UserService} from '../../services/UserService'
 import {useState} from 'react'
 import {Link, NavLink} from 'react-router-dom'
 import {FetchError} from '../../services/HttpService'
@@ -39,7 +38,7 @@ function Register() {
 		setShowSignInLink(false)
 		if (passwordIsStrong) {
 			const user = Object.assign(new User(), data)
-			UserService.register(user)
+			AuthService.register(user)
 				.then(user => AuthService.storeAuth(user, '/home'))
 				.catch(err => {
 					const error = err as FetchError

@@ -1,33 +1,11 @@
 import {serverUri} from '../Globals.ts'
 import {AddFriend} from '../entities/AddFriend.ts'
 import {UserShort} from '../entities/UserShort.ts'
-import {LoginDetails} from '../entities/LoginDetails.ts'
 import {User} from '../entities/User.ts'
 import {HttpService} from './HttpService.ts'
 
 export abstract class UserService {
 	private static readonly uri: string = serverUri + '/users'
-
-	/**
-	 * Sends a request to the server to authenticate the user. Does not store
-	 * authentication details in local storage – this must be performed
-	 * separately.
-	 * @param login the login details.
-	 * @returns a promise containing the logged in user.
-	 */
-	static async authenticate(login: LoginDetails): Promise<User> {
-		return HttpService.post(this.uri + '/auth', login)
-	}
-
-	/**
-	 * Sends a request to the server to register a new user.
-	 * @param user the (partially filled) user object. Email, password, first
-	 * 				name, and last name fields must be set.
-	 * @returns a promise containing the registered user.
-	 */
-	static async register(user: User): Promise<User> {
-		return HttpService.post(this.uri, user)
-	}
 
 	/**
 	 * Retrieves a user by the ID.

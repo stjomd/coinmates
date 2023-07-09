@@ -16,6 +16,15 @@ export abstract class AuthService {
 	}
 
 	/**
+	 * Sends a request for registration.
+	 * @param user the user entity with sign up info.
+	 * @returns a promise with the registered user.
+	 */
+	static async register(user: Partial<User>): Promise<User> {
+		return HttpService.post(this.uri + '/register', user)
+	}
+
+	/**
 	 * Saves authentication details into local storage, and reloads the page or
 	 * redirect the user to a specified URL.
 	 * @param user the user entity.
