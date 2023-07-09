@@ -76,7 +76,7 @@ public class BillController {
 	@ResponseStatus(HttpStatus.OK)
 	public List<BillDto> getAllBillsForUser(Integer user)
 	throws NotFoundException {
-		log.info("GET /api/v1/bills?user=", user);
+		log.info("GET /api/v1/bills?user={}", user);
 		List<Bill> bills = billService.getAllBillsForUser(user);
 		return billMapper.toDtos(bills);
 	}
