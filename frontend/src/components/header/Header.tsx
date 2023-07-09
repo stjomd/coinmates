@@ -9,6 +9,7 @@ function Header() {
 
 	// Determines whether the dropdown is visible
 	const [showDropdown, setShowDropdown] = useState(false)
+	const [showBottomBar, setShowBottomBar] = useState(false)
 
 	// Calculates the className for dropdown content based on showDropdown
 	const dropdownClass = () => {
@@ -74,25 +75,31 @@ function Header() {
 
 	return (
 		<header>
-			<div className='header-left'>
-				<Link to='/' style={{textDecoration: 'none'}}>
-					<p className='logo header-logo'>coinmates</p>
-				</Link>
-			</div>
-			<div className='header-right'>
-				<div className='header-links'>
-					<Link to='/home' className='header-link'>
-						<p>Home</p>
-					</Link>
-					<Link to='/bill' className='header-link'>
-						<p>Split Bills</p>
+			<div className='header-top-bar'>
+				<div className='header-left'>
+					<Link to='/' style={{textDecoration: 'none'}}>
+						<p className='logo header-logo'>coinmates</p>
 					</Link>
 				</div>
-				{userItem()}
+				<div className='header-right'>
+					<div className='header-links'>
+						<Link to='/home' className='header-link'>
+							<p>Home</p>
+						</Link>
+						<Link to='/bill' className='header-link'>
+							<p>Split Bills</p>
+						</Link>
+					</div>
+					{userItem()}
+				</div>
+				<div className='header-right-collapsed'>
+					<i
+						className='bi bi-list'
+						onClick={() => setShowBottomBar(!showBottomBar)}
+					/>
+				</div>
 			</div>
-			<div className='header-right-collapsed'>
-				<i className='bi bi-list' />
-			</div>
+			{showBottomBar && <div className='header-bottom-bar'>hello!</div>}
 		</header>
 	)
 }

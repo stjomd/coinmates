@@ -1,14 +1,16 @@
 @use '../../colors';
 
 header {
-	display: flex;
-	justify-content: space-between;
-	align-items: baseline;
 	width: 100%;
 	padding-top: 10pt;
 	padding-bottom: 10pt;
 	padding-left: 15pt;
 	padding-right: 15pt;
+	& .header-top-bar {
+		display: flex;
+		justify-content: space-between;
+		align-items: baseline;
+	}
 }
 
 .header-left {
@@ -58,6 +60,12 @@ header {
 	}
 	.header-right-collapsed {
 		display: block;
+	}
+}
+
+@media (min-width: 501px) {
+	.header-bottom-bar {
+		display: none;
 	}
 }
 
