@@ -168,6 +168,23 @@ function BillView() {
 		}
 	}
 
+	/**
+	 * Calculates and returns a string with the pending amount.
+	 * @returns a string with the pending amount.
+	 */
+	const pendingAmount = () => {
+		if (bill == null) {
+			return '...'
+		}
+		const splitAmount =
+			Number(bill.splitAmount.integer) + Number(bill.splitAmount.fraction) / 100
+		const unpaidPersons = bill.people.length - bill.payments.length
+		const pending = splitAmount * unpaidPersons
+		const pendingInteger = Math.trunc(pending)
+		const pendingFraction = Math.round((pending - pendingInteger) * 100)
+		return `${pendingInteger},${String(pendingFraction).padEnd(2, '0')}`
+	}
+
 	// The component
 	return (
 		<>
@@ -195,7 +212,9 @@ function BillView() {
 				</div>
 				<div>
 					<p className='bv-small-txt'>Pending</p>
-					<p className='logo bv-amount bv-amount-pending'>??,?? &euro;</p>
+					<p className='logo bv-amount bv-amount-pending'>
+						{pendingAmount()} &euro;
+					</p>
 				</div>
 			</div>
 			<p className='bv-small-txt mb-1'>People assigned to this bill</p>
