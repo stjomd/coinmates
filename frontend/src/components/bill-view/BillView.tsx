@@ -176,17 +176,19 @@ function BillView() {
 		let string = '...'
 		let className = 'logo bv-amount '
 		if (bill != null) {
-			const splitAmount =
-				Number(bill.splitAmount.integer) +
-				Number(bill.splitAmount.fraction) / 100
-			const unpaidPersons = bill.people.length - bill.payments.length
-			const pending = splitAmount * unpaidPersons
-			if (pending > 0) {
+			if (bill.status === 'CLOSED') {
+				string = '0,00'
+			} else {
+				const splitAmount =
+					Number(bill.splitAmount.integer) +
+					Number(bill.splitAmount.fraction) / 100
+				const unpaidPersons = bill.people.length - bill.payments.length
+				const pending = splitAmount * unpaidPersons
+				const pendingInteger = Math.trunc(pending)
+				const pendingFraction = Math.round((pending - pendingInteger) * 100)
+				string = `${pendingInteger},${String(pendingFraction).padEnd(2, '0')}`
 				className += 'bv-amount-pending'
 			}
-			const pendingInteger = Math.trunc(pending)
-			const pendingFraction = Math.round((pending - pendingInteger) * 100)
-			string = `${pendingInteger},${String(pendingFraction).padEnd(2, '0')}`
 		}
 		return <p className={className}>{string} &euro;</p>
 	}
