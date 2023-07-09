@@ -1,6 +1,7 @@
 package at.stjomd.coinmatesserver.controller;
 
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,17 +17,13 @@ import jakarta.validation.Valid;
 
 
 @RestController
-@RequestMapping("/api/v1/test")
-public class TestController {
-
-	@GetMapping
-	public String hello() {
-		return "Hello, world!";
-	}
+@RequestMapping("/api/v1/auth")
+public class AuthController {
 
 	@PostMapping("/login")
 	public String login(
-		@Valid @RequestBody LoginDetailsDto form, BindingResult bindingResult,
+		@Valid @RequestBody LoginDetailsDto form,
+		BindingResult bindingResult,
 		HttpServletRequest request
 	) throws Exception {
 		if (bindingResult.hasErrors()) {
