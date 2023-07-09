@@ -17,6 +17,8 @@ public interface UserMapper {
 	// ----- UserDto -----------------------------------------------------------
 
 	@Mapping(target = "friends", ignore = true)
+	@Mapping(target = "createdBills", ignore = true)
+	@Mapping(target = "assignedBills", ignore = true)
 	User toEntity(UserDto dto);
 
 	UserDto toDto(User entity);
@@ -26,19 +28,18 @@ public interface UserMapper {
 	@BeanMapping(ignoreByDefault = true)
 	@Mapping(source = "email", target = "email")
 	@Mapping(source = "password", target = "password")
-	User toUser(LoginDetailsDto dto);
+	User toEntity(LoginDetailsDto dto);
 
-	// ----- FriendDto ---------------------------------------------------------
+	// ----- UserShortDto ------------------------------------------------------
 
 	@BeanMapping(ignoreByDefault = true)
 	@Mapping(source = "id", target = "id")
-	User toUser(UserShortDto friendDto);
+	User toUser(UserShortDto shortDto);
 
-	UserShortDto toFriendDto(User user);
+	UserShortDto toShortDto(User user);
 
-	Set<UserShortDto> toFriendDtos(Set<User> entities);
-
-	Set<User> toUsers(Set<UserShortDto> friendDtos);
+	Set<UserShortDto> toShortDtos(Set<User> entities);
+	Set<User> toEntities(Set<UserShortDto> shortDtos);
 
 	// ----- Integer IDs -------------------------------------------------------
 

@@ -54,7 +54,7 @@ public class UserController {
 	public Set<UserShortDto> getFriends(@PathVariable Integer id)
 	throws NotFoundException {
 		log.info("GET /api/v1/users/{}/friends", id);
-		return userMapper.toFriendDtos(userService.getFriends(id));
+		return userMapper.toShortDtos(userService.getFriends(id));
 	}
 
 	@PatchMapping("/{id}")
@@ -64,7 +64,7 @@ public class UserController {
 	) throws NotFoundException {
 		log.info("PATCH /api/v1/users/{}: friendId = {}", id, friendDto.getId());
 		Set<User> friends = userService.addFriend(id, friendDto.getId());
-		return userMapper.toFriendDtos(friends);
+		return userMapper.toShortDtos(friends);
 	}
 
 }

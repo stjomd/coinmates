@@ -82,6 +82,7 @@ public class User implements UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
+		// TODO: hook user roles
 		return Set.of();
 	}
 
@@ -92,12 +93,12 @@ public class User implements UserDetails {
 
 	@Override
 	public boolean isAccountNonExpired() {
-		return true;
+		return status != Status.DELETED;
 	}
 
 	@Override
 	public boolean isAccountNonLocked() {
-		return true;
+		return status != Status.DELETED;
 	}
 
 	@Override
@@ -107,7 +108,7 @@ public class User implements UserDetails {
 
 	@Override
 	public boolean isEnabled() {
-		return true;
+		return status != Status.DELETED;
 	}
 
 }

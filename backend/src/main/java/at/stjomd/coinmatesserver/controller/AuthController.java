@@ -39,7 +39,7 @@ public class AuthController {
 		@Valid @RequestBody LoginDetailsDto details,
 		HttpServletRequest request
 	) throws AuthenticationFailedException {
-		User user = userMapper.toUser(details);
+		User user = userMapper.toEntity(details);
 		return userMapper.toDto(authService.login(user, request));
 	}
 
