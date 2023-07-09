@@ -31,6 +31,13 @@
 	margin-top: 4pt;
 }
 
+.home-no-bills {
+	display: flex;
+	justify-content: center;
+	font-style: italic;
+	color: rgba(colors.$dark, 0.5);
+}
+
 .home-bill-link {
 	text-decoration: none;
 }

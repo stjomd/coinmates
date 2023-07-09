@@ -44,7 +44,13 @@ function Home() {
 				</p>
 			</div>
 			<div className='home-history'>
-				<div className='home-bills'>{billElements()}</div>
+				<div className='home-bills'>
+					{bills.length > 0 ? (
+						billElements()
+					) : (
+						<div className='home-no-bills'>You do not have any bills yet.</div>
+					)}
+				</div>
 			</div>
 		</>
 	)
