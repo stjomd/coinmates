@@ -7,6 +7,7 @@ import at.stjomd.coinmatesserver.exception.AuthenticationFailedException;
 import at.stjomd.coinmatesserver.exception.NotFoundException;
 import at.stjomd.coinmatesserver.exception.UserAlreadyExistsException;
 import at.stjomd.coinmatesserver.exception.ValidationFailedException;
+import jakarta.servlet.ServletException;
 import lombok.extern.slf4j.Slf4j;
 import java.util.Date;
 
@@ -138,6 +139,22 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 	) {
 		log(exception);
 		HttpStatus status = HttpStatus.NOT_FOUND;
+		return handleExceptionInternal(
+			exception,
+			errorBody(exception, status),
+			new HttpHeaders(),
+			status,
+			request
+		);
+	}
+
+	// Servlet Exception
+	@ExceptionHandler(value = {ServletException.class})
+	protected ResponseEntity<Object> handleServlet(
+		ServletException exception, WebRequest request
+	) {
+		log(exception);
+		HttpStatus status = HttpStatus.BAD_REQUEST;
 		return handleExceptionInternal(
 			exception,
 			errorBody(exception, status),
