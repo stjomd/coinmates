@@ -47,7 +47,7 @@ function BillView() {
 		console.log(payment)
 		BillService.submitPayment(payment)
 			.then(() => {
-				setDidPay(true)
+				window.location.reload()
 				setIsSubmitting(false)
 			})
 			.catch(err => {
