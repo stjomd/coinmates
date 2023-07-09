@@ -23,7 +23,7 @@ function BillView() {
 					setBill(res)
 					// Check if user has paid
 					const paid =
-						user == null
+						user?.id == null
 							? false
 							: res.payments.filter(p => p.id === user.id).length > 0
 					setDidPay(paid)
