@@ -13,6 +13,7 @@ import PersonView from '../person-view/PersonView'
 import SplitBill from '../split-bill/SplitBill'
 import {AuthService} from '../../services/AuthService'
 import BillView from '../bill-view/BillView'
+import ErrorPage from '../error-page/ErrorPage'
 
 function App() {
 	/**
@@ -141,7 +142,14 @@ function App() {
 					}
 				/>
 				{/* all other routes: 404 */}
-				<Route path='*' element={<p>404</p>} />
+				<Route
+					path='*'
+					element={
+						<div className='centered'>
+							<ErrorPage />
+						</div>
+					}
+				/>
 			</Routes>
 		)
 	}
