@@ -32,6 +32,13 @@ header {
 	display: none;
 }
 
+.header-bottom-bar {
+	margin-top: 10pt;
+	& * {
+		margin-top: 6pt;
+	}
+}
+
 .header-links {
 	display: flex;
 	gap: 15pt;
@@ -43,6 +50,10 @@ header {
 	&:hover {
 		text-decoration: underline;
 	}
+}
+
+.header-link-danger {
+	color: var(--bs-danger);
 }
 
 .header-logo {

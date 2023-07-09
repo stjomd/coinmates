@@ -60,7 +60,6 @@ function Header() {
 						{user.firstName} {user.lastName}
 					</p>
 					<ul className={dropdownClass()}>
-						{/* <li className='dropdown-item'>Settings</li> */}
 						<li
 							className='dropdown-item dropdown-item-danger'
 							onClick={AuthService.deleteAuth}
@@ -73,6 +72,17 @@ function Header() {
 		}
 	}
 
+	const headerLinks = () => {
+		return [
+			<Link key='1' to='/home' className='header-link'>
+				<p>Home</p>
+			</Link>,
+			<Link key='2' to='/bill' className='header-link'>
+				<p>Split Bills</p>
+			</Link>,
+		]
+	}
+
 	return (
 		<header>
 			<div className='header-top-bar'>
@@ -82,14 +92,7 @@ function Header() {
 					</Link>
 				</div>
 				<div className='header-right'>
-					<div className='header-links'>
-						<Link to='/home' className='header-link'>
-							<p>Home</p>
-						</Link>
-						<Link to='/bill' className='header-link'>
-							<p>Split Bills</p>
-						</Link>
-					</div>
+					<div className='header-links'>{headerLinks()}</div>
 					{userItem()}
 				</div>
 				<div className='header-right-collapsed'>
@@ -99,7 +102,17 @@ function Header() {
 					/>
 				</div>
 			</div>
-			{showBottomBar && <div className='header-bottom-bar'>hello!</div>}
+			{showBottomBar && (
+				<div className='header-bottom-bar'>
+					{headerLinks()}
+					<p
+						className='header-link header-link-danger'
+						onClick={AuthService.deleteAuth}
+					>
+						Log out
+					</p>
+				</div>
+			)}
 		</header>
 	)
 }
