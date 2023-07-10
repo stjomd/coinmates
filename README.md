@@ -29,7 +29,7 @@ A service for bill splitting with friends. A small project to refresh React & Sp
 
 ## Running
 
-You will need Java JDK 17 and npm. In `/frontend`, install the dependencies by running `npm install`. In `/backend`, do the same by running `./gradlew build`.
+You will need Java JDK 17 and npm. In `/frontend`, install the dependencies by running `npm install`.
 
 Then, in the respective directories, you can run the frontend with the command
 
