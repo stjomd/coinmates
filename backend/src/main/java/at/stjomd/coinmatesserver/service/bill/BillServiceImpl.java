@@ -13,6 +13,7 @@ import at.stjomd.coinmatesserver.entity.Amount;
 import at.stjomd.coinmatesserver.entity.Bill;
 import at.stjomd.coinmatesserver.entity.Payment;
 import at.stjomd.coinmatesserver.entity.User;
+import at.stjomd.coinmatesserver.exception.AccessForbiddenException;
 import at.stjomd.coinmatesserver.exception.NotFoundException;
 import at.stjomd.coinmatesserver.exception.ValidationFailedException;
 import at.stjomd.coinmatesserver.repository.BillRepository;
@@ -68,20 +69,41 @@ public class BillServiceImpl implements BillService {
 	}
 
 	@Override
-	public Bill getBill(Integer id) throws NotFoundException {
+	public Bill getBill(Integer id, User authenticatedUser)
+	throws AccessForbiddenException, NotFoundException {
 		log.trace("getBill(id = {})", id);
 		Bill bill = billRepository.findById(id)
 			.orElseThrow(() ->
 				new NotFoundException("No bill found with ID: " + id)
 			);
+		// Check if this bill can be shown to authd user
+		boolean authdUserIsCreator = bill.getCreator().getId()
+			.equals(authenticatedUser.getId());
+		boolean authdUserIsAssigned = false;
+		for (User assignedPerson : bill.getPeople()) {
+			if (assignedPerson.getId().equals(authenticatedUser.getId())) {
+				authdUserIsAssigned = true; break;
+			}
+		}
+		if (!authdUserIsCreator && !authdUserIsAssigned) {
+			throw new AccessForbiddenException(
+				"Attempted to access a bill that the requester is not part of"
+			);
+		}
 		bill.setSplitAmount(splitAmount(bill));
 		return bill;
 	}
 
 	@Override
 	@Transactional
-	public Bill createBill(Bill bill) {
+	public Bill createBill(Bill bill, User authenticatedUser)
+	throws AccessForbiddenException {
 		log.trace("createBill({})", bill);
+		if (!bill.getCreator().getId().equals(authenticatedUser.getId())) {
+			throw new AccessForbiddenException(
+				"Attempted to create a bill for another user"
+			);
+		}
 		// Remove creator from bill.people
 		for (User friend : bill.getPeople()) {
 			if (friend.getId().equals(bill.getCreator().getId())) {
@@ -134,11 +156,12 @@ public class BillServiceImpl implements BillService {
 
 	@Override
 	@Transactional
-	public Payment submitPayment(Payment payment) throws NotFoundException {
+	public Payment submitPayment(Payment payment, User authenticatedUser)
+	throws AccessForbiddenException, NotFoundException {
 		log.trace("submitPayment({})", payment);
 		validator.submitPayment(payment);
 		// Retrieve managed bill entity and check if split amount matches
-		Bill bill = getBill(payment.getBill().getId());
+		Bill bill = getBill(payment.getBill().getId(), authenticatedUser);
 		Amount splitAmount = splitAmount(bill);
 		if (!splitAmount.equals(payment.getAmount())) {
 			throw new ValidationFailedException(String.format(

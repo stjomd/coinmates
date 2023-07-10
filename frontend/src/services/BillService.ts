@@ -32,7 +32,7 @@ export abstract class BillService {
 	 * @returns a promise containing the bill with the specified ID.
 	 */
 	static async getAllBills(userId: number): Promise<Bill[]> {
-		return HttpService.get(this.uri, {user: userId})
+		return HttpService.get(this.uri)
 	}
 
 	/**
