@@ -8,6 +8,9 @@ import org.springframework.stereotype.Component;
 
 /**
  * Maps the password field to null in the DTO, to hide the hash.
+ * Although the password field is not serialized (by {@code @JsonProperty}
+ * annotations), this decorator serves as protection still, in case the
+ * annotation gets accidentaly removed.
  */
 @Slf4j
 @Component

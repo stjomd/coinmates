@@ -9,11 +9,12 @@ spring:
         hibernate:
             ddl-auto: update
         database-platform: org.hibernate.dialect.H2Dialect
-    # Disable security for the time being
-    autoconfigure:
-        exclude[0]: org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
 
 logging:
     file.name: ./backend/log/backend.log
     level:
         root: INFO
+
+server.servlet.session.cookie:
+    secure: true
+    same-site: none

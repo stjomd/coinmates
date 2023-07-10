@@ -1,0 +1,84 @@
+@use '../../colors';
+@use '../../fonts';
+
+input#splitb-amount {
+	color: colors.$primary;
+	font-family: fonts.$display-font-family;
+	text-align: center;
+	&.is-invalid {
+		color: var(--bs-danger);
+	}
+	&::placeholder {
+		color: rgba(colors.$dark, 0.2);
+	}
+}
+
+.sb-list {
+	&:not(:first-of-type) {
+		margin-top: 12pt;
+	}
+	& .sb-list-item-unselected:hover {
+		background-color: rgba(colors.$primary, 0.1);
+		cursor: pointer;
+		& p::after {
+			content: 'Select';
+			margin-left: 10pt;
+			color: rgba(colors.$dark, 0.5);
+			font-style: italic;
+		}
+	}
+	& .sb-list-item-selected:hover {
+		background-color: rgba(colors.$accent-red, 0.1);
+		cursor: pointer;
+		& p::after {
+			content: 'Remove';
+			margin-left: 10pt;
+			color: rgba(colors.$dark, 0.5);
+			font-style: italic;
+		}
+	}
+	&.is-invalid li {
+		border-color: var(--bs-danger);
+	}
+}
+
+.sb-list-item-contents {
+	display: flex;
+	justify-content: space-between;
+	align-items: baseline;
+	& p {
+		margin: 0;
+	}
+	& span.sb-split-amt {
+		color: rgba(colors.$dark, 0.7);
+		font-size: 10pt;
+		font-family: fonts.$display-font-family;
+	}
+}
+
+.sb-list-item-centered {
+	text-align: center;
+}
+
+.sb-list-item-box {
+	display: flex;
+	justify-content: space-between;
+	& p {
+		margin: 0;
+	}
+}
+
+.sb-buttons-container {
+	width: 100%;
+	display: flex;
+	justify-content: end;
+}
+
+.sb-form * .invalid-feedback {
+	margin-top: 0 !important;
+}
+
+.sb-invalid {
+	color: var(--bs-danger);
+	font-size: 0.875em;
+}

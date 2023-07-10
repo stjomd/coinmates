@@ -1,0 +1,27 @@
+.pv-content {
+	max-width: min(700px, 100vw - 30pt);
+}
+
+.pv-name {
+	font-size: 20pt;
+}
+
+.pv-top p {
+	margin: 0;
+}
+
+.pv-bottom {
+	margin-top: 40pt;
+}
+
+.pv-btn {
+	width: 100%;
+	color: white;
+	&:hover {
+		color: white;
+	}
+}
+
+.pv-alert {
+	margin-top: 4pt;
+}

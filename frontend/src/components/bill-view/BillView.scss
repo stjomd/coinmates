@@ -1,0 +1,53 @@
+@use '../../colors';
+
+.bv-title {
+	color: colors.$primary;
+	font-weight: 800;
+}
+
+span.badge {
+	scale: 0.8;
+}
+
+.bv-small-txt {
+	color: rgba(colors.$dark, 0.7);
+	font-size: 0.875rem;
+	font-weight: bold;
+	margin: 0;
+}
+
+.bv-amount {
+	font-size: 20pt;
+	margin-bottom: 8px;
+	&.bv-amount-pending {
+		color: colors.$accent-blue;
+	}
+}
+
+.bv-amounts-box {
+	display: flex;
+	flex-wrap: wrap;
+	column-gap: 30pt;
+	margin-top: 24pt;
+	margin-bottom: 14pt;
+}
+
+.bv-person-box {
+	display: flex;
+	justify-content: space-between;
+}
+
+.bv-list-user {
+	font-weight: bold;
+	& .bv-person-box span.bv-person-user-name::after {
+		content: ' (You)';
+	}
+}
+
+.bv-pay-link {
+	font-weight: bold;
+	&:hover {
+		text-decoration: underline;
+		cursor: pointer;
+	}
+}

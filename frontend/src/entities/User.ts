@@ -1,6 +1,6 @@
 export class User {
 	constructor(
-		public id?: string,
+		public id?: number,
 		public email?: string,
 		public password?: string,
 		public firstName?: string,
@@ -14,12 +14,12 @@ export class User {
 // eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace User {
 	export enum Role {
-		REGULAR,
-		ADMIN,
+		REGULAR = 'REGULAR',
+		ADMIN = 'ADMIN',
 	}
 	export enum Status {
-		ACTIVE,
-		RESTRICTED,
-		DELETED,
+		ACTIVE = 'ACTIVE',
+		RESTRICTED = 'RESTRICTED',
+		DELETED = 'DELETED',
 	}
 }

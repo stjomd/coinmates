@@ -7,3 +7,27 @@
 	font-family: fonts.$display-font-family;
 	color: colors.$primary;
 }
+
+.horizcenter-top {
+	min-height: 100%;
+	width: min(700px, 100vw - 30pt);
+	flex-grow: 1;
+	color: colors.$dark;
+	margin-top: 20pt;
+	// background-color: beige; // debug
+}
+
+.unpadded-alert {
+	padding-left: 8pt;
+	padding-right: 8pt;
+	padding-top: 4pt;
+	padding-bottom: 5pt;
+}
+
+.btn-whitetxt {
+	color: white;
+	&:hover,
+	&:active:hover {
+		color: white;
+	}
+}

@@ -3,8 +3,11 @@ package at.stjomd.coinmatesserver.controller;
 import at.stjomd.coinmatesserver.entity.ErrorBody;
 import at.stjomd.coinmatesserver.entity.dto.ErrorBodyDto;
 import at.stjomd.coinmatesserver.entity.mapper.ErrorBodyMapper;
+import at.stjomd.coinmatesserver.exception.AccessForbiddenException;
 import at.stjomd.coinmatesserver.exception.AuthenticationFailedException;
+import at.stjomd.coinmatesserver.exception.NotFoundException;
 import at.stjomd.coinmatesserver.exception.UserAlreadyExistsException;
+import at.stjomd.coinmatesserver.exception.ValidationFailedException;
 import lombok.extern.slf4j.Slf4j;
 import java.util.Date;
 
@@ -56,6 +59,8 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 		);
 	}
 
+	// ----- Exception Handlers ------------------------------------------------
+
 	// Authentication Fail
 	@ExceptionHandler(value = {AuthenticationFailedException.class})
 	protected ResponseEntity<Object> handleAuthFailed(
@@ -88,19 +93,73 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 		);
 	}
 
-	// Validation
+	// Validation (spring)
 	@Override
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(
 		MethodArgumentNotValidException exception, HttpHeaders headers,
 		HttpStatusCode status, WebRequest request
 	) {
 		log(exception);
+		// TODO: only returning first error now; fix to return all
 		HttpStatus overriddenStatus = HttpStatus.UNPROCESSABLE_ENTITY;
+		ErrorBody errorBody = new ErrorBody(
+			new Date(),
+			overriddenStatus.value(), overriddenStatus.getReasonPhrase(),
+			exception.getBindingResult().getFieldError().getDefaultMessage()
+		);
 		return handleExceptionInternal(
 			exception,
-			errorBody(exception, overriddenStatus),
+			errorBody,
 			headers,
 			overriddenStatus,
+			request
+		);
+	}
+
+	// Validation
+	@ExceptionHandler(value = {ValidationFailedException.class})
+	protected ResponseEntity<Object> handleValidationFailed(
+		ValidationFailedException exception, WebRequest request
+	) {
+		log(exception);
+		HttpStatus status = HttpStatus.UNPROCESSABLE_ENTITY;
+		return handleExceptionInternal(
+			exception,
+			errorBody(exception, status),
+			new HttpHeaders(),
+			status,
+			request
+		);
+	}
+
+	// Not Found
+	@ExceptionHandler(value = {NotFoundException.class})
+	protected ResponseEntity<Object> handleNotFound(
+		NotFoundException exception, WebRequest request
+	) {
+		log(exception);
+		HttpStatus status = HttpStatus.NOT_FOUND;
+		return handleExceptionInternal(
+			exception,
+			errorBody(exception, status),
+			new HttpHeaders(),
+			status,
+			request
+		);
+	}
+
+	// Access Forbidden
+	@ExceptionHandler(value = {AccessForbiddenException.class})
+	protected ResponseEntity<Object> handleAccessForbidden(
+		AccessForbiddenException exception, WebRequest request
+	) {
+		log(exception);
+		HttpStatus status = HttpStatus.FORBIDDEN;
+		return handleExceptionInternal(
+			exception,
+			errorBody(exception, status),
+			new HttpHeaders(),
+			status,
 			request
 		);
 	}

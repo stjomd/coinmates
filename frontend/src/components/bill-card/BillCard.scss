@@ -1,0 +1,60 @@
+@use '../../colors';
+@use '../../fonts';
+
+.bc-container {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	column-gap: 16px;
+	margin: 0 !important;
+	& div {
+		margin: 0;
+	}
+	padding-top: 2px;
+	padding-bottom: 2px;
+}
+
+.bc-title {
+	font-weight: bold;
+	& .badge {
+		scale: 0.75;
+	}
+}
+
+.bc-date {
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	& span {
+		font-family: fonts.$display-font-family;
+		line-height: 1.25;
+		margin: 0;
+	}
+}
+
+.bc-details {
+	display: flex;
+	flex-grow: 1;
+	flex-direction: column;
+	& span {
+		line-height: 1.25;
+		margin: 0;
+	}
+}
+
+.bc-persons {
+	font-size: 0.875em;
+}
+
+.bc-amount {
+	& .bc-amount-open {
+		color: colors.$accent-blue;
+	}
+	& .bc-amount-closed {
+		color: colors.$primary;
+	}
+}
+
+.bc-card:hover .bc-title {
+	text-decoration: underline;
+}

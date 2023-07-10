@@ -1,19 +1,19 @@
 import './App.scss'
 import '../../styles/global.scss'
 
-import {
-	BrowserRouter as Router,
-	Routes,
-	Route,
-	Navigate,
-} from 'react-router-dom'
+import {ReactNode} from 'react'
+import {BrowserRouter, Routes, Route, Navigate} from 'react-router-dom'
 
 import Landing from '../landing/Landing'
 import Login from '../login/Login'
 import Register from '../register/Register'
 import Header from '../header/Header'
-import {UserService} from '../../services/UserService'
-import {ReactNode} from 'react'
+import Home from '../home/Home'
+import PersonView from '../person-view/PersonView'
+import SplitBill from '../split-bill/SplitBill'
+import {AuthService} from '../../services/AuthService'
+import BillView from '../bill-view/BillView'
+import ErrorPage from '../error-page/ErrorPage'
 
 function App() {
 	/**
@@ -24,8 +24,23 @@ function App() {
 	 * @returns if the user is logged in, redirects to the specified URL.
 	 * 					Otherwise renders the element.
 	 */
-	const onlyIfNotLoggedIn = (url: string, element: ReactNode) => {
-		if (UserService.getAuth() != null) {
+	const renderIfNotLoggedIn = (url: string, element: ReactNode) => {
+		if (AuthService.getAuth() != null) {
+			return <Navigate replace to={url} />
+		} else {
+			return element
+		}
+	}
+
+	/**
+	 * Determines if the component is shown to unauthenticated users.
+	 * @param url the URL to redirect the user to.
+	 * @param element the element to render.
+	 * @returns if the user is NOT logged in, redirects to the specified URL.
+	 * 					Otherwise renders the element.
+	 */
+	const renderIfLoggedIn = (url: string, element: ReactNode) => {
+		if (AuthService.getAuth() == null) {
 			return <Navigate replace to={url} />
 		} else {
 			return element
@@ -61,7 +76,7 @@ function App() {
 				{/* home page */}
 				<Route
 					path='/'
-					element={onlyIfNotLoggedIn(
+					element={renderIfNotLoggedIn(
 						'/home',
 						<div className='centered gradient'>
 							<Landing />
@@ -71,7 +86,7 @@ function App() {
 				{/* login form */}
 				<Route
 					path='/login'
-					element={onlyIfNotLoggedIn(
+					element={renderIfNotLoggedIn(
 						'/home',
 						<div className='centered'>
 							<Login />
@@ -81,15 +96,60 @@ function App() {
 				{/* register form */}
 				<Route
 					path='/register'
-					element={onlyIfNotLoggedIn(
+					element={renderIfNotLoggedIn(
 						'/home',
 						<div className='centered'>
 							<Register />
 						</div>
 					)}
 				/>
+				{/* home dashboard */}
+				<Route
+					path='/home'
+					element={renderIfLoggedIn(
+						'/',
+						<div className='horizcenter-top'>
+							<Home />
+						</div>
+					)}
+				/>
+				{/* person view */}
+				<Route
+					path='/user/:id'
+					element={
+						<div className='centered'>
+							<PersonView />
+						</div>
+					}
+				/>
+				{/* split bill */}
+				<Route
+					path='/bill'
+					element={renderIfLoggedIn(
+						'/',
+						<div className='horizcenter-top'>
+							<SplitBill />
+						</div>
+					)}
+				/>
+				{/* bill preview */}
+				<Route
+					path='/bill/:id'
+					element={
+						<div className='horizcenter-top'>
+							<BillView />
+						</div>
+					}
+				/>
 				{/* all other routes: 404 */}
-				<Route path='*' element={<p>Welcome!</p>} />
+				<Route
+					path='*'
+					element={
+						<div className='centered'>
+							<ErrorPage />
+						</div>
+					}
+				/>
 			</Routes>
 		)
 	}
@@ -103,13 +163,13 @@ function App() {
 	}
 
 	return (
-		<Router>
+		<BrowserRouter>
 			<div className='flexbox-container'>
 				{header()}
 				{content()}
 				{footer()}
 			</div>
-		</Router>
+		</BrowserRouter>
 	)
 }
 

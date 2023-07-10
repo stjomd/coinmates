@@ -1,0 +1,27 @@
+#error-image {
+	max-width: min(40vw, 450px);
+}
+
+.ep-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 60px;
+	padding-left: 15pt;
+	padding-right: 15pt;
+}
+
+.ep-right p {
+	margin: 0;
+	width: 100%;
+}
+
+.ep-title {
+	font-size: 20pt;
+}
+
+@media (max-width: 780px) {
+	.ep-container {
+		flex-direction: column;
+	}
+}

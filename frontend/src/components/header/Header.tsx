@@ -1,14 +1,15 @@
-import {useEffect, useState} from 'react'
-import {UserService} from '../../services/UserService'
 import './Header.scss'
 
+import {useEffect, useState} from 'react'
 import {Link} from 'react-router-dom'
+import {AuthService} from '../../services/AuthService'
 
 function Header() {
-	const user = UserService.getAuth()
+	const user = AuthService.getAuth()
 
 	// Determines whether the dropdown is visible
 	const [showDropdown, setShowDropdown] = useState(false)
+	const [showBottomBar, setShowBottomBar] = useState(false)
 
 	// Calculates the className for dropdown content based on showDropdown
 	const dropdownClass = () => {
@@ -59,10 +60,9 @@ function Header() {
 						{user.firstName} {user.lastName}
 					</p>
 					<ul className={dropdownClass()}>
-						{/* <li className='dropdown-item'>Settings</li> */}
 						<li
 							className='dropdown-item dropdown-item-danger'
-							onClick={UserService.deleteAuth}
+							onClick={AuthService.deleteAuth}
 						>
 							Log out
 						</li>
@@ -72,17 +72,47 @@ function Header() {
 		}
 	}
 
+	const headerLinks = () => {
+		return [
+			<Link key='1' to='/home' className='header-link'>
+				<p>Home</p>
+			</Link>,
+			<Link key='2' to='/bill' className='header-link'>
+				<p>Split Bills</p>
+			</Link>,
+		]
+	}
+
 	return (
 		<header>
-			<div className='header-left'>
-				<Link to='/' style={{textDecoration: 'none'}}>
-					<p className='logo header-logo'>coinmates</p>
-				</Link>
-				<Link to='/home' className='header-link'>
-					<p>Home</p>
-				</Link>
+			<div className='header-top-bar'>
+				<div className='header-left'>
+					<Link to='/' style={{textDecoration: 'none'}}>
+						<p className='logo header-logo'>coinmates</p>
+					</Link>
+				</div>
+				<div className='header-right'>
+					<div className='header-links'>{headerLinks()}</div>
+					{userItem()}
+				</div>
+				<div className='header-right-collapsed'>
+					<i
+						className='bi bi-list'
+						onClick={() => setShowBottomBar(!showBottomBar)}
+					/>
+				</div>
 			</div>
-			{userItem()}
+			{showBottomBar && (
+				<div className='header-bottom-bar'>
+					{headerLinks()}
+					<p
+						className='header-link header-link-danger'
+						onClick={AuthService.deleteAuth}
+					>
+						Log out
+					</p>
+				</div>
+			)}
 		</header>
 	)
 }
