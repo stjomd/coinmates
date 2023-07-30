@@ -13,7 +13,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16
+      - run: cd frontend
       - name: Install dependencies
-        run: cd frontend && npm install
+        run: npm install
       - name: Run tests
         run: npm test
