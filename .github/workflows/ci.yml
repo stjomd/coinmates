@@ -9,16 +9,13 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-        with:
-          persist-credentials: false
       - name: Install Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 16
-      - run: cd frontend
-      - name: Reconfigure git to use HTTP authentication
-        run: git config --global url."https://github.com/".insteadOf ssh://git@github.com/
       - name: Install dependencies
-        run: npm install
+        run: |
+          cd frontend
+          npm install
       - name: Run tests
         run: npm test
