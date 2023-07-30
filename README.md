@@ -25,8 +25,8 @@ A service for bill splitting with friends. A small project to refresh React & Sp
 
 - Not the best user experience at places at the moment
   - Logout is shaky, requires session renewal (= browser restart), otherwise logging in/registering again is not possible
-  - Add ability to discover friends, currently the assumption is that a user gets sent a link (`/user/:id`), where they can be added as friends
 - Implement logout with cookie management (causes issues after backend restart)
+- Write more tests
 
 ## Running
 
