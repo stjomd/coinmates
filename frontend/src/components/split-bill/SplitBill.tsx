@@ -17,6 +17,8 @@ import {Navigate} from 'react-router-dom'
 
 function SplitBill() {
 	// ----- Properties ----------------------------------------------------------
+	const user = AuthService.getAuth()
+
 	const [friends, setFriends] = useState(new Array<UserShort>())
 	const [selectedFriends, setSelectedFriends] = useState(new Array<UserShort>())
 
@@ -40,7 +42,7 @@ function SplitBill() {
 
 	const [bill, updateBill] = useReducer((prev: Bill, next: Partial<Bill>) => {
 		return {...prev, ...next}
-	}, Bill.newEmpty(AuthService.getAuth()!.id!))
+	}, Bill.newEmpty(user != null && user.id != null ? user.id : 0))
 
 	// ----- Logic ---------------------------------------------------------------
 
