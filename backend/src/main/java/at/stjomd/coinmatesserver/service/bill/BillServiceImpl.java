@@ -51,13 +51,10 @@ public class BillServiceImpl implements BillService {
 	@Override
 	public Amount calculateSplitAmount(Amount amount, Integer people) {
 		log.trace("calculateSplitAmount({}, {})", amount, people);
-		System.out.println("calc call");
 		validator.calculateSplitAmount(amount, people);
-		System.out.println("validated");
 		// Convert to double, round to two decimal places
 		Double value = amount.getInteger() + (amount.getFraction() / 100.0);
 		Double split = Math.round((value / people) * 100) / 100.0;
-		System.out.println("value = " + value + ", split = " + split);
 		// Convert to string to parse two parts separately
 		Integer integerPart = (int) split.doubleValue();
 		Double fraction = split - integerPart;
