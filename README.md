@@ -23,9 +23,7 @@ A service for bill splitting with friends. A small project to refresh React & Sp
 
 ## Limitations / TODO
 
-- Not the best user experience at places at the moment
-  - Logout is shaky, requires session renewal (= browser restart), otherwise logging in/registering again is not possible
-- Implement logout with cookie management (causes issues after backend restart)
+- Add remember me functionality
 - Write more tests
 
 ## Running
