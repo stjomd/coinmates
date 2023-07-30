@@ -5,14 +5,11 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
 import at.stjomd.coinmatesserver.entity.User;
 import at.stjomd.coinmatesserver.entity.dto.LoginDetailsDto;
@@ -34,10 +31,15 @@ public class AuthController {
 
 	private final AuthService authService;
 	private final UserMapper userMapper;
+	private final LogoutHandler logoutHandler;
 
-	public AuthController(AuthService authService, UserMapper userMapper) {
+	public AuthController(
+		AuthService authService, UserMapper userMapper,
+		LogoutHandler logoutHandler
+	) {
 		this.authService = authService;
 		this.userMapper = userMapper;
+		this.logoutHandler = logoutHandler;
 	}
 
 	@PostMapping("/login")
@@ -73,7 +75,6 @@ public class AuthController {
 			throw new AuthenticationFailedException("Already logged out");
 		}
 		log.info("POST /api/v1/auth/logout: {}", user.getEmail());
-		LogoutHandler logoutHandler = new SecurityContextLogoutHandler();
 		logoutHandler.logout(request, null, null);
 	}
 
