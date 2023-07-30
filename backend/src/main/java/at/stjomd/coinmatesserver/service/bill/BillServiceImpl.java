@@ -1,6 +1,7 @@
 package at.stjomd.coinmatesserver.service.bill;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -50,17 +51,23 @@ public class BillServiceImpl implements BillService {
 	@Override
 	public Amount calculateSplitAmount(Amount amount, Integer people) {
 		log.trace("calculateSplitAmount({}, {})", amount, people);
+		System.out.println("calc call");
 		validator.calculateSplitAmount(amount, people);
+		System.out.println("validated");
 		// Convert to double, round to two decimal places
 		Double value = amount.getInteger() + (amount.getFraction() / 100.0);
 		Double split = Math.round((value / people) * 100) / 100.0;
+		System.out.println("value = " + value + ", split = " + split);
 		// Convert to string to parse two parts separately
 		String string = String.format("%.2f", split);
 		String[] parts = string.split(",");
+		System.out.println("string = " + string + ", parts = " + Arrays.toString(parts));
 		// Construct an amount instance
 		if (parts.length == 1) {
+			System.out.println("if branch");
 			return new Amount(split.intValue(), 0);
 		} else {
+			System.out.println("else branch");
 			return new Amount(
 				Integer.parseInt(parts[0]),
 				Integer.parseInt(parts[1])

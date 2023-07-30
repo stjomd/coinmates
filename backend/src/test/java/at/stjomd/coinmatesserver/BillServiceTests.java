@@ -64,6 +64,7 @@ class BillServiceTests {
 		void shouldReturnCorrectSplitAmount() {
 			Amount amount = new Amount(50, 55);
 			Amount splitAmount = billService.calculateSplitAmount(amount, 2);
+			System.out.println(splitAmount);
 			assertAll(
 				() -> assertEquals(25, splitAmount.getInteger()),
 				() -> assertEquals(28, splitAmount.getFraction())
