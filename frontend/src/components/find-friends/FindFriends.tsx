@@ -1,18 +1,23 @@
-import {useEffect, useState} from 'react'
 import './FindFriends.scss'
+
+import {useEffect, useState} from 'react'
 import {UserService} from '../../services/UserService'
 import {UserShort} from '../../entities/UserShort'
+import {useDebouncedCallback} from 'use-debounce'
 
 function FindFriendsView() {
 	const [query, setQuery] = useState('')
 	const [users, setUsers] = useState<UserShort[]>([])
 
-	useEffect(() => {
-		UserService.searchUsers(query).then(response => {
-			console.log(response)
+	const loadSearchResults = useDebouncedCallback((searchQuery: string) => {
+		UserService.searchUsers(searchQuery).then(response => {
 			setUsers(response)
 		})
-	}, [query])
+	}, 1000)
+
+	useEffect(() => {
+		loadSearchResults(query)
+	}, [loadSearchResults, query])
 
 	return (
 		<>
@@ -29,11 +34,17 @@ function FindFriendsView() {
 					onChange={event => setQuery(event.target.value)}
 				/>
 			</div>
-			{users.map(user => (
-				<p>
-					{user.firstName} {user.lastName}
-				</p>
-			))}
+			<ul className='list-group ff-results-list'>
+				{users.map(user => (
+					<li
+						key={user.id}
+						className='list-group-item'
+						onClick={() => window.location.replace(`user/${user.id}`)}
+					>
+						{user.firstName} {user.lastName}
+					</li>
+				))}
+			</ul>
 		</>
 	)
 }

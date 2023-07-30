@@ -1,0 +1,7 @@
+.ff-results-list li {
+	&:hover {
+		cursor: pointer;
+		font-weight: bold;
+		background-color: rgba(black, 0.05);
+	}
+}

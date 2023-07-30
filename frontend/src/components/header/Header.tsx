@@ -81,7 +81,7 @@ function Header() {
 				<p>Split Bills</p>
 			</Link>,
 			<Link key='3' to='/friends' className='header-link'>
-				<p>Find friends</p>
+				<p>Find Friends</p>
 			</Link>,
 		]
 	}
