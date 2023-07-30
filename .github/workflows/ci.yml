@@ -9,29 +9,25 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-      - name: Install Node.js
+      - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 16
-      - name: Install dependencies
-        run: |
-          cd frontend
-          npm install
       - name: Run tests
         run: |
           cd frontend
-          npm test
+          npm install-test
   test-backend:
     name: Backend
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-      - name: Set up JDK 17
+      - name: Set up JDK
         uses: actions/setup-java@v3
         with:
-          java-version: '17'
-          distribution: 'adopt'
+          java-version: 17
+          distribution: oracle
       - name: Run tests
         run: |
           cd backend
@@ -40,5 +36,5 @@ jobs:
         if: ${{ always() }}
         uses: actions/upload-artifact@v3
         with:
-          name: Report
+          name: Backend Test Report
           path: backend/build/reports/tests/test/*
