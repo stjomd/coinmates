@@ -14,6 +14,7 @@ import SplitBill from '../split-bill/SplitBill'
 import {AuthService} from '../../services/AuthService'
 import BillView from '../bill-view/BillView'
 import ErrorPage from '../error-page/ErrorPage'
+import FindFriendsView from '../find-friends/FindFriends'
 
 function App() {
 	/**
@@ -140,6 +141,16 @@ function App() {
 							<BillView />
 						</div>
 					}
+				/>
+				{/* find friends page */}
+				<Route
+					path='/friends'
+					element={renderIfLoggedIn(
+						'/',
+						<div className='horizcenter-top'>
+							<FindFriendsView />
+						</div>
+					)}
 				/>
 				{/* all other routes: 404 */}
 				<Route

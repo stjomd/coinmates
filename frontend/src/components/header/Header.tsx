@@ -80,6 +80,9 @@ function Header() {
 			<Link key='2' to='/bill' className='header-link'>
 				<p>Split Bills</p>
 			</Link>,
+			<Link key='3' to='/friends' className='header-link'>
+				<p>Find friends</p>
+			</Link>,
 		]
 	}
 
