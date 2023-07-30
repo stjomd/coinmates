@@ -1,0 +1,15 @@
+name: Tests
+
+on: [push]
+
+jobs:
+  test-frontend:
+    name: Frontend Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Install dependencies
+        run: cd frontend && npm install
+      - name: Run tests
+        run: npm test
