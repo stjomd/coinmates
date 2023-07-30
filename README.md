@@ -11,11 +11,13 @@ A service for bill splitting with friends. A small project to refresh React & Sp
 - Frontend:
   - React + React Router, React Hook Form, Zod
   - Bootstrap (without js)
+  - Jest
   - Vite
   - TypeScript
 - Backend:
   - Spring Framework + Web, Security, JPA, H2
   - Lombok, Mapstruct
+  - JUnit
   - Gradle
   - Java
 
@@ -25,7 +27,6 @@ A service for bill splitting with friends. A small project to refresh React & Sp
   - Logout is shaky, requires session renewal (= browser restart), otherwise logging in/registering again is not possible
   - Add ability to discover friends, currently the assumption is that a user gets sent a link (`/user/:id`), where they can be added as friends
 - Implement logout with cookie management (causes issues after backend restart)
-- Write tests
 
 ## Running
 
