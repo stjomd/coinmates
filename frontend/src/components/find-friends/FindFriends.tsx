@@ -9,15 +9,34 @@ function FindFriendsView() {
 	const [query, setQuery] = useState('')
 	const [users, setUsers] = useState<UserShort[]>([])
 
+	const [errorMessage, setErrorMessage] = useState<string>()
+
 	const loadSearchResults = useDebouncedCallback((searchQuery: string) => {
-		UserService.searchUsers(searchQuery).then(response => {
-			setUsers(response)
-		})
+		if (query.length > 0) {
+			UserService.searchUsers(searchQuery)
+				.then(response => setUsers(response))
+				.catch(() =>
+					setErrorMessage('Could not load results, please try again.')
+				)
+		}
 	}, 1000)
 
 	useEffect(() => {
+		setErrorMessage(undefined)
 		loadSearchResults(query)
 	}, [loadSearchResults, query])
+
+	const searchResultItems = () => {
+		return users.map(user => (
+			<li
+				key={user.id}
+				className='list-group-item'
+				onClick={() => window.location.replace(`user/${user.id}`)}
+			>
+				{user.firstName} {user.lastName}
+			</li>
+		))
+	}
 
 	return (
 		<>
@@ -34,17 +53,18 @@ function FindFriendsView() {
 					onChange={event => setQuery(event.target.value)}
 				/>
 			</div>
-			<ul className='list-group ff-results-list'>
-				{users.map(user => (
-					<li
-						key={user.id}
-						className='list-group-item'
-						onClick={() => window.location.replace(`user/${user.id}`)}
-					>
-						{user.firstName} {user.lastName}
-					</li>
-				))}
-			</ul>
+			{errorMessage && (
+				<div className='alert alert-danger unpadded-alert' role='alert'>
+					{errorMessage}
+				</div>
+			)}
+			{users.length > 0 ? (
+				<ul className='list-group ff-results-list'>{searchResultItems()}</ul>
+			) : (
+				<div className='alert alert-secondary unpadded-alert' role='alert'>
+					No users found. Try another query.
+				</div>
+			)}
 		</>
 	)
 }
