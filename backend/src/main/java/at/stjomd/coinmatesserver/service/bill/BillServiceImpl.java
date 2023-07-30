@@ -59,20 +59,11 @@ public class BillServiceImpl implements BillService {
 		Double split = Math.round((value / people) * 100) / 100.0;
 		System.out.println("value = " + value + ", split = " + split);
 		// Convert to string to parse two parts separately
-		String string = String.format("%.2f", split);
-		String[] parts = string.split(",");
-		System.out.println("string = " + string + ", parts = " + Arrays.toString(parts));
+		Integer integerPart = (int) split.doubleValue();
+		Double fraction = split - integerPart;
+		Integer fractionalPart = (int) (fraction * 100.0);
 		// Construct an amount instance
-		if (parts.length == 1) {
-			System.out.println("if branch");
-			return new Amount(split.intValue(), 0);
-		} else {
-			System.out.println("else branch");
-			return new Amount(
-				Integer.parseInt(parts[0]),
-				Integer.parseInt(parts[1])
-			);
-		}
+		return new Amount(integerPart, fractionalPart);
 	}
 
 	@Override
