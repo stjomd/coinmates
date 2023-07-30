@@ -39,4 +39,13 @@ export abstract class UserService {
 	): Promise<Set<UserShort>> {
 		return HttpService.patch(this.uri + `/${id}`, new AddFriend(friendId))
 	}
+
+	/**
+	 * Sends a search request to the server.
+	 * @param query the search query.
+	 * @returns a promise containing the set of users matching the query.
+	 */
+	static async searchUsers(query: string): Promise<UserShort[]> {
+		return HttpService.get(this.uri, {query: query})
+	}
 }

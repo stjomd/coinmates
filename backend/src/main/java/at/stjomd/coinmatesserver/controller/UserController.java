@@ -78,4 +78,11 @@ public class UserController {
 		return userMapper.toShortDtos(friends);
 	}
 
+	@GetMapping
+	@ResponseStatus(HttpStatus.OK)
+	public Set<UserShortDto> searchUsers(String query) {
+		log.info("GET /api/v1/users?query={}", query);
+		return userMapper.toShortDtos(userService.searchUsers(query));
+	}
+
 }

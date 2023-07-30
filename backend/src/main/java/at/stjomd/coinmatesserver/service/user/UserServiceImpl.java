@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.Collection;
 import java.util.Set;
 
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -88,6 +89,18 @@ public class UserServiceImpl implements UserService {
 		user.getFriends().add(friendUser);
 		friendUser.getFriends().add(user);
 		return user.getFriends();
+	}
+
+	@Override
+	public Set<User> searchUsers(String query) {
+		log.trace("searchUsers({})", query);
+		if (query.length() < 1) {
+			return Set.of();
+		}
+		return userRepository
+			.findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCaseOrEmailContainingIgnoreCase(
+				query, query, query, PageRequest.of(0, 10)
+			);
 	}
 
 }

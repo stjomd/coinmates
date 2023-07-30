@@ -60,4 +60,13 @@ public interface UserService {
 	Set<User> addFriend(Integer id, Integer friendId, User authenticatedUser)
 	throws AccessForbiddenException, NotFoundException;
 
+	/**
+	 * Resolves a search query and returns the results. The query is matched
+	 * against first name, last name, or email. Case is ignored. The amount of
+	 * results is limited to 10.
+	 * @param query the search query.
+	 * @return the set of users that match the query.
+	 */
+	Set<User> searchUsers(String query);
+
 }
