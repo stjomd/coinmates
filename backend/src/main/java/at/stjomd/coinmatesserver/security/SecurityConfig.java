@@ -10,6 +10,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.logout.LogoutHandler;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.security.web.header.writers.StaticHeadersWriter;
 
 import at.stjomd.coinmatesserver.repository.UserRepository;
@@ -68,6 +70,14 @@ public class SecurityConfig {
 			)
 			.csrf(csrf -> csrf.disable())
 			.build();
+	}
+
+	@Bean
+	LogoutHandler logoutHandler() {
+		SecurityContextLogoutHandler sclh = new SecurityContextLogoutHandler();
+		sclh.setClearAuthentication(true);
+		sclh.setInvalidateHttpSession(true);
+		return sclh;
 	}
 
 }

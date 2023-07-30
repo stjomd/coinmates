@@ -1,0 +1,44 @@
+name: Tests
+
+on: [push]
+
+jobs:
+  test-frontend:
+    name: Frontend
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - name: Run tests
+        run: |
+          cd frontend
+          npm install-test
+      - name: Run linter
+        run: |
+          cd frontend
+          npm run lint
+  test-backend:
+    name: Backend
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17
+          distribution: oracle
+      - name: Run tests
+        run: |
+          cd backend
+          ./gradlew clean test
+      - name: Upload report
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: Backend Test Report
+          path: backend/build/reports/tests/test/*

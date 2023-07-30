@@ -11,25 +11,25 @@ A service for bill splitting with friends. A small project to refresh React & Sp
 - Frontend:
   - React + React Router, React Hook Form, Zod
   - Bootstrap (without js)
+  - Jest
   - Vite
   - TypeScript
 - Backend:
   - Spring Framework + Web, Security, JPA, H2
   - Lombok, Mapstruct
+  - JUnit
   - Gradle
   - Java
 
 ## Limitations / TODO
 
-- Not the best user experience at places at the moment
-	- Logout is shaky, requires session renewal (= browser restart), otherwise logging in/registering again is not possible
-	- Add ability to discover friends, currently the assumption is that a user gets sent a link (`/user/:id`), where they can be added as friends
-- Implement logout with cookie management (causes issues after backend restart)
-- Write tests
+- Add remember me functionality
+- Write more tests
 
 ## Running
 
-You will need Java JDK 17 and npm. In `/frontend`, install the dependencies by running `npm install`.
+You will need Java JDK 17, as well as Node.js 16 and npm.
+In `/frontend`, install the dependencies by running `npm install`.
 
 Then, in the respective directories, you can run the frontend with the command
 

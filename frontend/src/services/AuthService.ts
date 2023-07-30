@@ -1,7 +1,7 @@
 import {serverUri} from '../Globals'
 import {LoginDetails} from '../entities/LoginDetails'
 import {User} from '../entities/User'
-import {HttpService} from './HttpService'
+import {FetchError, HttpService} from './HttpService'
 
 export abstract class AuthService {
 	private static readonly uri: string = serverUri + '/auth'
@@ -25,14 +25,30 @@ export abstract class AuthService {
 	}
 
 	/**
+	 * Sends a request for logout, and if successful, removes data from local
+	 * storage.
+	 */
+	static async logout() {
+		// Use fetch here because this request returns no body (and HttpService
+		// expects one)
+		const response = await fetch(this.uri + '/logout', {
+			method: 'POST',
+			credentials: 'include',
+		})
+		if (response.ok) {
+			this.deleteAuth()
+		} else {
+			throw (await response.json()) as FetchError
+		}
+	}
+
+	/**
 	 * Saves authentication details into local storage, and reloads the page or
 	 * redirect the user to a specified URL.
 	 * @param user the user entity.
 	 * @param url the URL to redirect to. If null, page is reloaded.
-	 * @todo Make secure!
 	 */
 	static storeAuth(user: User, url?: string) {
-		// TODO: make secure / store token
 		localStorage.setItem('user', JSON.stringify(user))
 		if (url == null) {
 			window.location.reload()
@@ -44,10 +60,8 @@ export abstract class AuthService {
 	/**
 	 * Retrieves authentication details from local storage.
 	 * @returns the authentication details, or null if unauthenticated.
-	 * @todo Make secure!
 	 */
 	static getAuth(): User | null {
-		// TODO: make secure / store token
 		const contents = localStorage.getItem('user')
 		if (contents != null) {
 			return JSON.parse(contents) as User
@@ -59,7 +73,6 @@ export abstract class AuthService {
 	/**
 	 * Removes authentication details from local storage, and redirect the user to
 	 * the landing page.
-	 * @todo Make secure!
 	 */
 	static deleteAuth() {
 		localStorage.removeItem('user')

@@ -27,11 +27,10 @@ export abstract class BillService {
 	}
 
 	/**
-	 * Retrieves all bill for a specific user.
-	 * @param userId the ID of the user.
-	 * @returns a promise containing the bill with the specified ID.
+	 * Retrieves all bill for the authenticated user.
+	 * @returns a promise containing the bills.
 	 */
-	static async getAllBills(userId: number): Promise<Bill[]> {
+	static async getAllBills(): Promise<Bill[]> {
 		return HttpService.get(this.uri)
 	}
 

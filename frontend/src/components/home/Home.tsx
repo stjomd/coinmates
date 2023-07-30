@@ -14,7 +14,7 @@ function Home() {
 	// Load user's bills
 	useEffect(() => {
 		if (user?.id != null) {
-			BillService.getAllBills(user.id)
+			BillService.getAllBills()
 				.then(setBills)
 				.catch(() =>
 					setErrorMessage(

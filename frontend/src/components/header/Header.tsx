@@ -62,7 +62,7 @@ function Header() {
 					<ul className={dropdownClass()}>
 						<li
 							className='dropdown-item dropdown-item-danger'
-							onClick={AuthService.deleteAuth}
+							onClick={() => AuthService.logout()}
 						>
 							Log out
 						</li>
@@ -79,6 +79,9 @@ function Header() {
 			</Link>,
 			<Link key='2' to='/bill' className='header-link'>
 				<p>Split Bills</p>
+			</Link>,
+			<Link key='3' to='/friends' className='header-link'>
+				<p>Find Friends</p>
 			</Link>,
 		]
 	}
@@ -107,7 +110,7 @@ function Header() {
 					{headerLinks()}
 					<p
 						className='header-link header-link-danger'
-						onClick={AuthService.deleteAuth}
+						onClick={() => AuthService.logout()}
 					>
 						Log out
 					</p>
