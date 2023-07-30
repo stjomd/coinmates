@@ -32,11 +32,13 @@ jobs:
         with:
           java-version: '17'
           distribution: 'adopt'
-      - name: Build
-        run: |
-          cd backend
-          ./gradlew clean build
       - name: Run tests
         run: |
           cd backend
           ./gradlew clean test
+      - name: Upload report
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: Report
+          path: backend/build/reports/tests/test/*
